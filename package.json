@@ -2,10 +2,10 @@
   "name": "copora-api",
   "version": "1.0.0",
   "description": "",
-  "main": "dist/index.js",
+  "main": "dist/src/app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon dist/src/app.js",
+    "start": "node dist/src/app.js",
     "build": "tsc",
     "generate-swagger": "node generateSwagger.js",
     "postbuild": "npm run generate-swagger",
