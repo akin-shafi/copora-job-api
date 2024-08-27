@@ -49,26 +49,26 @@ const router = Router();
  */
 router.post('/', ReferenceController.createOrUpdateReference);
 
-/**
- * @swagger
- * /reference/{applicationNo}:
- *   get:
- *     summary: Get Reference record by Application Number
- *     tags: [Reference]
- *     parameters:
- *       - in: path
- *         name: applicationNo
- *         schema:
- *           type: string
- *         required: true
- *         description: The application number
- *     responses:
- *       200:
- *         description: Reference record retrieved successfully
- *       404:
- *         description: Reference record not found
- */
-router.get('/:applicationNo', ReferenceController.getReferenceByNo);
+// /**
+//  * @swagger
+//  * /reference/{applicationNo}:
+//  *   get:
+//  *     summary: Get Reference record by Application Number
+//  *     tags: [Reference]
+//  *     parameters:
+//  *       - in: path
+//  *         name: applicationNo
+//  *         schema:
+//  *           type: string
+//  *         required: true
+//  *         description: The application number
+//  *     responses:
+//  *       200:
+//  *         description: Reference record retrieved successfully
+//  *       404:
+//  *         description: Reference record not found
+//  */
+// router.get('/:applicationNo', ReferenceController.getReferenceByNo);
 
 /**
  * @swagger
@@ -115,25 +115,25 @@ router.get('/:applicationNo', ReferenceController.getReferenceByNo);
  */
 router.put('/:applicationNo', ReferenceController.updateReferenceByNo);
 
-/**
- * @swagger
- * /reference/{applicationNo}:
- *   delete:
- *     summary: Delete Reference record by Application Number
- *     tags: [Reference]
- *     parameters:
- *       - in: path
- *         name: applicationNo
- *         schema:
- *           type: string
- *         required: true
- *         description: The application number
- *     responses:
- *       200:
- *         description: Reference record deleted successfully
- *       404:
- *         description: Reference record not found
- */
-router.delete('/:applicationNo', ReferenceController.deleteReferenceByNo);
+// /**
+//  * @swagger
+//  * /reference/{applicationNo}:
+//  *   delete:
+//  *     summary: Delete Reference record by Application Number
+//  *     tags: [Reference]
+//  *     parameters:
+//  *       - in: path
+//  *         name: applicationNo
+//  *         schema:
+//  *           type: string
+//  *         required: true
+//  *         description: The application number
+//  *     responses:
+//  *       200:
+//  *         description: Reference record deleted successfully
+//  *       404:
+//  *         description: Reference record not found
+//  */
+// router.delete('/:applicationNo', ReferenceController.deleteReferenceByNo);
 
 export default router;

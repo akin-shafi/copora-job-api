@@ -48,8 +48,8 @@ const swaggerOptions = {
         description: "Endpoints related to agreement consents"
       },
       {
-        name: "Application",
-        description: "Endpoints related to applications"
+        name: "Applicants",
+        description: "Endpoints related to applicants"
       },
       {
         name: "BankDetails",

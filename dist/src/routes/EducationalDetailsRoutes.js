@@ -47,26 +47,26 @@ var router = (0, express_1.Router)();
  *         description: Bad request
  */
 router.post('/', EducationalDetailsController_1.EducationalDetailsController.createEducationalDetails);
-/**
- * @swagger
- * /educational-details/{applicationNo}:
- *   get:
- *     summary: Get Educational Details by Application Number
- *     tags: [EducationalDetails]
- *     parameters:
- *       - in: path
- *         name: applicationNo
- *         schema:
- *           type: string
- *         required: true
- *         description: The application number
- *     responses:
- *       200:
- *         description: Educational Details retrieved successfully
- *       404:
- *         description: Educational Details not found
- */
-router.get('/:applicationNo', EducationalDetailsController_1.EducationalDetailsController.getEducationalDetailsByNo);
+// /**
+//  * @swagger
+//  * /educational-details/{applicationNo}:
+//  *   get:
+//  *     summary: Get Educational Details by Application Number
+//  *     tags: [EducationalDetails]
+//  *     parameters:
+//  *       - in: path
+//  *         name: applicationNo
+//  *         schema:
+//  *           type: string
+//  *         required: true
+//  *         description: The application number
+//  *     responses:
+//  *       200:
+//  *         description: Educational Details retrieved successfully
+//  *       404:
+//  *         description: Educational Details not found
+//  */
+// router.get('/:applicationNo', EducationalDetailsController.getEducationalDetailsByNo);
 /**
  * @swagger
  * /educational-details/{applicationNo}:
@@ -111,24 +111,24 @@ router.get('/:applicationNo', EducationalDetailsController_1.EducationalDetailsC
  *         description: Educational Details not found
  */
 router.put('/:applicationNo', EducationalDetailsController_1.EducationalDetailsController.updateEducationalDetailsByNo);
-/**
- * @swagger
- * /educational-details/{applicationNo}:
- *   delete:
- *     summary: Delete Educational Details by Application Number
- *     tags: [EducationalDetails]
- *     parameters:
- *       - in: path
- *         name: applicationNo
- *         schema:
- *           type: string
- *         required: true
- *         description: The application number
- *     responses:
- *       200:
- *         description: Educational Details deleted successfully
- *       404:
- *         description: Educational Details not found
- */
-router.delete('/:applicationNo', EducationalDetailsController_1.EducationalDetailsController.deleteEducationalDetailsByNo);
+// /**
+//  * @swagger
+//  * /educational-details/{applicationNo}:
+//  *   delete:
+//  *     summary: Delete Educational Details by Application Number
+//  *     tags: [EducationalDetails]
+//  *     parameters:
+//  *       - in: path
+//  *         name: applicationNo
+//  *         schema:
+//  *           type: string
+//  *         required: true
+//  *         description: The application number
+//  *     responses:
+//  *       200:
+//  *         description: Educational Details deleted successfully
+//  *       404:
+//  *         description: Educational Details not found
+//  */
+// router.delete('/:applicationNo', EducationalDetailsController.deleteEducationalDetailsByNo);
 exports.default = router;

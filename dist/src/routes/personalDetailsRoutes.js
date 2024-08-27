@@ -45,26 +45,26 @@ var router = (0, express_1.Router)();
  *         description: Bad request
  */
 router.post('/', PersonalDetailsController_1.PersonalDetailsController.createPersonalDetails);
-/**
- * @swagger
- * /personal-details/{applicationNo}:
- *   get:
- *     summary: Get Personal Details record by Application Number
- *     tags: [PersonalDetails]
- *     parameters:
- *       - in: path
- *         name: applicationNo
- *         schema:
- *           type: string
- *         required: true
- *         description: The application number
- *     responses:
- *       200:
- *         description: Personal Details record retrieved successfully
- *       404:
- *         description: Personal Details record not found
- */
-router.get('/:applicationNo', PersonalDetailsController_1.PersonalDetailsController.getPersonalDetailsByNo);
+// /**
+//  * @swagger
+//  * /personal-details/{applicationNo}:
+//  *   get:
+//  *     summary: Get Personal Details record by Application Number
+//  *     tags: [PersonalDetails]
+//  *     parameters:
+//  *       - in: path
+//  *         name: applicationNo
+//  *         schema:
+//  *           type: string
+//  *         required: true
+//  *         description: The application number
+//  *     responses:
+//  *       200:
+//  *         description: Personal Details record retrieved successfully
+//  *       404:
+//  *         description: Personal Details record not found
+//  */
+// router.get('/:applicationNo', PersonalDetailsController.getPersonalDetailsByNo);
 /**
  * @swagger
  * /personal-details/{applicationNo}:
@@ -119,24 +119,24 @@ router.get('/:applicationNo', PersonalDetailsController_1.PersonalDetailsControl
  *         description: Personal Details record not found
  */
 router.put('/:applicationNo', PersonalDetailsController_1.PersonalDetailsController.updatePersonalDetailsByNo);
-/**
- * @swagger
- * /personal-details/{applicationNo}:
- *   delete:
- *     summary: Delete Personal Details record by Application Number
- *     tags: [PersonalDetails]
- *     parameters:
- *       - in: path
- *         name: applicationNo
- *         schema:
- *           type: string
- *         required: true
- *         description: The application number
- *     responses:
- *       200:
- *         description: Personal Details record deleted successfully
- *       404:
- *         description: Personal Details record not found
- */
-router.delete('/:applicationNo', PersonalDetailsController_1.PersonalDetailsController.deletePersonalDetailsByNo);
+// /**
+//  * @swagger
+//  * /personal-details/{applicationNo}:
+//  *   delete:
+//  *     summary: Delete Personal Details record by Application Number
+//  *     tags: [PersonalDetails]
+//  *     parameters:
+//  *       - in: path
+//  *         name: applicationNo
+//  *         schema:
+//  *           type: string
+//  *         required: true
+//  *         description: The application number
+//  *     responses:
+//  *       200:
+//  *         description: Personal Details record deleted successfully
+//  *       404:
+//  *         description: Personal Details record not found
+//  */
+// router.delete('/:applicationNo', PersonalDetailsController.deletePersonalDetailsByNo);
 exports.default = router;

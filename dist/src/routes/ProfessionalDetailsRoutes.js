@@ -61,26 +61,26 @@ var router = (0, express_1.Router)();
  *         description: Bad request
  */
 router.post('/', ProfessionalDetailsController_1.ProfessionalDetailsController.createProfessionalDetails);
-/**
- * @swagger
- * /professional-details/{applicationNo}:
- *   get:
- *     summary: Get Professional Details record by Application Number
- *     tags: [ProfessionalDetails]
- *     parameters:
- *       - in: path
- *         name: applicationNo
- *         schema:
- *           type: string
- *         required: true
- *         description: The application number
- *     responses:
- *       200:
- *         description: Professional Details record retrieved successfully
- *       404:
- *         description: Professional Details record not found
- */
-router.get('/:applicationNo', ProfessionalDetailsController_1.ProfessionalDetailsController.getProfessionalDetailsByNo);
+// /**
+//  * @swagger
+//  * /professional-details/{applicationNo}:
+//  *   get:
+//  *     summary: Get Professional Details record by Application Number
+//  *     tags: [ProfessionalDetails]
+//  *     parameters:
+//  *       - in: path
+//  *         name: applicationNo
+//  *         schema:
+//  *           type: string
+//  *         required: true
+//  *         description: The application number
+//  *     responses:
+//  *       200:
+//  *         description: Professional Details record retrieved successfully
+//  *       404:
+//  *         description: Professional Details record not found
+//  */
+// router.get('/:applicationNo', ProfessionalDetailsController.getProfessionalDetailsByNo);
 /**
  * @swagger
  * /professional-details/{applicationNo}:
@@ -139,24 +139,24 @@ router.get('/:applicationNo', ProfessionalDetailsController_1.ProfessionalDetail
  *         description: Professional Details record not found
  */
 router.put('/:applicationNo', ProfessionalDetailsController_1.ProfessionalDetailsController.updateProfessionalDetailsByNo);
-/**
- * @swagger
- * /professional-details/{applicationNo}:
- *   delete:
- *     summary: Delete Professional Details record by Application Number
- *     tags: [ProfessionalDetails]
- *     parameters:
- *       - in: path
- *         name: applicationNo
- *         schema:
- *           type: string
- *         required: true
- *         description: The application number
- *     responses:
- *       200:
- *         description: Professional Details record deleted successfully
- *       404:
- *         description: Professional Details record not found
- */
-router.delete('/:applicationNo', ProfessionalDetailsController_1.ProfessionalDetailsController.deleteProfessionalDetailsByNo);
+// /**
+//  * @swagger
+//  * /professional-details/{applicationNo}:
+//  *   delete:
+//  *     summary: Delete Professional Details record by Application Number
+//  *     tags: [ProfessionalDetails]
+//  *     parameters:
+//  *       - in: path
+//  *         name: applicationNo
+//  *         schema:
+//  *           type: string
+//  *         required: true
+//  *         description: The application number
+//  *     responses:
+//  *       200:
+//  *         description: Professional Details record deleted successfully
+//  *       404:
+//  *         description: Professional Details record not found
+//  */
+// router.delete('/:applicationNo', ProfessionalDetailsController.deleteProfessionalDetailsByNo);
 exports.default = router;
