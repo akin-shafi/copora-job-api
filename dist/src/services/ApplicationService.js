@@ -38,42 +38,142 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ApplicationService = void 0;
 var data_source_1 = require("../data-source");
+var UserEntity_1 = require("../entities/UserEntity");
 var ApplicationEntity_1 = require("../entities/ApplicationEntity");
+var PersonalDetailsEntity_1 = require("../entities/PersonalDetailsEntity");
+var ContactDetailsEntity_1 = require("../entities/ContactDetailsEntity");
+var ProfessionalDetailsEntity_1 = require("../entities/ProfessionalDetailsEntity");
+var EducationalDetailsEntity_1 = require("../entities/EducationalDetailsEntity");
+var HealthAndDisabilityEntity_1 = require("../entities/HealthAndDisabilityEntity");
+var FoodSafetyQuestionnaireEntity_1 = require("../entities/FoodSafetyQuestionnaireEntity");
+var BankDetailsEntity_1 = require("../entities/BankDetailsEntity");
+var AgreementConsentEntity_1 = require("../entities/AgreementConsentEntity");
+var ReferenceEntity_1 = require("../entities/ReferenceEntity");
 var ApplicationService = /** @class */ (function () {
     function ApplicationService() {
-        this.applicationRepository = data_source_1.AppDataSource.getRepository(ApplicationEntity_1.Application);
     }
-    ApplicationService.prototype.createApplication = function () {
+    ApplicationService.createApplication = function (data) {
         return __awaiter(this, void 0, void 0, function () {
-            var application;
+            return __generator(this, function (_a) {
+                return [2 /*return*/];
+            });
+        });
+    };
+    ApplicationService.updateApplicationByNo = function (applicationNo, data) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                return [2 /*return*/];
+            });
+        });
+    };
+    ApplicationService.deleteApplicationByNo = function (applicationNo) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                return [2 /*return*/];
+            });
+        });
+    };
+    ApplicationService.getApplicationByNo = function (applicationNo) {
+        return __awaiter(this, void 0, void 0, function () {
+            var application, error_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        application = new ApplicationEntity_1.Application();
-                        application.applicationNo = this.generateUniqueApplicationNo();
-                        application.createdAt = new Date();
-                        application.updatedAt = new Date();
-                        return [4 /*yield*/, this.applicationRepository.save(application)];
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, data_source_1.AppDataSource.getRepository(ApplicationEntity_1.Application).findOneBy({ applicationNo: applicationNo })];
                     case 1:
-                        _a.sent();
+                        application = _a.sent();
+                        if (!application) {
+                            throw new Error('Application not found');
+                        }
                         return [2 /*return*/, application];
+                    case 2:
+                        error_1 = _a.sent();
+                        throw new Error("Error retrieving application: ".concat(error_1.message));
+                    case 3: return [2 /*return*/];
                 }
             });
         });
     };
-    ApplicationService.prototype.generateUniqueApplicationNo = function () {
-        // Implement your logic to generate a unique application number
-        // For example, you could use a UUID or a timestamp-based approach
-        return "APP-".concat(Date.now());
+    ApplicationService.getApplicantData = function (applicationNo) {
+        return __awaiter(this, void 0, void 0, function () {
+            var user, application, personalDetails, contactDetails, professionalDetails, educationalDetails, healthAndDisability, foodSafetyQuestionnaire, bankDetails, agreementConsent, reference, error_2;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 12, , 13]);
+                        return [4 /*yield*/, data_source_1.AppDataSource.getRepository(UserEntity_1.User).findOneBy({ applicationNo: applicationNo })];
+                    case 1:
+                        user = _a.sent();
+                        return [4 /*yield*/, data_source_1.AppDataSource.getRepository(ApplicationEntity_1.Application).findOneBy({ applicationNo: applicationNo })];
+                    case 2:
+                        application = _a.sent();
+                        return [4 /*yield*/, data_source_1.AppDataSource.getRepository(PersonalDetailsEntity_1.PersonalDetails).findOneBy({ applicationNo: applicationNo })];
+                    case 3:
+                        personalDetails = _a.sent();
+                        return [4 /*yield*/, data_source_1.AppDataSource.getRepository(ContactDetailsEntity_1.ContactDetails).findOneBy({ applicationNo: applicationNo })];
+                    case 4:
+                        contactDetails = _a.sent();
+                        return [4 /*yield*/, data_source_1.AppDataSource.getRepository(ProfessionalDetailsEntity_1.ProfessionalDetails).findOneBy({ applicationNo: applicationNo })];
+                    case 5:
+                        professionalDetails = _a.sent();
+                        return [4 /*yield*/, data_source_1.AppDataSource.getRepository(EducationalDetailsEntity_1.EducationalDetails).findOneBy({ applicationNo: applicationNo })];
+                    case 6:
+                        educationalDetails = _a.sent();
+                        return [4 /*yield*/, data_source_1.AppDataSource.getRepository(HealthAndDisabilityEntity_1.HealthAndDisability).findOneBy({ applicationNo: applicationNo })];
+                    case 7:
+                        healthAndDisability = _a.sent();
+                        return [4 /*yield*/, data_source_1.AppDataSource.getRepository(FoodSafetyQuestionnaireEntity_1.FoodSafetyQuestionnaire).findOneBy({ applicationNo: applicationNo })];
+                    case 8:
+                        foodSafetyQuestionnaire = _a.sent();
+                        return [4 /*yield*/, data_source_1.AppDataSource.getRepository(BankDetailsEntity_1.BankDetails).findOneBy({ applicationNo: applicationNo })];
+                    case 9:
+                        bankDetails = _a.sent();
+                        return [4 /*yield*/, data_source_1.AppDataSource.getRepository(AgreementConsentEntity_1.AgreementConsent).findOneBy({ applicationNo: applicationNo })];
+                    case 10:
+                        agreementConsent = _a.sent();
+                        return [4 /*yield*/, data_source_1.AppDataSource.getRepository(ReferenceEntity_1.Reference).findOneBy({ applicationNo: applicationNo })];
+                    case 11:
+                        reference = _a.sent();
+                        return [2 /*return*/, {
+                                user: user,
+                                application: application,
+                                personalDetails: personalDetails,
+                                contactDetails: contactDetails,
+                                professionalDetails: professionalDetails,
+                                educationalDetails: educationalDetails,
+                                healthAndDisability: healthAndDisability,
+                                foodSafetyQuestionnaire: foodSafetyQuestionnaire,
+                                bankDetails: bankDetails,
+                                agreementConsent: agreementConsent,
+                                reference: reference,
+                            }];
+                    case 12:
+                        error_2 = _a.sent();
+                        throw new Error("Error retrieving applicant data: ".concat(error_2.message));
+                    case 13: return [2 /*return*/];
+                }
+            });
+        });
     };
-    ApplicationService.getApplicationByNo = function (applicationNo) {
-        throw new Error('Method not implemented.');
-    };
-    ApplicationService.updateApplicationByNo = function (applicationNo, body) {
-        throw new Error('Method not implemented.');
-    };
-    ApplicationService.deleteApplicationByNo = function (applicationNo) {
-        throw new Error('Method not implemented.');
+    ApplicationService.getAllApplicants = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var applications, error_3;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, data_source_1.AppDataSource.getRepository(ApplicationEntity_1.Application).find()];
+                    case 1:
+                        applications = _a.sent();
+                        return [2 /*return*/, applications];
+                    case 2:
+                        error_3 = _a.sent();
+                        throw new Error("Error retrieving all applicants: ".concat(error_3.message));
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
     };
     return ApplicationService;
 }());

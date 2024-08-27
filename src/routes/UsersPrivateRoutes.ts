@@ -20,7 +20,6 @@ const router = Router();
  */
 router.get('/', authenticateToken, authorizeRoles('admin'), UserController.getAll);
 
-
 /**
  * @swagger
  * /auth/users/{id}:
@@ -115,9 +114,6 @@ router.get('/:userId', authenticateToken, UserController.getById);
  */
 // router.post('/register', authenticateToken, authorizeRoles('admin'), UserController.register);
 router.post('/register',  UserController.register);
-
-
-
 
 
 /**

@@ -125,6 +125,51 @@ var ApplicationController = /** @class */ (function () {
             });
         });
     };
+    ApplicationController.getApplicantData = function (req, res) {
+        return __awaiter(this, void 0, void 0, function () {
+            var result, error_5;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, ApplicationService_1.ApplicationService.getApplicantData(req.params.applicationNo)];
+                    case 1:
+                        result = _a.sent();
+                        if (!result.user) {
+                            return [2 /*return*/, res.status(404).json({ message: 'Applicant not found' })];
+                        }
+                        res.status(200).json(result);
+                        return [3 /*break*/, 3];
+                    case 2:
+                        error_5 = _a.sent();
+                        res.status(500).json({ error: error_5.message });
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    ApplicationController.getAllApplicants = function (req, res) {
+        return __awaiter(this, void 0, void 0, function () {
+            var result, error_6;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, ApplicationService_1.ApplicationService.getAllApplicants()];
+                    case 1:
+                        result = _a.sent();
+                        res.status(200).json(result);
+                        return [3 /*break*/, 3];
+                    case 2:
+                        error_6 = _a.sent();
+                        res.status(500).json({ error: error_6.message });
+                        return [3 /*break*/, 3];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
     return ApplicationController;
 }());
 exports.ApplicationController = ApplicationController;

@@ -15,8 +15,6 @@ export class UserService {
     throw new Error('Method not implemented.');
   }
 
-  
-
   async login(email: string, password: string): Promise<string> {
     const user = await userRepository.findOne({ where: { email } });
     if (!user) {
@@ -129,7 +127,6 @@ export class UserService {
     }
   }
   
-
   async  findById(userId: number): Promise<User | null> {
     try {
       // Find the user by ID
