@@ -124,8 +124,6 @@ class UserController {
     }
   }
 
-  
-
   async forgetPassword(req: Request, res: Response) {
     try {
         const { email } = req.body;
@@ -560,8 +558,6 @@ class UserController {
       return res.status(500).json({ message: 'Server error', error: error.message });
     }
   }
-
-
 
 
 }

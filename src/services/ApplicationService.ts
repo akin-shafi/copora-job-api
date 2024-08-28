@@ -1,6 +1,6 @@
 import { AppDataSource } from '../data-source';
 import { User } from '../entities/UserEntity';
-import { Application } from '../entities/ApplicationEntity';
+// import { Application } from '../entities/ApplicationEntity';
 import { PersonalDetails } from '../entities/PersonalDetailsEntity';
 import { ContactDetails } from '../entities/ContactDetailsEntity';
 import { ProfessionalDetails } from '../entities/ProfessionalDetailsEntity';
@@ -27,7 +27,7 @@ export class ApplicationService {
   
   static async getApplicationByNo(applicationNo: string) {
     try {
-      const application = await AppDataSource.getRepository(Application).findOneBy({ applicationNo });
+      const application = await AppDataSource.getRepository(User).findOneBy({ applicationNo });
       if (!application) {
         throw new Error('Application not found');
       }
@@ -38,9 +38,10 @@ export class ApplicationService {
   }
 
   static async getApplicantData(applicationNo: string) {
+    // console.log("applicationNo", applicationNo)
     try {
       const user = await AppDataSource.getRepository(User).findOneBy({ applicationNo });
-      const application = await AppDataSource.getRepository(Application).findOneBy({ applicationNo });
+      // const application = await AppDataSource.getRepository(Application).findOneBy({ applicationNo });
       const personalDetails = await AppDataSource.getRepository(PersonalDetails).findOneBy({ applicationNo });
       const contactDetails = await AppDataSource.getRepository(ContactDetails).findOneBy({ applicationNo });
       const professionalDetails = await AppDataSource.getRepository(ProfessionalDetails).findOneBy({ applicationNo });
@@ -53,7 +54,7 @@ export class ApplicationService {
 
       return {
         user,
-        application,
+        // application,
         personalDetails,
         contactDetails,
         professionalDetails,
@@ -71,7 +72,7 @@ export class ApplicationService {
 
   static async getAllApplicants() {
     try {
-      const applications = await AppDataSource.getRepository(Application).find();
+      const applications = await AppDataSource.getRepository(User).find();
       return applications;
     } catch (error) {
       throw new Error(`Error retrieving all applicants: ${error.message}`);

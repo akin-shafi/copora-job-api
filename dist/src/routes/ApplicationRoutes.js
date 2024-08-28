@@ -14,7 +14,7 @@ var router = express_1.default.Router();
  */
 /**
  * @swagger
- * /applicant/{applicationNo}:
+ * /{applicationNo}:
  *   get:
  *     summary: Fetch single applicant data
  *     tags: [Applicants]
@@ -87,7 +87,7 @@ var router = express_1.default.Router();
  *                   type: string
  *                   description: Error details
  */
-router.get('/applicant/:applicationNo', ApplicationController_1.ApplicationController.getApplicantData); // Fetch single applicant data
+router.get('/:applicationNo', ApplicationController_1.ApplicationController.getApplicantData); // Fetch single applicant data
 // /**
 //  * @swagger
 //  * /applicants:

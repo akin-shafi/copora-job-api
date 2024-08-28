@@ -11,8 +11,9 @@ var dotenv_1 = __importDefault(require("dotenv"));
 var rateLimiter_1 = __importDefault(require("./middlewares/rateLimiter")); // Import the rate limiter middleware
 var UserRoutes_1 = __importDefault(require("./routes/UserRoutes"));
 var UsersPrivateRoutes_1 = __importDefault(require("./routes/UsersPrivateRoutes"));
-var AgreementConsentRoutes_1 = __importDefault(require("./routes/AgreementConsentRoutes"));
 var ApplicationRoutes_1 = __importDefault(require("./routes/ApplicationRoutes"));
+var AgreementConsentRoutes_1 = __importDefault(require("./routes/AgreementConsentRoutes"));
+var ApplicationRoutes_2 = __importDefault(require("./routes/ApplicationRoutes"));
 var BankDetailsRoutes_1 = __importDefault(require("./routes/BankDetailsRoutes"));
 var ContactDetailsRoutes_1 = __importDefault(require("./routes/ContactDetailsRoutes"));
 var EducationalDetailsRoutes_1 = __importDefault(require("./routes/EducationalDetailsRoutes"));
@@ -60,19 +61,20 @@ data_source_1.AppDataSource.initialize()
         ignoreRoute: function (req, res) { return false; } // Ignore logging some routes
     }));
     // API routes with optional prefix
-    var prefix = '/api';
-    app.use("".concat(prefix, "/users"), UserRoutes_1.default);
-    app.use("".concat(prefix, "/auth/users"), UsersPrivateRoutes_1.default);
-    app.use("".concat(prefix, "/agreement-consent"), AgreementConsentRoutes_1.default);
-    app.use("".concat(prefix, "/application"), ApplicationRoutes_1.default);
-    app.use("".concat(prefix, "/bank-details"), BankDetailsRoutes_1.default);
-    app.use("".concat(prefix, "/contact-details"), ContactDetailsRoutes_1.default);
-    app.use("".concat(prefix, "/education-details"), EducationalDetailsRoutes_1.default);
-    app.use("".concat(prefix, "/food-safety"), FoodSafetyQuestionnaireRoutes_1.default);
-    app.use("".concat(prefix, "/health-and-disability"), HealthAndDisabilityRoutes_1.default);
-    app.use("".concat(prefix, "/personal-details"), personalDetailsRoutes_1.default);
-    app.use("".concat(prefix, "/professional-details"), ProfessionalDetailsRoutes_1.default);
-    app.use("".concat(prefix, "/reference"), ReferenceRoutes_1.default);
+    // const prefix = '/api';
+    app.use("/users", UserRoutes_1.default);
+    app.use("/applicant", ApplicationRoutes_1.default);
+    app.use("/auth/users", UsersPrivateRoutes_1.default);
+    app.use("/agreement-consent", AgreementConsentRoutes_1.default);
+    app.use("/application", ApplicationRoutes_2.default);
+    app.use("/bank-details", BankDetailsRoutes_1.default);
+    app.use("/contact-details", ContactDetailsRoutes_1.default);
+    app.use("/education-details", EducationalDetailsRoutes_1.default);
+    app.use("/food-safety", FoodSafetyQuestionnaireRoutes_1.default);
+    app.use("/health-and-disability", HealthAndDisabilityRoutes_1.default);
+    app.use("/personal-details", personalDetailsRoutes_1.default);
+    app.use("/professional-details", ProfessionalDetailsRoutes_1.default);
+    app.use("/reference", ReferenceRoutes_1.default);
     // Swagger setup
     app.use('/api-docs', swagger_ui_express_1.default.serve, swagger_ui_express_1.default.setup(swagger_1.swaggerSpec));
     // Error logging with Winston

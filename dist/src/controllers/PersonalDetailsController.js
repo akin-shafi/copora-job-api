@@ -87,21 +87,24 @@ var PersonalDetailsController = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        _a.trys.push([0, 2, , 3]);
+                        console.log("req:", req.params);
+                        _a.label = 1;
+                    case 1:
+                        _a.trys.push([1, 3, , 4]);
                         applicationNo = req.params.applicationNo;
                         return [4 /*yield*/, PersonalDetailsService_1.PersonalDetailsService.getByApplicationNo(applicationNo)];
-                    case 1:
+                    case 2:
                         entry = _a.sent();
                         if (!entry) {
                             return [2 /*return*/, res.status(404).send({ message: 'Personal details not found' })];
                         }
                         res.status(200).send(entry);
-                        return [3 /*break*/, 3];
-                    case 2:
+                        return [3 /*break*/, 4];
+                    case 3:
                         error_2 = _a.sent();
                         res.status(500).send({ message: 'Error fetching personal details', error: error_2.message });
-                        return [3 /*break*/, 3];
-                    case 3: return [2 /*return*/];
+                        return [3 /*break*/, 4];
+                    case 4: return [2 /*return*/];
                 }
             });
         });

@@ -12,7 +12,7 @@ const router = express.Router();
 
 /**
  * @swagger
- * /applicant/{applicationNo}:
+ * /{applicationNo}:
  *   get:
  *     summary: Fetch single applicant data
  *     tags: [Applicants]
@@ -85,7 +85,7 @@ const router = express.Router();
  *                   type: string
  *                   description: Error details
  */
-router.get('/applicant/:applicationNo', ApplicationController.getApplicantData); // Fetch single applicant data
+router.get('/:applicationNo', ApplicationController.getApplicantData); // Fetch single applicant data
 
 // /**
 //  * @swagger

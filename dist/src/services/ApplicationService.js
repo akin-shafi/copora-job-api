@@ -39,7 +39,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ApplicationService = void 0;
 var data_source_1 = require("../data-source");
 var UserEntity_1 = require("../entities/UserEntity");
-var ApplicationEntity_1 = require("../entities/ApplicationEntity");
+// import { Application } from '../entities/ApplicationEntity';
 var PersonalDetailsEntity_1 = require("../entities/PersonalDetailsEntity");
 var ContactDetailsEntity_1 = require("../entities/ContactDetailsEntity");
 var ProfessionalDetailsEntity_1 = require("../entities/ProfessionalDetailsEntity");
@@ -80,7 +80,7 @@ var ApplicationService = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, data_source_1.AppDataSource.getRepository(ApplicationEntity_1.Application).findOneBy({ applicationNo: applicationNo })];
+                        return [4 /*yield*/, data_source_1.AppDataSource.getRepository(UserEntity_1.User).findOneBy({ applicationNo: applicationNo })];
                     case 1:
                         application = _a.sent();
                         if (!application) {
@@ -97,47 +97,44 @@ var ApplicationService = /** @class */ (function () {
     };
     ApplicationService.getApplicantData = function (applicationNo) {
         return __awaiter(this, void 0, void 0, function () {
-            var user, application, personalDetails, contactDetails, professionalDetails, educationalDetails, healthAndDisability, foodSafetyQuestionnaire, bankDetails, agreementConsent, reference, error_2;
+            var user, personalDetails, contactDetails, professionalDetails, educationalDetails, healthAndDisability, foodSafetyQuestionnaire, bankDetails, agreementConsent, reference, error_2;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        _a.trys.push([0, 12, , 13]);
+                        _a.trys.push([0, 11, , 12]);
                         return [4 /*yield*/, data_source_1.AppDataSource.getRepository(UserEntity_1.User).findOneBy({ applicationNo: applicationNo })];
                     case 1:
                         user = _a.sent();
-                        return [4 /*yield*/, data_source_1.AppDataSource.getRepository(ApplicationEntity_1.Application).findOneBy({ applicationNo: applicationNo })];
-                    case 2:
-                        application = _a.sent();
                         return [4 /*yield*/, data_source_1.AppDataSource.getRepository(PersonalDetailsEntity_1.PersonalDetails).findOneBy({ applicationNo: applicationNo })];
-                    case 3:
+                    case 2:
                         personalDetails = _a.sent();
                         return [4 /*yield*/, data_source_1.AppDataSource.getRepository(ContactDetailsEntity_1.ContactDetails).findOneBy({ applicationNo: applicationNo })];
-                    case 4:
+                    case 3:
                         contactDetails = _a.sent();
                         return [4 /*yield*/, data_source_1.AppDataSource.getRepository(ProfessionalDetailsEntity_1.ProfessionalDetails).findOneBy({ applicationNo: applicationNo })];
-                    case 5:
+                    case 4:
                         professionalDetails = _a.sent();
                         return [4 /*yield*/, data_source_1.AppDataSource.getRepository(EducationalDetailsEntity_1.EducationalDetails).findOneBy({ applicationNo: applicationNo })];
-                    case 6:
+                    case 5:
                         educationalDetails = _a.sent();
                         return [4 /*yield*/, data_source_1.AppDataSource.getRepository(HealthAndDisabilityEntity_1.HealthAndDisability).findOneBy({ applicationNo: applicationNo })];
-                    case 7:
+                    case 6:
                         healthAndDisability = _a.sent();
                         return [4 /*yield*/, data_source_1.AppDataSource.getRepository(FoodSafetyQuestionnaireEntity_1.FoodSafetyQuestionnaire).findOneBy({ applicationNo: applicationNo })];
-                    case 8:
+                    case 7:
                         foodSafetyQuestionnaire = _a.sent();
                         return [4 /*yield*/, data_source_1.AppDataSource.getRepository(BankDetailsEntity_1.BankDetails).findOneBy({ applicationNo: applicationNo })];
-                    case 9:
+                    case 8:
                         bankDetails = _a.sent();
                         return [4 /*yield*/, data_source_1.AppDataSource.getRepository(AgreementConsentEntity_1.AgreementConsent).findOneBy({ applicationNo: applicationNo })];
-                    case 10:
+                    case 9:
                         agreementConsent = _a.sent();
                         return [4 /*yield*/, data_source_1.AppDataSource.getRepository(ReferenceEntity_1.Reference).findOneBy({ applicationNo: applicationNo })];
-                    case 11:
+                    case 10:
                         reference = _a.sent();
                         return [2 /*return*/, {
                                 user: user,
-                                application: application,
+                                // application,
                                 personalDetails: personalDetails,
                                 contactDetails: contactDetails,
                                 professionalDetails: professionalDetails,
@@ -148,10 +145,10 @@ var ApplicationService = /** @class */ (function () {
                                 agreementConsent: agreementConsent,
                                 reference: reference,
                             }];
-                    case 12:
+                    case 11:
                         error_2 = _a.sent();
                         throw new Error("Error retrieving applicant data: ".concat(error_2.message));
-                    case 13: return [2 /*return*/];
+                    case 12: return [2 /*return*/];
                 }
             });
         });
@@ -163,7 +160,7 @@ var ApplicationService = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, data_source_1.AppDataSource.getRepository(ApplicationEntity_1.Application).find()];
+                        return [4 /*yield*/, data_source_1.AppDataSource.getRepository(UserEntity_1.User).find()];
                     case 1:
                         applications = _a.sent();
                         return [2 /*return*/, applications];
