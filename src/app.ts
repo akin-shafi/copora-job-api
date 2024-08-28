@@ -66,19 +66,19 @@ AppDataSource.initialize()
     }));
 
     // API routes with optional prefix
-    const prefix = '/api';
-    app.use(`${prefix}/users`, userRoutes);
-    app.use(`${prefix}/auth/users`, userPrivateRoutes);
-    app.use(`${prefix}/agreement-consent`, AgreementConsentRoutes); 
-    app.use(`${prefix}/application`, ApplicationRoutes); 
-    app.use(`${prefix}/bank-details`, BankDetailsRoutes); 
-    app.use(`${prefix}/contact-details`, ContactDetailsRoutes); 
-    app.use(`${prefix}/education-details`, EducationalDetailsRoutes);
-    app.use(`${prefix}/food-safety`, FoodSafetyQuestionnaireRoutes);
-    app.use(`${prefix}/health-and-disability`, HealthAndDisabilityRoutes);
-    app.use(`${prefix}/personal-details`, personalDetailsRoutes);
-    app.use(`${prefix}/professional-details`, ProfessionalDetailsRoutes);
-    app.use(`${prefix}/reference`, ReferenceRoutes);
+    // const prefix = '/api';
+    app.use(`/users`, userRoutes);
+    app.use(`/auth/users`, userPrivateRoutes);
+    app.use(`/agreement-consent`, AgreementConsentRoutes); 
+    app.use(`/application`, ApplicationRoutes); 
+    app.use(`/bank-details`, BankDetailsRoutes); 
+    app.use(`/contact-details`, ContactDetailsRoutes); 
+    app.use(`/education-details`, EducationalDetailsRoutes);
+    app.use(`/food-safety`, FoodSafetyQuestionnaireRoutes);
+    app.use(`/health-and-disability`, HealthAndDisabilityRoutes);
+    app.use(`/personal-details`, personalDetailsRoutes);
+    app.use(`/professional-details`, ProfessionalDetailsRoutes);
+    app.use(`/reference`, ReferenceRoutes);
     
     // Swagger setup
     app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerSpec));
