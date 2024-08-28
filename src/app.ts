@@ -6,6 +6,7 @@ import dotenv from 'dotenv';
 import rateLimiter from './middlewares/rateLimiter'; // Import the rate limiter middleware
 import userRoutes from './routes/UserRoutes';
 import userPrivateRoutes from './routes/UsersPrivateRoutes';
+import userApplicant from './routes/ApplicationRoutes';
 import AgreementConsentRoutes from './routes/AgreementConsentRoutes';
 import ApplicationRoutes from './routes/ApplicationRoutes';
 import BankDetailsRoutes from './routes/BankDetailsRoutes';
@@ -68,6 +69,7 @@ AppDataSource.initialize()
     // API routes with optional prefix
     // const prefix = '/api';
     app.use(`/users`, userRoutes);
+    app.use(`/applicant`, userApplicant);
     app.use(`/auth/users`, userPrivateRoutes);
     app.use(`/agreement-consent`, AgreementConsentRoutes); 
     app.use(`/application`, ApplicationRoutes); 
