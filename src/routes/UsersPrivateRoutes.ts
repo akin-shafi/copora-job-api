@@ -41,7 +41,7 @@ router.get('/', authenticateToken, authorizeRoles('admin'), UserController.getAl
  *     security:
  *       - bearerAuth: []  # Apply bearerAuth security scheme
  */
-router.get('/:userId', authenticateToken, UserController.getById);
+router.get('/:id', authenticateToken, UserController.getById);
 
 /**
  * @swagger
@@ -137,16 +137,16 @@ router.post('/register',  UserController.register);
  *     security:
  *       - bearerAuth: []  # Apply bearerAuth security scheme
  */
-router.delete('/:userId', authenticateToken, UserController.delete);
+router.delete('/:id', authenticateToken, UserController.delete);
 /**
  * @swagger
- * /auth/users/profile/{userId}:
+ * /auth/users/profile/{id}:
  *   put:
  *     summary: Update user profile
  *     tags: [Admin - Private Endpoints]
  *     parameters:
  *       - in: path
- *         name: userId
+ *         name: id
  *         schema:
  *           type: integer
  *         required: true
@@ -210,7 +210,7 @@ router.delete('/:userId', authenticateToken, UserController.delete);
  *     security:
  *       - bearerAuth: []  # Apply bearerAuth security scheme
  */
-router.put('/profile/:userId',  authenticateToken, multer.single('profilePicture'), async (req, res) => {
+router.put('/profile/:id',  authenticateToken, multer.single('profilePicture'), async (req, res) => {
     try {
         if (req.file) {
         console.log('Uploaded file:', req.file);
