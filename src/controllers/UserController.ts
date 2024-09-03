@@ -282,9 +282,9 @@ class UserController {
         }
 
         // Check if user email is verified
-        if (!user.isVerified) {
-            return res.status(400).json({ statusCode: 400, message: 'Email is not verified' });
-        }
+        // if (!user.isVerified) {
+        //     return res.status(400).json({ statusCode: 400, message: 'Email is not verified' });
+        // }
 
         // Check if user account is active
         if (!user.accountStatus) {
