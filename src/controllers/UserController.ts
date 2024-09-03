@@ -288,8 +288,8 @@ class UserController {
 
         // Check if user account is active
         if (!user.accountStatus) {
-          return res.status(400).json({ statusCode: 400, message: 'Account is not active' });
-        }
+          return res.status(403).json({ statusCode: 403, message: 'Account is not active' });
+        }        
         
 
         // Check if two-factor authentication is enabled
