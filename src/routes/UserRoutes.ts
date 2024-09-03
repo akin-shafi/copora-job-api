@@ -22,7 +22,7 @@ const router = Router();
    *             properties:
    *               email:
    *                 type: string
-   *                 default: "sakinropo@gmail.com"
+   *                 default: "engineering@copora.com"
    *                 description: User email
    *               password:
    *                 type: string
