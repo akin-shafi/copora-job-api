@@ -187,6 +187,7 @@ class UserController {
       user.password = hashedPassword;
       user.resetPasswordToken = null;
       user.resetPasswordExpires = null;
+      user.accountStatus = true;
       await userService.updateData(user);
 
       res.status(200).json({ message: 'Password has been reset successfully' });
