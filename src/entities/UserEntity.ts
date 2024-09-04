@@ -25,6 +25,9 @@ export class User {
   @Column()
   profilePicture: string;
 
+  @Column()
+  onboardingStep: string;
+
   @Column({
     type: 'boolean',  
     default: false,
