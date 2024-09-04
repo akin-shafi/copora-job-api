@@ -267,12 +267,14 @@ var UserController = /** @class */ (function () {
                     case 2:
                         hashedPassword = _b.sent();
                         user.password = hashedPassword;
+                        user.resetPassword = true;
                         user.resetPasswordToken = null;
                         user.resetPasswordExpires = null;
+                        user.accountStatus = true;
                         return [4 /*yield*/, userService.updateData(user)];
                     case 3:
                         _b.sent();
-                        res.status(200).json({ message: 'Password has been reset successfully' });
+                        res.status(200).json({ statusCode: 200, message: 'Password has been reset successfully' });
                         return [3 /*break*/, 5];
                     case 4:
                         error_3 = _b.sent();
@@ -395,12 +397,12 @@ var UserController = /** @class */ (function () {
                             return [2 /*return*/, res.status(400).json({ statusCode: 400, message: 'Invalid email or password' })];
                         }
                         // Check if user email is verified
-                        if (!user.isVerified) {
-                            return [2 /*return*/, res.status(400).json({ statusCode: 400, message: 'Email is not verified' })];
-                        }
+                        // if (!user.isVerified) {
+                        //     return res.status(400).json({ statusCode: 400, message: 'Email is not verified' });
+                        // }
                         // Check if user account is active
                         if (!user.accountStatus) {
-                            return [2 /*return*/, res.status(400).json({ statusCode: 400, message: 'Account is not active' })];
+                            return [2 /*return*/, res.status(401).json({ statusCode: 401, message: 'Account is not active' })];
                         }
                         if (!user.twoFactorEnabled) return [3 /*break*/, 4];
                         loginType = "password-base";
@@ -426,6 +428,8 @@ var UserController = /** @class */ (function () {
                                 firstName: user.firstName,
                                 lastName: user.lastName,
                                 email: user.email,
+                                resetPassword: user.resetPassword,
+                                onboardingStep: user.onboardingStep,
                                 applicationNo: user.applicationNo,
                                 profilePicture: user === null || user === void 0 ? void 0 : user.profilePicture,
                             },
@@ -613,10 +617,59 @@ var UserController = /** @class */ (function () {
             });
         });
     };
+    // Update onboarding step controller
+    UserController.prototype.updateOnboardingStep = function (req, res) {
+        return __awaiter(this, void 0, void 0, function () {
+            var _a, applicationNo, onboardingStep, userRepository, user, updatedUser, error_11;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        _a = req.body, applicationNo = _a.applicationNo, onboardingStep = _a.onboardingStep;
+                        userRepository = data_source_1.AppDataSource.getRepository(UserEntity_1.User);
+                        _b.label = 1;
+                    case 1:
+                        _b.trys.push([1, 4, , 5]);
+                        // Validate input
+                        if (!applicationNo || onboardingStep === undefined) {
+                            return [2 /*return*/, res.status(400).json({
+                                    message: "Application number and onboarding step are required",
+                                })];
+                        }
+                        return [4 /*yield*/, UserService_1.UserService.findApplicationNo(applicationNo)];
+                    case 2:
+                        user = _b.sent();
+                        if (!user) {
+                            return [2 /*return*/, res.status(404).json({
+                                    message: "User not found",
+                                })];
+                        }
+                        // Update the onboarding step
+                        user.onboardingStep = onboardingStep;
+                        return [4 /*yield*/, userRepository.save(user)];
+                    case 3:
+                        updatedUser = _b.sent();
+                        return [2 /*return*/, res.status(200).json({
+                                statusCode: 200,
+                                message: "Onboarding step updated successfully",
+                                onboardingStep: updatedUser.onboardingStep,
+                            })];
+                    case 4:
+                        error_11 = _b.sent();
+                        console.error("Error updating onboarding step:", error_11);
+                        return [2 /*return*/, res.status(500).json({
+                                message: "Server error",
+                                error: error_11.message,
+                            })];
+                    case 5: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    ;
     // Get all users
     UserController.prototype.getAll = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            var users, error_11;
+            var users, error_12;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -627,9 +680,9 @@ var UserController = /** @class */ (function () {
                         res.status(200).json(users);
                         return [3 /*break*/, 3];
                     case 2:
-                        error_11 = _a.sent();
-                        console.error('Error fetching users:', error_11);
-                        res.status(500).json({ message: 'Server error', error: error_11.message });
+                        error_12 = _a.sent();
+                        console.error('Error fetching users:', error_12);
+                        res.status(500).json({ message: 'Server error', error: error_12.message });
                         return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
                 }
@@ -639,7 +692,7 @@ var UserController = /** @class */ (function () {
     // Get user by ID
     UserController.prototype.getById = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            var userId, user, error_12;
+            var userId, user, error_13;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -653,9 +706,9 @@ var UserController = /** @class */ (function () {
                         }
                         return [2 /*return*/, res.status(200).json(user)];
                     case 2:
-                        error_12 = _a.sent();
-                        console.error('Error fetching user:', error_12);
-                        return [2 /*return*/, res.status(500).json({ message: 'Server error', error: error_12.message })];
+                        error_13 = _a.sent();
+                        console.error('Error fetching user:', error_13);
+                        return [2 /*return*/, res.status(500).json({ message: 'Server error', error: error_13.message })];
                     case 3: return [2 /*return*/];
                 }
             });
@@ -665,7 +718,7 @@ var UserController = /** @class */ (function () {
     // Update user
     UserController.prototype.update = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            var userId, userData, updatedUser, error_13;
+            var userId, userData, updatedUser, error_14;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -680,9 +733,9 @@ var UserController = /** @class */ (function () {
                         }
                         return [2 /*return*/, res.status(200).json(updatedUser)];
                     case 2:
-                        error_13 = _a.sent();
-                        console.error('Error updating user:', error_13);
-                        return [2 /*return*/, res.status(500).json({ message: 'Server error', error: error_13.message })];
+                        error_14 = _a.sent();
+                        console.error('Error updating user:', error_14);
+                        return [2 /*return*/, res.status(500).json({ message: 'Server error', error: error_14.message })];
                     case 3: return [2 /*return*/];
                 }
             });
@@ -691,7 +744,7 @@ var UserController = /** @class */ (function () {
     // Delete user
     UserController.prototype.delete = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            var userId, error_14;
+            var userId, error_15;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -703,9 +756,9 @@ var UserController = /** @class */ (function () {
                         res.status(204).send(); // No content
                         return [3 /*break*/, 3];
                     case 2:
-                        error_14 = _a.sent();
-                        console.error('Error deleting user:', error_14);
-                        res.status(500).json({ message: 'Server error', error: error_14.message });
+                        error_15 = _a.sent();
+                        console.error('Error deleting user:', error_15);
+                        res.status(500).json({ message: 'Server error', error: error_15.message });
                         return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
                 }
@@ -714,7 +767,7 @@ var UserController = /** @class */ (function () {
     };
     UserController.prototype.verifyEmail = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            var verifyToken, user, error_15;
+            var verifyToken, user, error_16;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -743,9 +796,9 @@ var UserController = /** @class */ (function () {
                         _a.sent();
                         return [2 /*return*/, res.status(200).json({ message: 'Email verified successfully. You can now log in.' })];
                     case 4:
-                        error_15 = _a.sent();
-                        console.error('Error during email verification:', error_15);
-                        return [2 /*return*/, res.status(500).json({ message: 'Server error', error: error_15.message })];
+                        error_16 = _a.sent();
+                        console.error('Error during email verification:', error_16);
+                        return [2 /*return*/, res.status(500).json({ message: 'Server error', error: error_16.message })];
                     case 5: return [2 /*return*/];
                 }
             });

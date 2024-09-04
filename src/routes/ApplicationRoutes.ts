@@ -11,8 +11,8 @@ const router = express.Router();
  */
 
 /**
- * @swagger
- * /{applicationNo}:
+ * @swagger 
+ * /applicant/{applicationNo}:
  *   get:
  *     summary: Fetch single applicant data
  *     tags: [Applicants]

@@ -44,6 +44,17 @@ var User = /** @class */ (function () {
         __metadata("design:type", String)
     ], User.prototype, "profilePicture", void 0);
     __decorate([
+        (0, typeorm_1.Column)(),
+        __metadata("design:type", String)
+    ], User.prototype, "onboardingStep", void 0);
+    __decorate([
+        (0, typeorm_1.Column)({
+            type: 'boolean',
+            default: false,
+        }),
+        __metadata("design:type", Boolean)
+    ], User.prototype, "resetPassword", void 0);
+    __decorate([
         (0, typeorm_1.Column)({ type: 'varchar', nullable: true }),
         __metadata("design:type", String)
     ], User.prototype, "resetPasswordToken", void 0);

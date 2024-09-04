@@ -14,7 +14,7 @@ var router = express_1.default.Router();
  */
 /**
  * @swagger
- * /{applicationNo}:
+ * /applicant/{applicationNo}:
  *   get:
  *     summary: Fetch single applicant data
  *     tags: [Applicants]

@@ -80,7 +80,7 @@ router.get('/', AuthMiddleware_1.authenticateToken, (0, AuthMiddleware_1.authori
  *     security:
  *       - bearerAuth: []  # Apply bearerAuth security scheme
  */
-router.get('/:userId', AuthMiddleware_1.authenticateToken, UserController_1.default.getById);
+router.get('/:id', AuthMiddleware_1.authenticateToken, UserController_1.default.getById);
 /**
  * @swagger
  * /auth/users/register:
@@ -173,16 +173,16 @@ router.post('/register', UserController_1.default.register);
  *     security:
  *       - bearerAuth: []  # Apply bearerAuth security scheme
  */
-router.delete('/:userId', AuthMiddleware_1.authenticateToken, UserController_1.default.delete);
+router.delete('/:id', AuthMiddleware_1.authenticateToken, UserController_1.default.delete);
 /**
  * @swagger
- * /auth/users/profile/{userId}:
+ * /auth/users/profile/{id}:
  *   put:
  *     summary: Update user profile
  *     tags: [Admin - Private Endpoints]
  *     parameters:
  *       - in: path
- *         name: userId
+ *         name: id
  *         schema:
  *           type: integer
  *         required: true
@@ -246,7 +246,7 @@ router.delete('/:userId', AuthMiddleware_1.authenticateToken, UserController_1.d
  *     security:
  *       - bearerAuth: []  # Apply bearerAuth security scheme
  */
-router.put('/profile/:userId', AuthMiddleware_1.authenticateToken, multerConfig_1.default.single('profilePicture'), function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+router.put('/profile/:id', AuthMiddleware_1.authenticateToken, multerConfig_1.default.single('profilePicture'), function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
     var error_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
@@ -355,4 +355,78 @@ router.put('/profile/:userId', AuthMiddleware_1.authenticateToken, multerConfig_
  *                   example: Internal Server Error
  */
 router.patch('/users/:id/role', AuthMiddleware_1.authenticateToken, (0, AuthMiddleware_1.authorizeRoles)('admin'), UserController_1.default.changeUserRole);
+/**
+ * @swagger
+ * /auth/users/update-onboarding-step:
+ *   patch:
+ *     summary: Update the onboarding step for a user.
+ *     description: This endpoint allows updating the onboarding step for a user based on their application number.
+ *     tags: [Admin - Private Endpoints]
+ *     tags:
+ *       - Users
+ *     security:
+ *       - BearerAuth: []  # If you're using JWT authentication
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - applicationNo
+ *               - onboardingStep
+ *             properties:
+ *               applicationNo:
+ *                 type: string
+ *                 description: The application number of the user.
+ *                 example: "APP123456"
+ *               onboardingStep:
+ *                 type: integer
+ *                 description: The onboarding step number to be updated.
+ *                 example: 2
+ *     responses:
+ *       200:
+ *         description: Successfully updated the onboarding step.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Onboarding step updated successfully"
+ *                 user:
+ *                   $ref: '#/components/schemas/User'  # Assuming you have a User schema defined
+ *       400:
+ *         description: Missing required parameters (applicationNo or onboardingStep).
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Application number and onboarding step are required"
+ *       404:
+ *         description: User not found.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "User not found"
+ *       500:
+ *         description: Server error.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Server error"
+ */
+router.patch('/update-onboarding-step', AuthMiddleware_1.authenticateToken, UserController_1.default.updateOnboardingStep);
 exports.default = router;
