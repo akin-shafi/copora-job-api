@@ -191,7 +191,7 @@ class UserController {
       user.accountStatus = true;
       await userService.updateData(user);
 
-      res.status(200).json({ message: 'Password has been reset successfully' });
+      res.status(200).json({ statusCode: 200, message: 'Password has been reset successfully' });
     } catch (error) {
       console.error('Error during reset-password:', error);
       res.status(500).json({ message: 'Server error', error: error.message });
