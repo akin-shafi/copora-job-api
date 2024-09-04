@@ -289,7 +289,7 @@ class UserController {
 
         // Check if user account is active
         if (!user.accountStatus) {
-          return res.status(403).json({ statusCode: 403, message: 'Account is not active' });
+          return res.status(401).json({ statusCode: 401, message: 'Account is not active' });
         }        
         
 
@@ -319,6 +319,7 @@ class UserController {
                 firstName: user.firstName,
                 lastName: user.lastName,
                 email: user.email,
+                resetPassword: user.resetPassword,
                 applicationNo: user.applicationNo,
                 profilePicture: user?.profilePicture,
             },

@@ -86,11 +86,6 @@ const router = Router();
  *                 description: Role of the user
  *                 default: applicant
  *                 example: applicant
- *               accountStatus:
- *                 type: boolean
- *                 description: Status of the user's account
- *                 default: true
- *                 example: false
  *               createdBy:
  *                 type: string
  *                 enum: [admin, applicant]

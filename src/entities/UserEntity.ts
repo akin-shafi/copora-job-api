@@ -25,6 +25,12 @@ export class User {
   @Column()
   profilePicture: string;
 
+  @Column({
+    type: 'boolean',  
+    default: false,
+  })
+  resetPassword: boolean;
+
   @Column({ type: 'varchar', nullable: true })
   resetPasswordToken: string;
 
