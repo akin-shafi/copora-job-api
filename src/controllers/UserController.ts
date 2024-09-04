@@ -470,6 +470,46 @@ class UserController {
     }
   }
   
+  // Update onboarding step controller
+  async updateOnboardingStep(req: Request, res: Response) {
+      const { applicationNo, onboardingStep } = req.body;
+      const userRepository = AppDataSource.getRepository(User);
+      try {
+          // Validate input
+          if (!applicationNo || onboardingStep === undefined) {
+              return res.status(400).json({
+                  message: "Application number and onboarding step are required",
+              });
+          }
+
+          // Find the user by application number
+          const user = await UserService.findApplicationNo(applicationNo);
+
+          if (!user) {
+              return res.status(404).json({
+                  message: "User not found",
+              });
+          }
+
+          // Update the onboarding step
+          user.onboardingStep = onboardingStep;
+
+          // Save the updated user
+          const updatedUser = await userRepository.save(user);
+
+          return res.status(200).json({
+              statusCode: 200,
+              message: "Onboarding step updated successfully",
+              onboardingStep: updatedUser.onboardingStep,
+          });
+      } catch (error) {
+          console.error("Error updating onboarding step:", error);
+          return res.status(500).json({
+              message: "Server error",
+              error: error.message,
+          });
+      }
+  };
   // Get all users
   async getAll(req: Request, res: Response): Promise<void> {
     try {
