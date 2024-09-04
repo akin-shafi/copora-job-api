@@ -185,6 +185,7 @@ class UserController {
 
       const hashedPassword = await bcrypt.hash(newPassword, 10);
       user.password = hashedPassword;
+      user.resetPassword = true;
       user.resetPasswordToken = null;
       user.resetPasswordExpires = null;
       user.accountStatus = true;
