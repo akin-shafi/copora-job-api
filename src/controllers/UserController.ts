@@ -321,6 +321,7 @@ class UserController {
                 lastName: user.lastName,
                 email: user.email,
                 resetPassword: user.resetPassword,
+                onboardingStep: user.onboardingStep,
                 applicationNo: user.applicationNo,
                 profilePicture: user?.profilePicture,
             },
