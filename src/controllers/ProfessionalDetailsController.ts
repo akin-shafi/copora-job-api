@@ -6,31 +6,47 @@ export class ProfessionalDetailsController {
     // Create or update ProfessionalDetails
     static async createProfessionalDetails(req: Request, res: Response) {
         try {
-            const { applicationNo } = req.body;
+            const { applicationNo, ...professionalDetails } = req.body;
+
+            // Validate applicationNo
+            if (!applicationNo) {
+                return res.status(400).json({ statusCode: 400, message: 'Application number is required' });
+            }
 
             const existingApplicant = await UserService.findApplicationNo(applicationNo);
 
-            if(!existingApplicant){
+            if (!existingApplicant) {
                 return res.status(400).json({ statusCode: 400, message: 'Applicant does not exist' });
             }
 
-            // Check if the ProfessionalDetails with the given applicationNo exists
-            const newEntry = await ProfessionalDetailsService.create(req.body);
-            return res.status(201).send({ message: 'Professional details created', data: newEntry });
+            // Ensure professionalDetails is in the correct format
+            if (typeof professionalDetails !== 'object' || Array.isArray(professionalDetails)) {
+                return res.status(400).json({ statusCode: 400, message: 'Invalid professional details format' });
+            }
 
-            // const existingEntry = await ProfessionalDetailsService.getByApplicationNo(applicationNo);
+            // Process and save each entry in the professionalDetails
+            const entries = Object.values(professionalDetails).filter(value => typeof value === 'object' && value !== null) as Record<string, any>[];
+            if (entries.length === 0) {
+                return res.status(400).json({ statusCode: 400, message: 'No valid professional details provided' });
+            }
 
-            // if (existingEntry) {
-            //     // If it exists, update the existing record
-            //     const updatedEntry = await ProfessionalDetailsService.updateByApplicationNo(applicationNo, req.body);
-            //     return res.status(200).send({ message: 'Professional details updated', data: updatedEntry });
-            // } else {
-            //     // If it does not exist, create a new record
-            //     const newEntry = await ProfessionalDetailsService.create(req.body);
-            //     return res.status(201).send({ message: 'Professional details created', data: newEntry });
-            // }
+            // Save professional details to the database
+            const newEntries = [];
+            for (const entry of entries) {
+                if (entry && typeof entry === 'object') {
+                    const newEntry = await ProfessionalDetailsService.create({
+                        applicationNo,
+                        ...entry
+                    });
+                    newEntries.push(newEntry);
+                }
+            }
+
+            return res.status(201).json({ message: 'Professional details created', data: newEntries });
+
         } catch (error) {
-            res.status(500).send({ message: 'Error creating or updating professional details', error: error.message });
+            console.error('Error creating or updating professional details:', error);
+            res.status(500).json({ message: 'Error creating or updating professional details', error: error.message });
         }
     }
 

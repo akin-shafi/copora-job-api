@@ -43,7 +43,7 @@ var professionalDetailsRepository = data_source_1.AppDataSource.getRepository(Pr
 var ProfessionalDetailsService = /** @class */ (function () {
     function ProfessionalDetailsService() {
     }
-    // Create a new ProfessionalDetails entry
+    // Create a new ProfessionalDetails Service entry
     ProfessionalDetailsService.create = function (data) {
         return __awaiter(this, void 0, void 0, function () {
             var entry;

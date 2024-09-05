@@ -4,7 +4,7 @@ import { AppDataSource } from '../data-source';
 const professionalDetailsRepository = AppDataSource.getRepository(ProfessionalDetails);
 
 export class ProfessionalDetailsService {
-    // Create a new ProfessionalDetails entry
+    // Create a new ProfessionalDetails Service entry
     static async create(data: any) {
         const entry = professionalDetailsRepository.create(data);
         return await professionalDetailsRepository.save(entry);

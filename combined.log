@@ -110,3 +110,14 @@
 2024-09-05T07:53:11.243Z [[32minfo[39m]: HTTP GET /api-docs/swagger-ui-standalone-preset.js
 2024-09-05T07:53:13.831Z [[32minfo[39m]: HTTP GET /api-docs/favicon-32x32.png
 2024-09-05T07:53:34.802Z [[32minfo[39m]: HTTP PATCH /users/update-onboarding-step
+2024-09-05T09:12:34.245Z [[32minfo[39m]: HTTP GET /api-docs/
+2024-09-05T09:12:34.345Z [[32minfo[39m]: HTTP GET /api-docs/swagger-ui.css
+2024-09-05T09:12:34.348Z [[32minfo[39m]: HTTP GET /api-docs/swagger-ui-standalone-preset.js
+2024-09-05T09:12:34.355Z [[32minfo[39m]: HTTP GET /api-docs/swagger-ui-init.js
+2024-09-05T09:12:34.358Z [[32minfo[39m]: HTTP GET /api-docs/swagger-ui-bundle.js
+2024-09-05T09:12:38.484Z [[32minfo[39m]: HTTP GET /api-docs/favicon-32x32.png
+2024-09-05T09:13:31.288Z [[32minfo[39m]: HTTP POST /professional-details
+2024-09-05T09:16:13.933Z [[32minfo[39m]: HTTP POST /professional-details
+2024-09-05T09:17:41.752Z [[32minfo[39m]: HTTP POST /professional-details
+2024-09-05T09:18:27.726Z [[32minfo[39m]: HTTP POST /professional-details
+2024-09-05T09:27:16.871Z [[32minfo[39m]: HTTP POST /professional-details
