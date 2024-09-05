@@ -116,7 +116,7 @@ var ApplicationService = /** @class */ (function () {
                             })];
                     case 4:
                         professionalDetails = _a.sent();
-                        return [4 /*yield*/, data_source_1.AppDataSource.getRepository(EducationalDetailsEntity_1.EducationalDetails).findOneBy({ applicationNo: applicationNo })];
+                        return [4 /*yield*/, data_source_1.AppDataSource.getRepository(EducationalDetailsEntity_1.EducationalDetails).find({ where: { applicationNo: applicationNo } })];
                     case 5:
                         educationalDetails = _a.sent();
                         return [4 /*yield*/, data_source_1.AppDataSource.getRepository(HealthAndDisabilityEntity_1.HealthAndDisability).findOneBy({ applicationNo: applicationNo })];

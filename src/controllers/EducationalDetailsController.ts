@@ -1,28 +1,72 @@
 import { Request, Response } from 'express';
 import { EducationalDetailsService } from '../services/EducationalDetailsService';
+import { UserService } from '../services/UserService';
 
 export class EducationalDetailsController {
-    private static educationalDetailsService = new EducationalDetailsService();
+    // private static educationalDetailsService = new EducationalDetailsService();
 
     // Create or update educational details based on applicationNo
     static async createEducationalDetails(req: Request, res: Response) {
         try {
-            const { applicationNo } = req.body;
+            const { applicationNo, educationalDetails } = req.body;
 
-            // Check if the EducationalDetails with the given applicationNo exists
-            const existingEducationalDetails = await EducationalDetailsController.educationalDetailsService.getEducationalDetailsByApplicationNo(applicationNo);
-
-            if (existingEducationalDetails) {
-                // If it exists, update the existing record
-                const updatedEducationalDetails = await EducationalDetailsController.educationalDetailsService.updateEducationalDetailsByApplicationNo(applicationNo, req.body);
-                return res.status(200).send({ message: 'Educational Details updated', data: updatedEducationalDetails });
-            } else {
-                // If it does not exist, create a new record
-                const newEducationalDetails = await EducationalDetailsController.educationalDetailsService.createEducationalDetails(req.body);
-                return res.status(201).send({ message: 'Educational Details created', data: newEducationalDetails });
+            // Validate applicationNo
+            if (!applicationNo) {
+                return res.status(400).json({ statusCode: 400, message: 'Application number is required' });
             }
+
+            const existingApplicant = await UserService.findApplicationNo(applicationNo);
+
+            if (!existingApplicant) {
+                return res.status(400).json({ statusCode: 400, message: 'Applicant does not exist' });
+            }
+
+            // Ensure educationalDetails is an array
+            if (!Array.isArray(educationalDetails) || educationalDetails.length === 0) {
+                return res.status(400).json({ statusCode: 400, message: 'Educational details must be a non-empty array' });
+            }
+
+            const updatedEntries = [];
+            const newEntries = [];
+
+            for (const entry of educationalDetails) {
+                if (entry && typeof entry === 'object') {
+                    const { courseOfStudy, ...restOfEntry } = entry;
+
+                    // Ensure `courseOfStudy` is provided
+                    if (!courseOfStudy) {
+                        return res.status(400).json({ statusCode: 400, message: 'Course of study is required' });
+                    }
+
+                    // Check if an entry with the given `courseOfStudy` already exists
+                    const existingEntry = await EducationalDetailsService.findByCourseOfStudy(courseOfStudy);
+
+                    if (existingEntry) {
+                        // Update existing entry
+                        await EducationalDetailsService.update(existingEntry.id, {
+                            ...restOfEntry,
+                            applicationNo
+                        });
+                        updatedEntries.push({ ...existingEntry, ...restOfEntry });
+                    } else {
+                        // Create new entry
+                        const newEntry = await EducationalDetailsService.create({
+                            applicationNo,
+                            ...entry
+                        });
+                        newEntries.push(newEntry);
+                    }
+                }
+            }
+
+            return res.status(201).json({
+                message: 'Educational details processed',
+                data: { updatedEntries, newEntries }
+            });
+
         } catch (error) {
-            res.status(500).send({ message: 'Error creating or updating educational details', error: error.message });
+            console.error('Error creating or updating educational details:', error);
+            return res.status(500).json({ message: 'Error creating or updating educational details', error: error.message });
         }
     }
 
@@ -30,7 +74,7 @@ export class EducationalDetailsController {
     static async getEducationalDetailsByNo(req: Request, res: Response) {
         try {
             const { applicationNo } = req.params;
-            const educationalDetails = await EducationalDetailsController.educationalDetailsService.getEducationalDetailsByApplicationNo(applicationNo);
+            const educationalDetails = await EducationalDetailsService.getEducationalDetailsByApplicationNo(applicationNo);
             if (!educationalDetails) {
                 return res.status(404).send({ message: 'Educational Details not found' });
             }
@@ -44,7 +88,7 @@ export class EducationalDetailsController {
     static async updateEducationalDetailsByNo(req: Request, res: Response) {
         try {
             const { applicationNo } = req.params;
-            const updatedEducationalDetails = await EducationalDetailsController.educationalDetailsService.updateEducationalDetailsByApplicationNo(applicationNo, req.body);
+            const updatedEducationalDetails = await EducationalDetailsService.updateEducationalDetailsByApplicationNo(applicationNo, req.body);
             if (!updatedEducationalDetails) {
                 return res.status(404).send({ message: 'Educational Details not found' });
             }
@@ -58,7 +102,7 @@ export class EducationalDetailsController {
     static async deleteEducationalDetailsByNo(req: Request, res: Response) {
         try {
             const { applicationNo } = req.params;
-            const message = await EducationalDetailsController.educationalDetailsService.deleteEducationalDetailsByApplicationNo(applicationNo);
+            const message = await EducationalDetailsService.deleteEducationalDetailsByApplicationNo(applicationNo);
             res.status(200).send({ message });
         } catch (error) {
             res.status(404).send({ message: error.message });

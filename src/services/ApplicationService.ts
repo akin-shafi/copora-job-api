@@ -49,7 +49,7 @@ export class ApplicationService {
         where: { applicationNo }
       });
   
-      const educationalDetails = await AppDataSource.getRepository(EducationalDetails).findOneBy({ applicationNo });
+      const educationalDetails = await AppDataSource.getRepository(EducationalDetails).find({ where: {applicationNo} });
       const healthAndDisability = await AppDataSource.getRepository(HealthAndDisability).findOneBy({ applicationNo });
       const foodSafetyQuestionnaire = await AppDataSource.getRepository(FoodSafetyQuestionnaire).findOneBy({ applicationNo });
       const bankDetails = await AppDataSource.getRepository(BankDetails).findOneBy({ applicationNo });

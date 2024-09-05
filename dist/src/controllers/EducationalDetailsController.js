@@ -1,4 +1,15 @@
 "use strict";
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -35,39 +46,89 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __rest = (this && this.__rest) || function (s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
+    return t;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.EducationalDetailsController = void 0;
 var EducationalDetailsService_1 = require("../services/EducationalDetailsService");
+var UserService_1 = require("../services/UserService");
 var EducationalDetailsController = /** @class */ (function () {
     function EducationalDetailsController() {
     }
+    // private static educationalDetailsService = new EducationalDetailsService();
     // Create or update educational details based on applicationNo
     EducationalDetailsController.createEducationalDetails = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            var applicationNo, existingEducationalDetails, updatedEducationalDetails, newEducationalDetails, error_1;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
+            var _a, applicationNo, educationalDetails, existingApplicant, updatedEntries, newEntries, _i, educationalDetails_1, entry, courseOfStudy, restOfEntry, existingEntry, newEntry, error_1;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
                     case 0:
-                        _a.trys.push([0, 6, , 7]);
-                        applicationNo = req.body.applicationNo;
-                        return [4 /*yield*/, EducationalDetailsController.educationalDetailsService.getEducationalDetailsByApplicationNo(applicationNo)];
+                        _b.trys.push([0, 9, , 10]);
+                        _a = req.body, applicationNo = _a.applicationNo, educationalDetails = _a.educationalDetails;
+                        // Validate applicationNo
+                        if (!applicationNo) {
+                            return [2 /*return*/, res.status(400).json({ statusCode: 400, message: 'Application number is required' })];
+                        }
+                        return [4 /*yield*/, UserService_1.UserService.findApplicationNo(applicationNo)];
                     case 1:
-                        existingEducationalDetails = _a.sent();
-                        if (!existingEducationalDetails) return [3 /*break*/, 3];
-                        return [4 /*yield*/, EducationalDetailsController.educationalDetailsService.updateEducationalDetailsByApplicationNo(applicationNo, req.body)];
+                        existingApplicant = _b.sent();
+                        if (!existingApplicant) {
+                            return [2 /*return*/, res.status(400).json({ statusCode: 400, message: 'Applicant does not exist' })];
+                        }
+                        // Ensure educationalDetails is an array
+                        if (!Array.isArray(educationalDetails) || educationalDetails.length === 0) {
+                            return [2 /*return*/, res.status(400).json({ statusCode: 400, message: 'Educational details must be a non-empty array' })];
+                        }
+                        updatedEntries = [];
+                        newEntries = [];
+                        _i = 0, educationalDetails_1 = educationalDetails;
+                        _b.label = 2;
                     case 2:
-                        updatedEducationalDetails = _a.sent();
-                        return [2 /*return*/, res.status(200).send({ message: 'Educational Details updated', data: updatedEducationalDetails })];
-                    case 3: return [4 /*yield*/, EducationalDetailsController.educationalDetailsService.createEducationalDetails(req.body)];
+                        if (!(_i < educationalDetails_1.length)) return [3 /*break*/, 8];
+                        entry = educationalDetails_1[_i];
+                        if (!(entry && typeof entry === 'object')) return [3 /*break*/, 7];
+                        courseOfStudy = entry.courseOfStudy, restOfEntry = __rest(entry, ["courseOfStudy"]);
+                        // Ensure `courseOfStudy` is provided
+                        if (!courseOfStudy) {
+                            return [2 /*return*/, res.status(400).json({ statusCode: 400, message: 'Course of study is required' })];
+                        }
+                        return [4 /*yield*/, EducationalDetailsService_1.EducationalDetailsService.findByCourseOfStudy(courseOfStudy)];
+                    case 3:
+                        existingEntry = _b.sent();
+                        if (!existingEntry) return [3 /*break*/, 5];
+                        // Update existing entry
+                        return [4 /*yield*/, EducationalDetailsService_1.EducationalDetailsService.update(existingEntry.id, __assign(__assign({}, restOfEntry), { applicationNo: applicationNo }))];
                     case 4:
-                        newEducationalDetails = _a.sent();
-                        return [2 /*return*/, res.status(201).send({ message: 'Educational Details created', data: newEducationalDetails })];
-                    case 5: return [3 /*break*/, 7];
-                    case 6:
-                        error_1 = _a.sent();
-                        res.status(500).send({ message: 'Error creating or updating educational details', error: error_1.message });
+                        // Update existing entry
+                        _b.sent();
+                        updatedEntries.push(__assign(__assign({}, existingEntry), restOfEntry));
                         return [3 /*break*/, 7];
-                    case 7: return [2 /*return*/];
+                    case 5: return [4 /*yield*/, EducationalDetailsService_1.EducationalDetailsService.create(__assign({ applicationNo: applicationNo }, entry))];
+                    case 6:
+                        newEntry = _b.sent();
+                        newEntries.push(newEntry);
+                        _b.label = 7;
+                    case 7:
+                        _i++;
+                        return [3 /*break*/, 2];
+                    case 8: return [2 /*return*/, res.status(201).json({
+                            message: 'Educational details processed',
+                            data: { updatedEntries: updatedEntries, newEntries: newEntries }
+                        })];
+                    case 9:
+                        error_1 = _b.sent();
+                        console.error('Error creating or updating educational details:', error_1);
+                        return [2 /*return*/, res.status(500).json({ message: 'Error creating or updating educational details', error: error_1.message })];
+                    case 10: return [2 /*return*/];
                 }
             });
         });
@@ -81,7 +142,7 @@ var EducationalDetailsController = /** @class */ (function () {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
                         applicationNo = req.params.applicationNo;
-                        return [4 /*yield*/, EducationalDetailsController.educationalDetailsService.getEducationalDetailsByApplicationNo(applicationNo)];
+                        return [4 /*yield*/, EducationalDetailsService_1.EducationalDetailsService.getEducationalDetailsByApplicationNo(applicationNo)];
                     case 1:
                         educationalDetails = _a.sent();
                         if (!educationalDetails) {
@@ -107,7 +168,7 @@ var EducationalDetailsController = /** @class */ (function () {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
                         applicationNo = req.params.applicationNo;
-                        return [4 /*yield*/, EducationalDetailsController.educationalDetailsService.updateEducationalDetailsByApplicationNo(applicationNo, req.body)];
+                        return [4 /*yield*/, EducationalDetailsService_1.EducationalDetailsService.updateEducationalDetailsByApplicationNo(applicationNo, req.body)];
                     case 1:
                         updatedEducationalDetails = _a.sent();
                         if (!updatedEducationalDetails) {
@@ -133,7 +194,7 @@ var EducationalDetailsController = /** @class */ (function () {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
                         applicationNo = req.params.applicationNo;
-                        return [4 /*yield*/, EducationalDetailsController.educationalDetailsService.deleteEducationalDetailsByApplicationNo(applicationNo)];
+                        return [4 /*yield*/, EducationalDetailsService_1.EducationalDetailsService.deleteEducationalDetailsByApplicationNo(applicationNo)];
                     case 1:
                         message = _a.sent();
                         res.status(200).send({ message: message });
@@ -147,7 +208,6 @@ var EducationalDetailsController = /** @class */ (function () {
             });
         });
     };
-    EducationalDetailsController.educationalDetailsService = new EducationalDetailsService_1.EducationalDetailsService();
     return EducationalDetailsController;
 }());
 exports.EducationalDetailsController = EducationalDetailsController;
