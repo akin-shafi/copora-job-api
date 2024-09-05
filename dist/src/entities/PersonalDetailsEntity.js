@@ -38,6 +38,10 @@ var PersonalDetails = /** @class */ (function () {
         (0, typeorm_1.Column)(),
         __metadata("design:type", String)
     ], PersonalDetails.prototype, "nationalInsuranceNumber", void 0);
+    __decorate([
+        (0, typeorm_1.Column)(),
+        __metadata("design:type", String)
+    ], PersonalDetails.prototype, "passportPhoto", void 0);
     PersonalDetails = __decorate([
         (0, typeorm_1.Entity)()
     ], PersonalDetails);

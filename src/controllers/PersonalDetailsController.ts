@@ -1,36 +1,75 @@
 import { Request, Response } from 'express';
 import { PersonalDetailsService } from '../services/PersonalDetailsService';
 import { UserService } from '../services/UserService';
+import { v2 as cloudinary } from 'cloudinary';
+
 
 // APP-C57FF572
+
+// Configure Cloudinary
+
+
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+  });
 export class PersonalDetailsController {
-    // Create or update PersonalDetails
-    static async createPersonalDetails(req: Request, res: Response) {
-        try {
-            const { applicationNo } = req.body;
 
-            const existingApplicant = await UserService.findApplicationNo(applicationNo);
 
-            if(!existingApplicant){
-                return res.status(400).json({ statusCode: 400, message: 'Applicant does not exist' });
-            }
+    // Helper function to upload a file to Cloudinary
+  private async uploadPassportPhoto(file: Express.Multer.File | undefined): Promise<string> {
+    if (!file) return '';
 
-            // Check if the PersonalDetails with the given applicationNo exists
-            const existingEntry = await PersonalDetailsService.getByApplicationNo(applicationNo);
-
-            if (existingEntry) {
-                // If it exists, update the existing record
-                const updatedEntry = await PersonalDetailsService.updateByApplicationNo(applicationNo, req.body);
-                return res.status(200).send({ message: 'Personal details updated', data: updatedEntry });
-            } else {
-                // If it does not exist, create a new record
-                const newEntry = await PersonalDetailsService.create(req.body);
-                return res.status(201).send({ message: 'Personal details created', data: newEntry });
-            }
-        } catch (error) {
-            res.status(500).send({ message: 'Error creating or updating personal details', error: error.message });
-        }
+    try {
+      const result = await cloudinary.uploader.upload(file.path);
+      return result.secure_url;
+    } catch (error) {
+      console.error('Error uploading profile picture:', error);
+      throw new Error('Failed to upload profile picture');
     }
+  }
+
+  // Create or update PersonalDetails
+  async createOrUpdatePersonalDetails(req: Request, res: Response): Promise<void> {
+    try {
+      const { applicationNo } = req.body;
+      const file = req.file;
+
+      const existingApplicant = await UserService.findApplicationNo(applicationNo);
+
+      if (!existingApplicant) {
+        res.status(400).json({ statusCode: 400, message: 'Applicant does not exist' });
+        return; // Ensure to return here to avoid further execution
+      }
+
+      // Check if the PersonalDetails with the given applicationNo exists
+      const existingEntry = await PersonalDetailsService.getByApplicationNo(applicationNo);
+
+      let passportPhoto = '';
+
+      if (file) {
+        passportPhoto = await this.uploadPassportPhoto(file);
+      }
+
+      // Include the passportPhoto in the body data if it's available
+      const dataToSave = { ...req.body, passportPhoto: passportPhoto };
+
+      if (existingEntry) {
+        // Update the existing record
+        const updatedEntry = await PersonalDetailsService.updateByApplicationNo(applicationNo, dataToSave);
+        res.status(200).json({ message: 'Personal details updated', data: updatedEntry });
+      } else {
+        // Create a new record
+        const newEntry = await PersonalDetailsService.create(dataToSave);
+        res.status(201).json({ message: 'Personal details created', data: newEntry });
+      }
+    } catch (error) {
+      console.error('Error creating or updating personal details:', error);
+      res.status(500).json({ message: 'Error creating or updating personal details', error: error.message });
+    }
+  }
+
 
     // Get PersonalDetails by applicationNo
     static async getPersonalDetailsByNo(req: Request, res: Response) {

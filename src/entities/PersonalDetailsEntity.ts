@@ -35,4 +35,8 @@ export class PersonalDetails {
 
     @Column()
     nationalInsuranceNumber: string;
+
+    @Column()
+    passportPhoto: string;
+    
 }

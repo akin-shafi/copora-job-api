@@ -1,4 +1,15 @@
 "use strict";
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -39,43 +50,88 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.PersonalDetailsController = void 0;
 var PersonalDetailsService_1 = require("../services/PersonalDetailsService");
 var UserService_1 = require("../services/UserService");
+var cloudinary_1 = require("cloudinary");
 // APP-C57FF572
+// Configure Cloudinary
+cloudinary_1.v2.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 var PersonalDetailsController = /** @class */ (function () {
     function PersonalDetailsController() {
     }
-    // Create or update PersonalDetails
-    PersonalDetailsController.createPersonalDetails = function (req, res) {
+    // Helper function to upload a file to Cloudinary
+    PersonalDetailsController.prototype.uploadPassportPhoto = function (file) {
         return __awaiter(this, void 0, void 0, function () {
-            var applicationNo, existingApplicant, existingEntry, updatedEntry, newEntry, error_1;
+            var result, error_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        _a.trys.push([0, 7, , 8]);
+                        if (!file)
+                            return [2 /*return*/, ''];
+                        _a.label = 1;
+                    case 1:
+                        _a.trys.push([1, 3, , 4]);
+                        return [4 /*yield*/, cloudinary_1.v2.uploader.upload(file.path)];
+                    case 2:
+                        result = _a.sent();
+                        return [2 /*return*/, result.secure_url];
+                    case 3:
+                        error_1 = _a.sent();
+                        console.error('Error uploading profile picture:', error_1);
+                        throw new Error('Failed to upload profile picture');
+                    case 4: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    // Create or update PersonalDetails
+    PersonalDetailsController.prototype.createOrUpdatePersonalDetails = function (req, res) {
+        return __awaiter(this, void 0, void 0, function () {
+            var applicationNo, file, existingApplicant, existingEntry, passportPhoto, dataToSave, updatedEntry, newEntry, error_2;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 9, , 10]);
                         applicationNo = req.body.applicationNo;
+                        file = req.file;
                         return [4 /*yield*/, UserService_1.UserService.findApplicationNo(applicationNo)];
                     case 1:
                         existingApplicant = _a.sent();
                         if (!existingApplicant) {
-                            return [2 /*return*/, res.status(400).json({ statusCode: 400, message: 'Applicant does not exist' })];
+                            res.status(400).json({ statusCode: 400, message: 'Applicant does not exist' });
+                            return [2 /*return*/]; // Ensure to return here to avoid further execution
                         }
                         return [4 /*yield*/, PersonalDetailsService_1.PersonalDetailsService.getByApplicationNo(applicationNo)];
                     case 2:
                         existingEntry = _a.sent();
-                        if (!existingEntry) return [3 /*break*/, 4];
-                        return [4 /*yield*/, PersonalDetailsService_1.PersonalDetailsService.updateByApplicationNo(applicationNo, req.body)];
+                        passportPhoto = '';
+                        if (!file) return [3 /*break*/, 4];
+                        return [4 /*yield*/, this.uploadPassportPhoto(file)];
                     case 3:
-                        updatedEntry = _a.sent();
-                        return [2 /*return*/, res.status(200).send({ message: 'Personal details updated', data: updatedEntry })];
-                    case 4: return [4 /*yield*/, PersonalDetailsService_1.PersonalDetailsService.create(req.body)];
+                        passportPhoto = _a.sent();
+                        _a.label = 4;
+                    case 4:
+                        dataToSave = __assign(__assign({}, req.body), { passportPhoto: passportPhoto });
+                        if (!existingEntry) return [3 /*break*/, 6];
+                        return [4 /*yield*/, PersonalDetailsService_1.PersonalDetailsService.updateByApplicationNo(applicationNo, dataToSave)];
                     case 5:
-                        newEntry = _a.sent();
-                        return [2 /*return*/, res.status(201).send({ message: 'Personal details created', data: newEntry })];
-                    case 6: return [3 /*break*/, 8];
-                    case 7:
-                        error_1 = _a.sent();
-                        res.status(500).send({ message: 'Error creating or updating personal details', error: error_1.message });
+                        updatedEntry = _a.sent();
+                        res.status(200).json({ message: 'Personal details updated', data: updatedEntry });
                         return [3 /*break*/, 8];
-                    case 8: return [2 /*return*/];
+                    case 6: return [4 /*yield*/, PersonalDetailsService_1.PersonalDetailsService.create(dataToSave)];
+                    case 7:
+                        newEntry = _a.sent();
+                        res.status(201).json({ message: 'Personal details created', data: newEntry });
+                        _a.label = 8;
+                    case 8: return [3 /*break*/, 10];
+                    case 9:
+                        error_2 = _a.sent();
+                        console.error('Error creating or updating personal details:', error_2);
+                        res.status(500).json({ message: 'Error creating or updating personal details', error: error_2.message });
+                        return [3 /*break*/, 10];
+                    case 10: return [2 /*return*/];
                 }
             });
         });
@@ -83,7 +139,7 @@ var PersonalDetailsController = /** @class */ (function () {
     // Get PersonalDetails by applicationNo
     PersonalDetailsController.getPersonalDetailsByNo = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            var applicationNo, entry, error_2;
+            var applicationNo, entry, error_3;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -101,8 +157,8 @@ var PersonalDetailsController = /** @class */ (function () {
                         res.status(200).send(entry);
                         return [3 /*break*/, 4];
                     case 3:
-                        error_2 = _a.sent();
-                        res.status(500).send({ message: 'Error fetching personal details', error: error_2.message });
+                        error_3 = _a.sent();
+                        res.status(500).send({ message: 'Error fetching personal details', error: error_3.message });
                         return [3 /*break*/, 4];
                     case 4: return [2 /*return*/];
                 }
@@ -112,7 +168,7 @@ var PersonalDetailsController = /** @class */ (function () {
     // Update PersonalDetails by applicationNo
     PersonalDetailsController.updatePersonalDetailsByNo = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            var applicationNo, updatedEntry, error_3;
+            var applicationNo, updatedEntry, error_4;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -127,8 +183,8 @@ var PersonalDetailsController = /** @class */ (function () {
                         res.status(200).send(updatedEntry);
                         return [3 /*break*/, 3];
                     case 2:
-                        error_3 = _a.sent();
-                        res.status(400).send({ message: 'Error updating personal details', error: error_3.message });
+                        error_4 = _a.sent();
+                        res.status(400).send({ message: 'Error updating personal details', error: error_4.message });
                         return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
                 }
@@ -138,7 +194,7 @@ var PersonalDetailsController = /** @class */ (function () {
     // Delete PersonalDetails by applicationNo
     PersonalDetailsController.deletePersonalDetailsByNo = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            var applicationNo, message, error_4;
+            var applicationNo, message, error_5;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -150,8 +206,8 @@ var PersonalDetailsController = /** @class */ (function () {
                         res.status(200).send({ message: message });
                         return [3 /*break*/, 3];
                     case 2:
-                        error_4 = _a.sent();
-                        res.status(404).send({ message: error_4.message });
+                        error_5 = _a.sent();
+                        res.status(404).send({ message: error_5.message });
                         return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
                 }
