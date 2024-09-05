@@ -111,7 +111,9 @@ var ApplicationService = /** @class */ (function () {
                         return [4 /*yield*/, data_source_1.AppDataSource.getRepository(ContactDetailsEntity_1.ContactDetails).findOneBy({ applicationNo: applicationNo })];
                     case 3:
                         contactDetails = _a.sent();
-                        return [4 /*yield*/, data_source_1.AppDataSource.getRepository(ProfessionalDetailsEntity_1.ProfessionalDetails).findOneBy({ applicationNo: applicationNo })];
+                        return [4 /*yield*/, data_source_1.AppDataSource.getRepository(ProfessionalDetailsEntity_1.ProfessionalDetails).find({
+                                where: { applicationNo: applicationNo }
+                            })];
                     case 4:
                         professionalDetails = _a.sent();
                         return [4 /*yield*/, data_source_1.AppDataSource.getRepository(EducationalDetailsEntity_1.EducationalDetails).findOneBy({ applicationNo: applicationNo })];
@@ -134,10 +136,9 @@ var ApplicationService = /** @class */ (function () {
                         reference = _a.sent();
                         return [2 /*return*/, {
                                 user: user,
-                                // application,
                                 personalDetails: personalDetails,
                                 contactDetails: contactDetails,
-                                professionalDetails: professionalDetails,
+                                professionalDetails: professionalDetails, // This will be an array
                                 educationalDetails: educationalDetails,
                                 healthAndDisability: healthAndDisability,
                                 foodSafetyQuestionnaire: foodSafetyQuestionnaire,

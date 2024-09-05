@@ -38,26 +38,29 @@ export class ApplicationService {
   }
 
   static async getApplicantData(applicationNo: string) {
-    // console.log("applicationNo", applicationNo)
     try {
+      // Fetch user and other details
       const user = await AppDataSource.getRepository(User).findOneBy({ applicationNo });
-      // const application = await AppDataSource.getRepository(Application).findOneBy({ applicationNo });
       const personalDetails = await AppDataSource.getRepository(PersonalDetails).findOneBy({ applicationNo });
       const contactDetails = await AppDataSource.getRepository(ContactDetails).findOneBy({ applicationNo });
-      const professionalDetails = await AppDataSource.getRepository(ProfessionalDetails).findOneBy({ applicationNo });
+  
+      // Fetch multiple professional details
+      const professionalDetails = await AppDataSource.getRepository(ProfessionalDetails).find({
+        where: { applicationNo }
+      });
+  
       const educationalDetails = await AppDataSource.getRepository(EducationalDetails).findOneBy({ applicationNo });
       const healthAndDisability = await AppDataSource.getRepository(HealthAndDisability).findOneBy({ applicationNo });
       const foodSafetyQuestionnaire = await AppDataSource.getRepository(FoodSafetyQuestionnaire).findOneBy({ applicationNo });
       const bankDetails = await AppDataSource.getRepository(BankDetails).findOneBy({ applicationNo });
       const agreementConsent = await AppDataSource.getRepository(AgreementConsent).findOneBy({ applicationNo });
       const reference = await AppDataSource.getRepository(Reference).findOneBy({ applicationNo });
-
+  
       return {
         user,
-        // application,
         personalDetails,
         contactDetails,
-        professionalDetails,
+        professionalDetails, // This will be an array
         educationalDetails,
         healthAndDisability,
         foodSafetyQuestionnaire,
@@ -69,6 +72,7 @@ export class ApplicationService {
       throw new Error(`Error retrieving applicant data: ${error.message}`);
     }
   }
+  
 
   static async getAllApplicants() {
     try {
