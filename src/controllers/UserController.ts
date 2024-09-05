@@ -67,7 +67,7 @@ class UserController {
         profilePicture: profilePictureUrl,
         role,
         createdBy,
-        accountStatus,
+        // accountStatus,
         verificationToken,
         applicationNo // Save the generated application number
       });

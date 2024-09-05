@@ -101,7 +101,7 @@ var UserController = /** @class */ (function () {
                                 profilePicture: profilePictureUrl,
                                 role: role,
                                 createdBy: createdBy,
-                                accountStatus: accountStatus,
+                                // accountStatus,
                                 verificationToken: verificationToken,
                                 applicationNo: applicationNo // Save the generated application number
                             })];

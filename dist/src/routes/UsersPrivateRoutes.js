@@ -121,8 +121,6 @@ router.get('/:id', AuthMiddleware_1.authenticateToken, UserController_1.default.
  *                 description: Role of the user
  *                 default: applicant
  *                 example: admin
- *               accountStatus:
- *                 type: boolean
  *                 description: Status of the user's account
  *                 default: true
  *                 example: false

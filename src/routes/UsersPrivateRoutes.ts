@@ -83,8 +83,6 @@ router.get('/:id', authenticateToken, UserController.getById);
  *                 description: Role of the user
  *                 default: applicant
  *                 example: admin
- *               accountStatus:
- *                 type: boolean
  *                 description: Status of the user's account
  *                 default: true
  *                 example: false
