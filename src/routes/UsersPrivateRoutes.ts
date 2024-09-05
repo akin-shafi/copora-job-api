@@ -83,9 +83,6 @@ router.get('/:id', authenticateToken, UserController.getById);
  *                 description: Role of the user
  *                 default: applicant
  *                 example: admin
- *                 description: Status of the user's account
- *                 default: true
- *                 example: false
  *               createdBy:
  *                 type: string
  *                 enum: [admin, applicant]
