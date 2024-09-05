@@ -28,7 +28,7 @@ var FoodSafetyQuestionnaire = /** @class */ (function () {
     ], FoodSafetyQuestionnaire.prototype, "cleaningRawMeatUtensilsRequired", void 0);
     __decorate([
         (0, typeorm_1.Column)(),
-        __metadata("design:type", Boolean)
+        __metadata("design:type", String)
     ], FoodSafetyQuestionnaire.prototype, "foodSafetyAct1990Description", void 0);
     __decorate([
         (0, typeorm_1.Column)(),

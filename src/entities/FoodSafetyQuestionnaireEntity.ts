@@ -16,7 +16,7 @@ export class FoodSafetyQuestionnaire {
     cleaningRawMeatUtensilsRequired: boolean;
 
     @Column()
-    foodSafetyAct1990Description: boolean;
+    foodSafetyAct1990Description: string;
 
     @Column()
     cleaningRequirement: string;
