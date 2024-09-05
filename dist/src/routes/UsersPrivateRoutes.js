@@ -362,10 +362,8 @@ router.patch('/users/:id/role', AuthMiddleware_1.authenticateToken, (0, AuthMidd
  *     summary: Update the onboarding step for a user.
  *     description: This endpoint allows updating the onboarding step for a user based on their application number.
  *     tags: [Admin - Private Endpoints]
- *     tags:
- *       - Users
  *     security:
- *       - BearerAuth: []  # If you're using JWT authentication
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -395,8 +393,6 @@ router.patch('/users/:id/role', AuthMiddleware_1.authenticateToken, (0, AuthMidd
  *                 message:
  *                   type: string
  *                   example: "Onboarding step updated successfully"
- *                 user:
- *                   $ref: '#/components/schemas/User'  # Assuming you have a User schema defined
  *       400:
  *         description: Missing required parameters (applicationNo or onboardingStep).
  *         content:
@@ -428,5 +424,5 @@ router.patch('/users/:id/role', AuthMiddleware_1.authenticateToken, (0, AuthMidd
  *                   type: string
  *                   example: "Server error"
  */
-router.patch('/update-onboarding-step', AuthMiddleware_1.authenticateToken, UserController_1.default.updateOnboardingStep);
+router.patch('/update-onboarding-step', UserController_1.default.updateOnboardingStep);
 exports.default = router;
