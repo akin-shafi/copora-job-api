@@ -443,7 +443,7 @@ router.post('/send-two-factor-code', UserController_1.default.generateTwoFactorT
 router.post('/verify-two-factor', UserController_1.default.verifyTwoFactorCode);
 /**
  * @swagger
- * /update-onboarding-step:
+ * /users/update-onboarding-step:
  *   patch:
  *     summary: Update the onboarding step for a user.
  *     description: This endpoint allows updating the onboarding step for a user based on their application number.

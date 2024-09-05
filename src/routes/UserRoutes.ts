@@ -401,7 +401,7 @@ const router = Router();
   
 /**
  * @swagger
- * /update-onboarding-step:
+ * /users/update-onboarding-step:
  *   patch:
  *     summary: Update the onboarding step for a user.
  *     description: This endpoint allows updating the onboarding step for a user based on their application number.
