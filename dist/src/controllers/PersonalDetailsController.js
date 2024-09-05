@@ -62,7 +62,7 @@ var PersonalDetailsController = /** @class */ (function () {
     function PersonalDetailsController() {
     }
     // Helper function to upload a file to Cloudinary
-    PersonalDetailsController.prototype.uploadPassportPhoto = function (file) {
+    PersonalDetailsController.uploadPassportPhoto = function (file) {
         return __awaiter(this, void 0, void 0, function () {
             var result, error_1;
             return __generator(this, function (_a) {
@@ -79,15 +79,15 @@ var PersonalDetailsController = /** @class */ (function () {
                         return [2 /*return*/, result.secure_url];
                     case 3:
                         error_1 = _a.sent();
-                        console.error('Error uploading profile picture:', error_1);
-                        throw new Error('Failed to upload profile picture');
+                        console.error('Error uploading passport photo:', error_1);
+                        throw new Error('Failed to upload passport photo');
                     case 4: return [2 /*return*/];
                 }
             });
         });
     };
     // Create or update PersonalDetails
-    PersonalDetailsController.prototype.createOrUpdatePersonalDetails = function (req, res) {
+    PersonalDetailsController.createOrUpdatePersonalDetails = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
             var applicationNo, file, existingApplicant, existingEntry, passportPhoto, dataToSave, updatedEntry, newEntry, error_2;
             return __generator(this, function (_a) {
@@ -108,7 +108,7 @@ var PersonalDetailsController = /** @class */ (function () {
                         existingEntry = _a.sent();
                         passportPhoto = '';
                         if (!file) return [3 /*break*/, 4];
-                        return [4 /*yield*/, this.uploadPassportPhoto(file)];
+                        return [4 /*yield*/, PersonalDetailsController.uploadPassportPhoto(file)];
                     case 3:
                         passportPhoto = _a.sent();
                         _a.label = 4;

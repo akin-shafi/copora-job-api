@@ -44,7 +44,7 @@ var router = (0, express_1.Router)();
  *       400:
  *         description: Bad request
  */
-router.post('/', PersonalDetailsController_1.PersonalDetailsController.createPersonalDetails);
+router.post('/', PersonalDetailsController_1.PersonalDetailsController.createOrUpdatePersonalDetails);
 /**
  * @swagger
  * /personal-details/{applicationNo}:

@@ -45,7 +45,7 @@ const router = Router();
  *       400:
  *         description: Bad request
  */
-router.post('/', PersonalDetailsController.createPersonalDetails);
+router.post('/', PersonalDetailsController.createOrUpdatePersonalDetails);
 
 /**
  * @swagger

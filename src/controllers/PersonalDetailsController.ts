@@ -17,21 +17,22 @@ cloudinary.config({
 export class PersonalDetailsController {
 
 
-    // Helper function to upload a file to Cloudinary
-  private async uploadPassportPhoto(file: Express.Multer.File | undefined): Promise<string> {
+
+  // Helper function to upload a file to Cloudinary
+  static async uploadPassportPhoto(file: Express.Multer.File | undefined): Promise<string> {
     if (!file) return '';
 
     try {
       const result = await cloudinary.uploader.upload(file.path);
       return result.secure_url;
     } catch (error) {
-      console.error('Error uploading profile picture:', error);
-      throw new Error('Failed to upload profile picture');
+      console.error('Error uploading passport photo:', error);
+      throw new Error('Failed to upload passport photo');
     }
   }
 
   // Create or update PersonalDetails
-  async createOrUpdatePersonalDetails(req: Request, res: Response): Promise<void> {
+  static async createOrUpdatePersonalDetails(req: Request, res: Response): Promise<void> {
     try {
       const { applicationNo } = req.body;
       const file = req.file;
@@ -49,7 +50,7 @@ export class PersonalDetailsController {
       let passportPhoto = '';
 
       if (file) {
-        passportPhoto = await this.uploadPassportPhoto(file);
+        passportPhoto = await PersonalDetailsController.uploadPassportPhoto(file);
       }
 
       // Include the passportPhoto in the body data if it's available
@@ -69,6 +70,7 @@ export class PersonalDetailsController {
       res.status(500).json({ message: 'Error creating or updating personal details', error: error.message });
     }
   }
+
 
 
     // Get PersonalDetails by applicationNo
