@@ -115,6 +115,52 @@ var ProfessionalDetailsService = /** @class */ (function () {
             });
         });
     };
+    ProfessionalDetailsService.findByReferenceContactPhone = function (referenceContactPhone) {
+        return __awaiter(this, void 0, void 0, function () {
+            var entry, error_1;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, professionalDetailsRepository.findOne({
+                                where: { referenceContactPhone: referenceContactPhone }
+                            })];
+                    case 1:
+                        entry = _a.sent();
+                        return [2 /*return*/, entry || null]; // Return null if entry is not found
+                    case 2:
+                        error_1 = _a.sent();
+                        console.error('Error finding professional details by referenceContactPhone:', error_1);
+                        throw new Error('Error retrieving professional details');
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    ProfessionalDetailsService.update = function (id, data) {
+        return __awaiter(this, void 0, void 0, function () {
+            var entry, error_2;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 4, , 5]);
+                        return [4 /*yield*/, professionalDetailsRepository.findOneBy({ id: id })];
+                    case 1:
+                        entry = _a.sent();
+                        if (!entry) return [3 /*break*/, 3];
+                        Object.assign(entry, data);
+                        return [4 /*yield*/, professionalDetailsRepository.save(entry)];
+                    case 2: return [2 /*return*/, _a.sent()];
+                    case 3: return [2 /*return*/, null];
+                    case 4:
+                        error_2 = _a.sent();
+                        console.error('Error updating professional details:', error_2);
+                        throw new Error('Error updating professional details');
+                    case 5: return [2 /*return*/];
+                }
+            });
+        });
+    };
     return ProfessionalDetailsService;
 }());
 exports.ProfessionalDetailsService = ProfessionalDetailsService;

@@ -67,11 +67,11 @@ var ProfessionalDetailsController = /** @class */ (function () {
     // Create or update ProfessionalDetails
     ProfessionalDetailsController.createProfessionalDetails = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            var _a, applicationNo, professionalDetails, existingApplicant, entries, newEntries, _i, entries_1, entry, newEntry, error_1;
+            var _a, applicationNo, professionalDetails, existingApplicant, entries, updatedEntries, newEntries, _i, entries_1, entry, referenceContactPhone, restOfEntry, existingEntry, newEntry, error_1;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
-                        _b.trys.push([0, 6, , 7]);
+                        _b.trys.push([0, 9, , 10]);
                         _a = req.body, applicationNo = _a.applicationNo, professionalDetails = __rest(_a, ["applicationNo"]);
                         // Validate applicationNo
                         if (!applicationNo) {
@@ -91,28 +91,47 @@ var ProfessionalDetailsController = /** @class */ (function () {
                         if (entries.length === 0) {
                             return [2 /*return*/, res.status(400).json({ statusCode: 400, message: 'No valid professional details provided' })];
                         }
+                        updatedEntries = [];
                         newEntries = [];
                         _i = 0, entries_1 = entries;
                         _b.label = 2;
                     case 2:
-                        if (!(_i < entries_1.length)) return [3 /*break*/, 5];
+                        if (!(_i < entries_1.length)) return [3 /*break*/, 8];
                         entry = entries_1[_i];
-                        if (!(entry && typeof entry === 'object')) return [3 /*break*/, 4];
-                        return [4 /*yield*/, ProfessionalDetailsService_1.ProfessionalDetailsService.create(__assign({ applicationNo: applicationNo }, entry))];
+                        if (!(entry && typeof entry === 'object')) return [3 /*break*/, 7];
+                        referenceContactPhone = entry.referenceContactPhone, restOfEntry = __rest(entry, ["referenceContactPhone"]);
+                        if (!referenceContactPhone) {
+                            return [2 /*return*/, res.status(400).json({ statusCode: 400, message: 'Reference contact phone is required' })];
+                        }
+                        return [4 /*yield*/, ProfessionalDetailsService_1.ProfessionalDetailsService.findByReferenceContactPhone(referenceContactPhone)];
                     case 3:
+                        existingEntry = _b.sent();
+                        if (!existingEntry) return [3 /*break*/, 5];
+                        // Update existing entry
+                        return [4 /*yield*/, ProfessionalDetailsService_1.ProfessionalDetailsService.update(existingEntry.id, __assign(__assign({}, restOfEntry), { applicationNo: applicationNo }))];
+                    case 4:
+                        // Update existing entry
+                        _b.sent();
+                        updatedEntries.push(__assign(__assign({}, existingEntry), restOfEntry));
+                        return [3 /*break*/, 7];
+                    case 5: return [4 /*yield*/, ProfessionalDetailsService_1.ProfessionalDetailsService.create(__assign({ applicationNo: applicationNo }, entry))];
+                    case 6:
                         newEntry = _b.sent();
                         newEntries.push(newEntry);
-                        _b.label = 4;
-                    case 4:
+                        _b.label = 7;
+                    case 7:
                         _i++;
                         return [3 /*break*/, 2];
-                    case 5: return [2 /*return*/, res.status(201).json({ message: 'Professional details created', data: newEntries })];
-                    case 6:
+                    case 8: return [2 /*return*/, res.status(201).json({
+                            message: 'Professional details processed',
+                            data: { updatedEntries: updatedEntries, newEntries: newEntries }
+                        })];
+                    case 9:
                         error_1 = _b.sent();
                         console.error('Error creating or updating professional details:', error_1);
                         res.status(500).json({ message: 'Error creating or updating professional details', error: error_1.message });
-                        return [3 /*break*/, 7];
-                    case 7: return [2 /*return*/];
+                        return [3 /*break*/, 10];
+                    case 10: return [2 /*return*/];
                 }
             });
         });

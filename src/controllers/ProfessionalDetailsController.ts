@@ -7,48 +7,71 @@ export class ProfessionalDetailsController {
     static async createProfessionalDetails(req: Request, res: Response) {
         try {
             const { applicationNo, ...professionalDetails } = req.body;
-
+    
             // Validate applicationNo
             if (!applicationNo) {
                 return res.status(400).json({ statusCode: 400, message: 'Application number is required' });
             }
-
+    
             const existingApplicant = await UserService.findApplicationNo(applicationNo);
-
+    
             if (!existingApplicant) {
                 return res.status(400).json({ statusCode: 400, message: 'Applicant does not exist' });
             }
-
+    
             // Ensure professionalDetails is in the correct format
             if (typeof professionalDetails !== 'object' || Array.isArray(professionalDetails)) {
                 return res.status(400).json({ statusCode: 400, message: 'Invalid professional details format' });
             }
-
+    
             // Process and save each entry in the professionalDetails
             const entries = Object.values(professionalDetails).filter(value => typeof value === 'object' && value !== null) as Record<string, any>[];
             if (entries.length === 0) {
                 return res.status(400).json({ statusCode: 400, message: 'No valid professional details provided' });
             }
-
-            // Save professional details to the database
+    
+            const updatedEntries = [];
             const newEntries = [];
+    
             for (const entry of entries) {
                 if (entry && typeof entry === 'object') {
-                    const newEntry = await ProfessionalDetailsService.create({
-                        applicationNo,
-                        ...entry
-                    });
-                    newEntries.push(newEntry);
+                    const { referenceContactPhone, ...restOfEntry } = entry;
+    
+                    if (!referenceContactPhone) {
+                        return res.status(400).json({ statusCode: 400, message: 'Reference contact phone is required' });
+                    }
+    
+                    const existingEntry = await ProfessionalDetailsService.findByReferenceContactPhone(referenceContactPhone);
+    
+                    if (existingEntry) {
+                        // Update existing entry
+                        await ProfessionalDetailsService.update(existingEntry.id, {
+                            ...restOfEntry,
+                            applicationNo
+                        });
+                        updatedEntries.push({ ...existingEntry, ...restOfEntry });
+                    } else {
+                        // Create new entry
+                        const newEntry = await ProfessionalDetailsService.create({
+                            applicationNo,
+                            ...entry
+                        });
+                        newEntries.push(newEntry);
+                    }
                 }
             }
-
-            return res.status(201).json({ message: 'Professional details created', data: newEntries });
-
+    
+            return res.status(201).json({
+                message: 'Professional details processed',
+                data: { updatedEntries, newEntries }
+            });
+    
         } catch (error) {
             console.error('Error creating or updating professional details:', error);
             res.status(500).json({ message: 'Error creating or updating professional details', error: error.message });
         }
     }
+    
 
     // Get ProfessionalDetails by applicationNo
     static async getProfessionalDetailsByNo(req: Request, res: Response) {

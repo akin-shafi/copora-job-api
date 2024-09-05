@@ -139,6 +139,7 @@ export class UserService {
     }
   }
 
+
   // Get all users
   async getAll(): Promise<User[]> {
     return userRepository.find();

@@ -38,4 +38,33 @@ export class ProfessionalDetailsService {
         }
         return 'Professional details deleted';
     }
+
+
+    static async findByReferenceContactPhone(referenceContactPhone: string): Promise<ProfessionalDetails | null> {
+        try {
+            // Find the professional details by referenceContactPhone
+            const entry = await professionalDetailsRepository.findOne({
+                where: { referenceContactPhone }
+            });
+      
+            return entry || null; // Return null if entry is not found
+        } catch (error) {
+            console.error('Error finding professional details by referenceContactPhone:', error);
+            throw new Error('Error retrieving professional details');
+        }
+      }
+
+      static async update(id: number, data: Partial<ProfessionalDetails>): Promise<ProfessionalDetails | null> {
+        try {
+          const entry = await professionalDetailsRepository.findOneBy({ id });
+          if (entry) {
+            Object.assign(entry, data);
+            return await professionalDetailsRepository.save(entry);
+          }
+          return null;
+        } catch (error) {
+          console.error('Error updating professional details:', error);
+          throw new Error('Error updating professional details');
+        }
+      }
 }
