@@ -289,7 +289,7 @@ async updateData(user: User): Promise<User> {
 async findUsersWithIncompleteOnboarding(): Promise<User[]> {
   return userRepository.createQueryBuilder('user')
       .where('user.onboardingStep < :step', { step: 5 })
-      .andWhere('user.role = :role', { role: 'admin' })
+      .andWhere('user.role = :role', { role: 'applicant' })
       .getMany();
   }
 }

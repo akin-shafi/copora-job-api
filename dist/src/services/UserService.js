@@ -450,7 +450,7 @@ var UserService = /** @class */ (function () {
             return __generator(this, function (_a) {
                 return [2 /*return*/, userRepository.createQueryBuilder('user')
                         .where('user.onboardingStep < :step', { step: 5 })
-                        .andWhere('user.role = :role', { role: 'admin' })
+                        .andWhere('user.role = :role', { role: 'applicant' })
                         .getMany()];
             });
         });
