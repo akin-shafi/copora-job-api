@@ -5,11 +5,12 @@
   "main": "dist/src/app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon dist/src/app.js",
+    "start": "nodemon dist/src/app.js && npm run start-cron",
     "build": "tsc",
     "generate-swagger": "node generateSwagger.js",
     "postbuild": "npm run generate-swagger",
-    "seed": "ts-node src/seeds/seedProductImage.ts"
+    "seed": "ts-node src/seeds/seedProductImage.ts",
+    "start-cron": "ts-node src/cron-job/sendOnboardingReminder.ts"
   },
   "keywords": [],
   "author": "",
@@ -28,6 +29,7 @@
     "jsonwebtoken": "^9.0.2",
     "morgan": "^1.10.0",
     "multer": "^1.4.5-lts.1",
+    "node-cron": "^3.0.3",
     "nodemailer": "^6.9.14",
     "passport-jwt": "^4.0.1",
     "pg": "^8.12.0",

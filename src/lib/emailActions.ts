@@ -5,6 +5,7 @@ import twoFactorEmail from "../emails/twoFactorEmail";
 import loginLinkEmail from "../emails/loginLinkEmail";
 import verificationEmail from "../emails/verificationEmail";
 import invitationToOnboardEmail from '../emails/invitationToOnboardEmail';
+import onboardingReminderEmail from '../emails/onboardingReminderEmail';
 import { sendEmail } from "./email";
 
 // Function to send signup email
@@ -50,5 +51,12 @@ export async function sendLoginLink(user: { firstName?: string; email: string; }
     const subject = "Your Login Link";
     const html = loginLinkEmail(user, twoFactorToken);
     await sendEmail(user.email, subject, html);
+}
+
+// Function to send onboarding reminder email
+export async function sendOnboardingReminderEmail(user: { firstName: string; email: string }) {
+    const subject = 'Complete Your Onboarding with Copora';
+    const html = onboardingReminderEmail(user);  // Generate the email HTML
+    await sendEmail(user.email, subject, html);  // Send the email
 }
 

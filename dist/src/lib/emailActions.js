@@ -45,6 +45,7 @@ exports.sendVerificationEmail = sendVerificationEmail;
 exports.sendResetPasswordEmail = sendResetPasswordEmail;
 exports.sendTwoFactorCodeEmail = sendTwoFactorCodeEmail;
 exports.sendLoginLink = sendLoginLink;
+exports.sendOnboardingReminderEmail = sendOnboardingReminderEmail;
 // main.ts
 var signupEmail_1 = __importDefault(require("../emails/signupEmail"));
 var resetPasswordEmail_1 = __importDefault(require("../emails/resetPasswordEmail"));
@@ -52,6 +53,7 @@ var twoFactorEmail_1 = __importDefault(require("../emails/twoFactorEmail"));
 var loginLinkEmail_1 = __importDefault(require("../emails/loginLinkEmail"));
 var verificationEmail_1 = __importDefault(require("../emails/verificationEmail"));
 var invitationToOnboardEmail_1 = __importDefault(require("../emails/invitationToOnboardEmail"));
+var onboardingReminderEmail_1 = __importDefault(require("../emails/onboardingReminderEmail"));
 var email_1 = require("./email");
 // Function to send signup email
 function sendSignupEmail(user) {
@@ -151,6 +153,23 @@ function sendLoginLink(user, twoFactorToken) {
                     return [4 /*yield*/, (0, email_1.sendEmail)(user.email, subject, html)];
                 case 1:
                     _a.sent();
+                    return [2 /*return*/];
+            }
+        });
+    });
+}
+// Function to send onboarding reminder email
+function sendOnboardingReminderEmail(user) {
+    return __awaiter(this, void 0, void 0, function () {
+        var subject, html;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    subject = 'Complete Your Onboarding with Copora';
+                    html = (0, onboardingReminderEmail_1.default)(user);
+                    return [4 /*yield*/, (0, email_1.sendEmail)(user.email, subject, html)];
+                case 1:
+                    _a.sent(); // Send the email
                     return [2 /*return*/];
             }
         });
