@@ -12,7 +12,7 @@ export default function onboardingReminderEmail(user: { firstName?: string; emai
             <p>
                 Best regards,
                 <br/>
-                The Copora Team
+                The ${process.env.APP_COMPANY} Team
             </p>
         ${emailFooter()}    
     `;

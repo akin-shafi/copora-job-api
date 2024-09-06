@@ -6,7 +6,7 @@ import { FRONTEND_URL } from '../config';
 export default function resetPasswordEmail(user: { firstName?: string; email: string; }, resetToken: string) {
     return `
                 ${emailHeader('others')} 
-                <div style="padding: 20px;">
+                <div class="email-body" style="background-color: #ffffff; border-radius: 4px">
                     <h1 style="font-size: 24px; color: #333;">Password Reset Request</h1>
                     <p style="font-size: 16px; color: #333;">Hello ${user.firstName},</p>
                     <p style="font-size: 16px; color: #333;">
@@ -17,7 +17,7 @@ export default function resetPasswordEmail(user: { firstName?: string; email: st
                         If you did not request this, please ignore this email and your password will remain unchanged.
                     </p>
                     <p style="font-size: 16px; color: #333;">Best regards,</p>
-                    <p style="font-size: 16px; color: #333;">The Company Team</p>
+                    <p style="font-size: 16px; color: #333;">The ${process.env.APP_COMPANY} Team</p>
                 </div>
                 ${emailFooter()}
            

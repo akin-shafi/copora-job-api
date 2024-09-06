@@ -107,7 +107,7 @@ ${emailHeader('others')}
             padding: 1rem;
             margin-bottom: -15px;
         ">
-        Best regards,<br>Your Team
+        Best regards,<br>The ${process.env.APP_COMPANY} Team
         </p>
     </div>
 

@@ -114,7 +114,7 @@ ${emailHeader('others')}
                   margin-bottom: -15px;
                 ">
                 Best regards,<br><br>
-                <strong>Copora Team</strong>
+                <strong>The ${process.env.APP_COMPANY} Team</strong>
               </p>
             </div>
                   
