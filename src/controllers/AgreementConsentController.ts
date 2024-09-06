@@ -1,24 +1,46 @@
 import { Request, Response } from 'express';
 import { AgreementConsentService } from '../services/AgreementConsentService';
+import { UserService } from '../services/UserService';
+import {  sendOnboardingCompletionEmail } from '../lib/emailActions';
+import { AgreementConsent } from '../entities/AgreementConsentEntity';
 
+ 
 export class AgreementConsentController {
     // Create or update an AgreementConsent
     static async create(req: Request, res: Response) {
         try {
             const { applicationNo } = req.body;
 
+            // Get the applicant's details by application number
+            const existingApplicant = await UserService.findApplicationNo(applicationNo);
+
+            if (!existingApplicant) {
+                return res.status(400).json({ statusCode: 400, message: 'Applicant does not exist' });
+            }
+
             // Check if the AgreementConsent with the given applicationNo exists
             const existingAgreementConsent = await AgreementConsentService.getByApplicationNo(applicationNo);
 
+            let agreementConsent: AgreementConsent | AgreementConsent[];
+
             if (existingAgreementConsent) {
                 // If it exists, update the existing record
-                const updatedAgreementConsent = await AgreementConsentService.updateByApplicationNo(applicationNo, req.body);
-                return res.status(200).send({ message: 'Agreement Consent updated', data: updatedAgreementConsent });
+                agreementConsent = await AgreementConsentService.updateByApplicationNo(applicationNo, req.body);
+                res.status(200).send({ message: 'Agreement Consent updated', data: agreementConsent });
             } else {
                 // If it does not exist, create a new record
-                const newAgreementConsent = await AgreementConsentService.create(req.body);
-                return res.status(201).send({ message: 'Agreement Consent created', data: newAgreementConsent });
+                agreementConsent = await AgreementConsentService.create(req.body);
+                res.status(201).send({ message: 'Agreement Consent created', data: agreementConsent });
             }
+
+            // Fetch the user's email and send the onboarding completion email
+            const userEmail = existingApplicant.email;
+            const emailData = {
+                firstName: existingApplicant.firstName,
+                email: userEmail,
+            };
+            await sendOnboardingCompletionEmail(emailData);
+
         } catch (error) {
             res.status(500).send({ message: 'Error creating or updating Agreement Consent', error: error.message });
         }

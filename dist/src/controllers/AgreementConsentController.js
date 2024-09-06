@@ -38,36 +38,58 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AgreementConsentController = void 0;
 var AgreementConsentService_1 = require("../services/AgreementConsentService");
+var UserService_1 = require("../services/UserService");
+var emailActions_1 = require("../lib/emailActions");
 var AgreementConsentController = /** @class */ (function () {
     function AgreementConsentController() {
     }
     // Create or update an AgreementConsent
     AgreementConsentController.create = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            var applicationNo, existingAgreementConsent, updatedAgreementConsent, newAgreementConsent, error_1;
+            var applicationNo, existingApplicant, existingAgreementConsent, agreementConsent, userEmail, emailData, error_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        _a.trys.push([0, 6, , 7]);
+                        _a.trys.push([0, 8, , 9]);
                         applicationNo = req.body.applicationNo;
-                        return [4 /*yield*/, AgreementConsentService_1.AgreementConsentService.getByApplicationNo(applicationNo)];
+                        return [4 /*yield*/, UserService_1.UserService.findApplicationNo(applicationNo)];
                     case 1:
-                        existingAgreementConsent = _a.sent();
-                        if (!existingAgreementConsent) return [3 /*break*/, 3];
-                        return [4 /*yield*/, AgreementConsentService_1.AgreementConsentService.updateByApplicationNo(applicationNo, req.body)];
+                        existingApplicant = _a.sent();
+                        if (!existingApplicant) {
+                            return [2 /*return*/, res.status(400).json({ statusCode: 400, message: 'Applicant does not exist' })];
+                        }
+                        return [4 /*yield*/, AgreementConsentService_1.AgreementConsentService.getByApplicationNo(applicationNo)];
                     case 2:
-                        updatedAgreementConsent = _a.sent();
-                        return [2 /*return*/, res.status(200).send({ message: 'Agreement Consent updated', data: updatedAgreementConsent })];
-                    case 3: return [4 /*yield*/, AgreementConsentService_1.AgreementConsentService.create(req.body)];
-                    case 4:
-                        newAgreementConsent = _a.sent();
-                        return [2 /*return*/, res.status(201).send({ message: 'Agreement Consent created', data: newAgreementConsent })];
-                    case 5: return [3 /*break*/, 7];
+                        existingAgreementConsent = _a.sent();
+                        agreementConsent = void 0;
+                        if (!existingAgreementConsent) return [3 /*break*/, 4];
+                        return [4 /*yield*/, AgreementConsentService_1.AgreementConsentService.updateByApplicationNo(applicationNo, req.body)];
+                    case 3:
+                        // If it exists, update the existing record
+                        agreementConsent = _a.sent();
+                        res.status(200).send({ message: 'Agreement Consent updated', data: agreementConsent });
+                        return [3 /*break*/, 6];
+                    case 4: return [4 /*yield*/, AgreementConsentService_1.AgreementConsentService.create(req.body)];
+                    case 5:
+                        // If it does not exist, create a new record
+                        agreementConsent = _a.sent();
+                        res.status(201).send({ message: 'Agreement Consent created', data: agreementConsent });
+                        _a.label = 6;
                     case 6:
+                        userEmail = existingApplicant.email;
+                        emailData = {
+                            firstName: existingApplicant.firstName,
+                            email: userEmail,
+                        };
+                        return [4 /*yield*/, (0, emailActions_1.sendOnboardingCompletionEmail)(emailData)];
+                    case 7:
+                        _a.sent();
+                        return [3 /*break*/, 9];
+                    case 8:
                         error_1 = _a.sent();
                         res.status(500).send({ message: 'Error creating or updating Agreement Consent', error: error_1.message });
-                        return [3 /*break*/, 7];
-                    case 7: return [2 /*return*/];
+                        return [3 /*break*/, 9];
+                    case 9: return [2 /*return*/];
                 }
             });
         });

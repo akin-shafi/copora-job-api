@@ -6,6 +6,7 @@ import loginLinkEmail from "../emails/loginLinkEmail";
 import verificationEmail from "../emails/verificationEmail";
 import invitationToOnboardEmail from '../emails/invitationToOnboardEmail';
 import onboardingReminderEmail from '../emails/onboardingReminderEmail';
+import onboardingCompletionEmail from '../emails/onboardingCompletionEmail';
 import { sendEmail } from "./email";
 
 // Function to send signup email
@@ -37,8 +38,6 @@ export async function sendResetPasswordEmail(user: { email: string; firstName: s
     await sendEmail(user.email, subject, html);
 }
 
-  
-
 // Function to send two-factor verification email
 // { email: user.email, firstName: user.firstName }, twoFactorToken
 export async function sendTwoFactorCodeEmail(user: { firstName?: string; email: string; }, resetToken: any) {
@@ -59,4 +58,11 @@ export async function sendOnboardingReminderEmail(user: { firstName: string; ema
     const html = onboardingReminderEmail(user);  // Generate the email HTML
     await sendEmail(user.email, subject, html);  // Send the email
 }
+
+export async function sendOnboardingCompletionEmail(user: { firstName: string; email: string }) {
+    const subject = 'Onboarding Completed';
+    const html = onboardingCompletionEmail(user);  // Generate the email HTML
+    await sendEmail(user.email, subject, html);  // Send the email
+}
+
 
