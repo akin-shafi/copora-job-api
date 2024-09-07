@@ -8,7 +8,7 @@ const userService = new UserService();
 // Schedule the task to run at 11 PM daily
 // cron.schedule('0 23 * * *', async () => { 
 // cron.schedule('*/5 * * * * *', async () => { // 5 secs
-cron.schedule('0 */11 * * *', async () => {
+// cron.schedule('0 */11 * * *', async () => {
     try {
         // Query users with onboardingStep less than 5 and role is applicant
         const users = await userService.findUsersWithIncompleteOnboarding();
@@ -32,5 +32,5 @@ cron.schedule('0 */11 * * *', async () => {
     } catch (error) {
         console.error('Error running the onboarding reminder script:', error);
     }
-});
+// });
 
