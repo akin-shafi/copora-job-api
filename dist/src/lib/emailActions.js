@@ -47,6 +47,7 @@ exports.sendTwoFactorCodeEmail = sendTwoFactorCodeEmail;
 exports.sendLoginLink = sendLoginLink;
 exports.sendOnboardingReminderEmail = sendOnboardingReminderEmail;
 exports.sendOnboardingCompletionEmail = sendOnboardingCompletionEmail;
+exports.sendOnboardingHospitalityWorkerEmail = sendOnboardingHospitalityWorkerEmail;
 // main.ts
 var signupEmail_1 = __importDefault(require("../emails/signupEmail"));
 var resetPasswordEmail_1 = __importDefault(require("../emails/resetPasswordEmail"));
@@ -56,6 +57,7 @@ var verificationEmail_1 = __importDefault(require("../emails/verificationEmail")
 var invitationToOnboardEmail_1 = __importDefault(require("../emails/invitationToOnboardEmail"));
 var onboardingReminderEmail_1 = __importDefault(require("../emails/onboardingReminderEmail"));
 var onboardingCompletionEmail_1 = __importDefault(require("../emails/onboardingCompletionEmail"));
+var onboardingHospitalityWorkerEmail_1 = __importDefault(require("../emails/onboardingHospitalityWorkerEmail"));
 var email_1 = require("./email");
 // Function to send signup email
 function sendSignupEmail(user) {
@@ -185,6 +187,22 @@ function sendOnboardingCompletionEmail(user) {
                 case 0:
                     subject = 'Onboarding Completed';
                     html = (0, onboardingCompletionEmail_1.default)(user);
+                    return [4 /*yield*/, (0, email_1.sendEmail)(user.email, subject, html)];
+                case 1:
+                    _a.sent(); // Send the email
+                    return [2 /*return*/];
+            }
+        });
+    });
+}
+function sendOnboardingHospitalityWorkerEmail(user) {
+    return __awaiter(this, void 0, void 0, function () {
+        var subject, html;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    subject = 'Welcome ';
+                    html = (0, onboardingHospitalityWorkerEmail_1.default)(user);
                     return [4 /*yield*/, (0, email_1.sendEmail)(user.email, subject, html)];
                 case 1:
                     _a.sent(); // Send the email

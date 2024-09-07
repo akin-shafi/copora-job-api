@@ -7,6 +7,8 @@ import verificationEmail from "../emails/verificationEmail";
 import invitationToOnboardEmail from '../emails/invitationToOnboardEmail';
 import onboardingReminderEmail from '../emails/onboardingReminderEmail';
 import onboardingCompletionEmail from '../emails/onboardingCompletionEmail';
+import onboardingHospitalityWorkerEmail from '../emails/onboardingHospitalityWorkerEmail';
+
 import { sendEmail } from "./email";
 
 // Function to send signup email
@@ -64,5 +66,12 @@ export async function sendOnboardingCompletionEmail(user: { firstName: string; e
     const html = onboardingCompletionEmail(user);  // Generate the email HTML
     await sendEmail(user.email, subject, html);  // Send the email
 }
+
+export async function sendOnboardingHospitalityWorkerEmail(user: { firstName: string; email: string }) {
+    const subject = 'Welcome ';
+    const html = onboardingHospitalityWorkerEmail(user);  // Generate the email HTML
+    await sendEmail(user.email, subject, html);  // Send the email
+}
+
 
 
