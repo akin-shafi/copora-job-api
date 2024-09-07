@@ -1,4 +1,15 @@
 "use strict";
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -714,29 +725,59 @@ var UserController = /** @class */ (function () {
             });
         });
     };
-    // Create new user
     // Update user
+    // async update(req: Request, res: Response): Promise<Response> {
+    //   try {
+    //     const userId = parseInt(req.params.id, 10);
+    //     const userData = req.body;
+    //     const updatedUser = await userService.update(userId, userData);
+    //     if (!updatedUser) {
+    //       return res.status(404).json({ message: 'User not found' });
+    //     }
+    //     return res.status(200).json(updatedUser);
+    //   } catch (error) {
+    //     console.error('Error updating user:', error);
+    //     return res.status(500).json({ message: 'Server error', error: error.message });
+    //   }
+    // }
     UserController.prototype.update = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            var userId, userData, updatedUser, error_14;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
+            var userId, userData, salt, _a, updatedUser, error_14;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
                     case 0:
-                        _a.trys.push([0, 2, , 3]);
+                        _b.trys.push([0, 5, , 6]);
                         userId = parseInt(req.params.id, 10);
-                        userData = req.body;
-                        return [4 /*yield*/, userService.update(userId, userData)];
+                        // Validate userId
+                        if (isNaN(userId)) {
+                            return [2 /*return*/, res.status(400).json({ message: 'Invalid user ID' })];
+                        }
+                        userData = __assign({}, req.body);
+                        if (!userData.password) return [3 /*break*/, 3];
+                        return [4 /*yield*/, bcrypt_1.default.genSalt(10)];
                     case 1:
-                        updatedUser = _a.sent();
+                        salt = _b.sent();
+                        _a = userData;
+                        return [4 /*yield*/, bcrypt_1.default.hash(userData.password, salt)];
+                    case 2:
+                        _a.password = _b.sent();
+                        _b.label = 3;
+                    case 3: return [4 /*yield*/, userService.update(userId, userData)];
+                    case 4:
+                        updatedUser = _b.sent();
+                        // Check if user exists
                         if (!updatedUser) {
                             return [2 /*return*/, res.status(404).json({ message: 'User not found' })];
                         }
-                        return [2 /*return*/, res.status(200).json(updatedUser)];
-                    case 2:
-                        error_14 = _a.sent();
+                        return [2 /*return*/, res.status(200).json({
+                                message: 'User updated successfully',
+                                data: updatedUser,
+                            })];
+                    case 5:
+                        error_14 = _b.sent();
                         console.error('Error updating user:', error_14);
                         return [2 /*return*/, res.status(500).json({ message: 'Server error', error: error_14.message })];
-                    case 3: return [2 /*return*/];
+                    case 6: return [2 /*return*/];
                 }
             });
         });

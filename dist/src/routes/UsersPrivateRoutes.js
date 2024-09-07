@@ -47,20 +47,6 @@ var AuthMiddleware_1 = require("../middlewares/AuthMiddleware"); // Import the a
 var router = (0, express_1.Router)();
 /**
  * @swagger
- * /auth/users:
- *   get:
- *     summary: Retrieve all users
- *     description: Fetch all users from the database. Only accessible by admin users.
- *     tags: [Admin - Private Endpoints]
- *     responses:
- *       '200':
- *         description: A list of users
- *     security:
- *       - bearerAuth: []  # Apply bearerAuth security scheme
- */
-router.get('/', AuthMiddleware_1.authenticateToken, (0, AuthMiddleware_1.authorizeRoles)('admin'), UserController_1.default.getAll);
-/**
- * @swagger
  * /auth/users/{id}:
  *   get:
  *     summary: Retrieve a single user by ID
@@ -81,6 +67,20 @@ router.get('/', AuthMiddleware_1.authenticateToken, (0, AuthMiddleware_1.authori
  *       - bearerAuth: []  # Apply bearerAuth security scheme
  */
 router.get('/:id', AuthMiddleware_1.authenticateToken, UserController_1.default.getById);
+/**
+ * @swagger
+ * /auth/users:
+ *   get:
+ *     summary: Retrieve all users
+ *     description: Fetch all users from the database. Only accessible by admin users.
+ *     tags: [Admin - Private Endpoints]
+ *     responses:
+ *       '200':
+ *         description: A list of users
+ *     security:
+ *       - bearerAuth: []  # Apply bearerAuth security scheme
+ */
+router.get('/', AuthMiddleware_1.authenticateToken, (0, AuthMiddleware_1.authorizeRoles)('admin'), UserController_1.default.getAll);
 /**
  * @swagger
  * /auth/users/register:
@@ -169,6 +169,87 @@ router.post('/register', UserController_1.default.register);
  *       - bearerAuth: []  # Apply bearerAuth security scheme
  */
 router.delete('/:id', AuthMiddleware_1.authenticateToken, UserController_1.default.delete);
+/**
+ * @swagger
+ * /auth/users/{id}:
+ *   put:
+ *     summary: Update user by ID
+ *     description: Update user information by user ID. Optionally, update the password, which will be securely hashed.
+ *     tags: [Admin - Private Endpoints]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: The ID of the user to update
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 description: The user's name
+ *               email:
+ *                 type: string
+ *                 description: The user's email
+ *               password:
+ *                 type: string
+ *                 description: The user's new password (will be hashed)
+ *               role:
+ *                 type: string
+ *                 enum: [admin, institution, researcher, explorer]
+ *                 description: The user's role
+ *     responses:
+ *       200:
+ *         description: Successfully updated the user
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: User updated successfully
+ *                 data:
+ *                   $ref: '#/components/schemas/User'
+ *       400:
+ *         description: Invalid user ID or bad request
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Invalid user ID
+ *       404:
+ *         description: User not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: User not found
+ *       500:
+ *         description: Server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Server error
+ *                 error:
+ *                   type: string
+ */
+router.put('/:id', AuthMiddleware_1.authenticateToken, UserController_1.default.update);
 /**
  * @swagger
  * /auth/users/profile/{id}:

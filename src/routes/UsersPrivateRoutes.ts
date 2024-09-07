@@ -5,20 +5,6 @@ import { authenticateToken, authorizeRoles } from '../middlewares/AuthMiddleware
 // import { isAdmin } from '../middlewares/AuthMiddleware'; // Middleware to check if user is admin
 
 const router = Router();
-/**
- * @swagger
- * /auth/users:
- *   get:
- *     summary: Retrieve all users
- *     description: Fetch all users from the database. Only accessible by admin users.
- *     tags: [Admin - Private Endpoints]
- *     responses:
- *       '200':
- *         description: A list of users
- *     security:
- *       - bearerAuth: []  # Apply bearerAuth security scheme
- */
-router.get('/', authenticateToken, authorizeRoles('admin'), UserController.getAll);
 
 /**
  * @swagger
@@ -42,6 +28,22 @@ router.get('/', authenticateToken, authorizeRoles('admin'), UserController.getAl
  *       - bearerAuth: []  # Apply bearerAuth security scheme
  */
 router.get('/:id', authenticateToken, UserController.getById);
+
+/**
+ * @swagger
+ * /auth/users:
+ *   get:
+ *     summary: Retrieve all users
+ *     description: Fetch all users from the database. Only accessible by admin users.
+ *     tags: [Admin - Private Endpoints]
+ *     responses:
+ *       '200':
+ *         description: A list of users
+ *     security:
+ *       - bearerAuth: []  # Apply bearerAuth security scheme
+ */
+router.get('/', authenticateToken, authorizeRoles('admin'), UserController.getAll);
+
 
 /**
  * @swagger
@@ -110,7 +112,6 @@ router.get('/:id', authenticateToken, UserController.getById);
 // router.post('/register', authenticateToken, authorizeRoles('admin'), UserController.register);
 router.post('/register',  UserController.register);
 
-
 /**
  * @swagger
  * /auth/users/{id}:
@@ -133,6 +134,89 @@ router.post('/register',  UserController.register);
  *       - bearerAuth: []  # Apply bearerAuth security scheme
  */
 router.delete('/:id', authenticateToken, UserController.delete);
+
+/**
+ * @swagger
+ * /auth/users/{id}:
+ *   put:
+ *     summary: Update user by ID
+ *     description: Update user information by user ID. Optionally, update the password, which will be securely hashed.
+ *     tags: [Admin - Private Endpoints]
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: The ID of the user to update
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 description: The user's name
+ *               email:
+ *                 type: string
+ *                 description: The user's email
+ *               password:
+ *                 type: string
+ *                 description: The user's new password (will be hashed)
+ *               role:
+ *                 type: string
+ *                 enum: [admin, institution, researcher, explorer]
+ *                 description: The user's role
+ *     responses:
+ *       200:
+ *         description: Successfully updated the user
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: User updated successfully
+ *                 data:
+ *                   $ref: '#/components/schemas/User'
+ *       400:
+ *         description: Invalid user ID or bad request
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Invalid user ID
+ *       404:
+ *         description: User not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: User not found
+ *       500:
+ *         description: Server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Server error
+ *                 error:
+ *                   type: string
+ */
+router.put('/:id',  authenticateToken, UserController.update);
+
 /**
  * @swagger
  * /auth/users/profile/{id}:
@@ -304,7 +388,6 @@ router.put('/profile/:id',  authenticateToken, multer.single('profilePicture'), 
  *                   example: Internal Server Error
  */
 router.patch('/users/:id/role',  authenticateToken, authorizeRoles('admin'), UserController.changeUserRole);
-
 
 
 export default router;

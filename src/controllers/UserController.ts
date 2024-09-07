@@ -332,8 +332,6 @@ class UserController {
     }
   }
 
- 
-
   async verifyTwoFactorCode(req: Request, res: Response) {
     try {
       const { email, twoFactorCode } = req.body;
@@ -538,23 +536,54 @@ class UserController {
     }
   }
 
-  // Create new user
- 
+  // Update user
 
   
+  // async update(req: Request, res: Response): Promise<Response> {
+  //   try {
+  //     const userId = parseInt(req.params.id, 10);
+  //     const userData = req.body;
+  //     const updatedUser = await userService.update(userId, userData);
 
-  // Update user
+  //     if (!updatedUser) {
+  //       return res.status(404).json({ message: 'User not found' });
+  //     }
+
+  //     return res.status(200).json(updatedUser);
+  //   } catch (error) {
+  //     console.error('Error updating user:', error);
+  //     return res.status(500).json({ message: 'Server error', error: error.message });
+  //   }
+  // }
+
   async update(req: Request, res: Response): Promise<Response> {
     try {
       const userId = parseInt(req.params.id, 10);
-      const userData = req.body;
+      
+      // Validate userId
+      if (isNaN(userId)) {
+        return res.status(400).json({ message: 'Invalid user ID' });
+      }
+  
+      const userData = { ...req.body };
+  
+      // Handle password updates securely by hashing
+      if (userData.password) {
+        const salt = await bcrypt.genSalt(10);
+        userData.password = await bcrypt.hash(userData.password, salt);
+      }
+  
       const updatedUser = await userService.update(userId, userData);
-
+  
+      // Check if user exists
       if (!updatedUser) {
         return res.status(404).json({ message: 'User not found' });
       }
-
-      return res.status(200).json(updatedUser);
+  
+      return res.status(200).json({
+        message: 'User updated successfully',
+        data: updatedUser,
+      });
     } catch (error) {
       console.error('Error updating user:', error);
       return res.status(500).json({ message: 'Server error', error: error.message });
