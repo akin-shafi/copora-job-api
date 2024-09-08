@@ -161,3 +161,14 @@
 2024-09-07T12:05:22.398Z [[32minfo[39m]: HTTP GET /api-docs/swagger-ui-bundle.js
 2024-09-07T12:05:22.550Z [[32minfo[39m]: HTTP GET /api-docs/swagger-ui-standalone-preset.js
 2024-09-07T12:05:23.696Z [[32minfo[39m]: HTTP GET /api-docs/favicon-32x32.png
+2024-09-07T17:44:26.175Z [[32minfo[39m]: HTTP GET /api-docs/swagger-ui-init.js
+2024-09-07T17:44:26.217Z [[32minfo[39m]: HTTP GET /api-docs/swagger-ui-bundle.js
+2024-09-07T17:44:26.220Z [[32minfo[39m]: HTTP GET /api-docs/swagger-ui.css
+2024-09-07T17:44:26.224Z [[32minfo[39m]: HTTP GET /api-docs/swagger-ui-standalone-preset.js
+2024-09-07T17:44:29.048Z [[32minfo[39m]: HTTP GET /api-docs/swagger-ui-init.js
+2024-09-07T17:44:29.053Z [[32minfo[39m]: HTTP GET /api-docs/swagger-ui-standalone-preset.js
+2024-09-07T17:44:29.056Z [[32minfo[39m]: HTTP GET /api-docs/swagger-ui-bundle.js
+2024-09-08T00:45:27.737Z [[32minfo[39m]: HTTP GET /api-docs/swagger-ui-init.js
+2024-09-08T00:45:27.805Z [[32minfo[39m]: HTTP GET /api-docs/swagger-ui-standalone-preset.js
+2024-09-08T00:45:27.823Z [[32minfo[39m]: HTTP GET /api-docs/swagger-ui-bundle.js
+2024-09-08T00:45:27.901Z [[32minfo[39m]: HTTP GET /api-docs/swagger-ui.css
