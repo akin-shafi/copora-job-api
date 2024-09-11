@@ -19,18 +19,63 @@ var generalInfoController = new GeneralInfoController_1.GeneralInfoController();
  *           schema:
  *             type: object
  *             properties:
- *               field1:
+ *               applicationNo:
  *                 type: string
- *                 description: Description of field1
- *               field2:
+ *                 description: The application number, must be unique.
+ *               plateWaiting:
+ *                 type: boolean
+ *                 description: Whether plate waiting experience is present.
+ *               retailCashier:
+ *                 type: boolean
+ *                 description: Whether retail cashier experience is present.
+ *               barWork:
+ *                 type: boolean
+ *                 description: Whether bar work experience is present.
+ *               hospitality:
+ *                 type: boolean
+ *                 description: Whether hospitality experience is present.
+ *               foodService:
+ *                 type: boolean
+ *                 description: Whether food service experience is present.
+ *               barista:
+ *                 type: boolean
+ *                 description: Whether barista experience is present.
+ *               supervising:
+ *                 type: boolean
+ *                 description: Whether supervising experience is present.
+ *               level2FoodHygieneCertificate:
  *                 type: string
- *                 description: Description of field2
- *               field3:
- *                 type: number
- *                 description: Description of field3
+ *                 description: The level 2 food hygiene certificate.
+ *               level2FoodHygieneCertificateUpload:
+ *                 type: string
+ *                 description: The upload URL for the level 2 food hygiene certificate.
+ *               personalLicenseHolder:
+ *                 type: boolean
+ *                 description: Whether the applicant is a personal license holder.
+ *               personalLicenseCertificateUpload:
+ *                 type: string
+ *                 description: The upload URL for the personal license certificate.
+ *               dbsDisclosureAndBarringService:
+ *                 type: boolean
+ *                 description: Whether DBS (Disclosure and Barring Service) is passed.
+ *               dbsCertificateUpload:
+ *                 type: string
+ *                 description: The upload URL for the DBS certificate.
  *             required:
- *               - field1
- *               - field2
+ *               - applicationNo
+ *               - plateWaiting
+ *               - retailCashier
+ *               - barWork
+ *               - hospitality
+ *               - foodService
+ *               - barista
+ *               - supervising
+ *               - level2FoodHygieneCertificate
+ *               - level2FoodHygieneCertificateUpload
+ *               - personalLicenseHolder
+ *               - personalLicenseCertificateUpload
+ *               - dbsDisclosureAndBarringService
+ *               - dbsCertificateUpload
  *     responses:
  *       201:
  *         description: Successfully created the General Info entry
@@ -41,16 +86,49 @@ var generalInfoController = new GeneralInfoController_1.GeneralInfoController();
  *               properties:
  *                 id:
  *                   type: integer
- *                   description: The auto-generated id of the created General Info
- *                 field1:
+ *                   description: The auto-generated id of the created General Info entry.
+ *                 applicationNo:
  *                   type: string
- *                   description: The value of field1
- *                 field2:
+ *                   description: The application number.
+ *                 plateWaiting:
+ *                   type: boolean
+ *                   description: Whether plate waiting experience is present.
+ *                 retailCashier:
+ *                   type: boolean
+ *                   description: Whether retail cashier experience is present.
+ *                 barWork:
+ *                   type: boolean
+ *                   description: Whether bar work experience is present.
+ *                 hospitality:
+ *                   type: boolean
+ *                   description: Whether hospitality experience is present.
+ *                 foodService:
+ *                   type: boolean
+ *                   description: Whether food service experience is present.
+ *                 barista:
+ *                   type: boolean
+ *                   description: Whether barista experience is present.
+ *                 supervising:
+ *                   type: boolean
+ *                   description: Whether supervising experience is present.
+ *                 level2FoodHygieneCertificate:
  *                   type: string
- *                   description: The value of field2
- *                 field3:
- *                   type: number
- *                   description: The value of field3
+ *                   description: The level 2 food hygiene certificate.
+ *                 level2FoodHygieneCertificateUpload:
+ *                   type: string
+ *                   description: The upload URL for the level 2 food hygiene certificate.
+ *                 personalLicenseHolder:
+ *                   type: boolean
+ *                   description: Whether the applicant is a personal license holder.
+ *                 personalLicenseCertificateUpload:
+ *                   type: string
+ *                   description: The upload URL for the personal license certificate.
+ *                 dbsDisclosureAndBarringService:
+ *                   type: boolean
+ *                   description: Whether DBS (Disclosure and Barring Service) is passed.
+ *                 dbsCertificateUpload:
+ *                   type: string
+ *                   description: The upload URL for the DBS certificate.
  *       400:
  *         description: Bad request, required fields are missing or invalid
  *       500:
