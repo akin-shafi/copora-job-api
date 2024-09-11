@@ -49,6 +49,7 @@ class UserController {
       });
 
       const { access_token } = tokenResponse.data;
+      
 
       // Fetch LinkedIn user data
       const profileResponse = await axios.get('https://api.linkedin.com/v2/me', {
