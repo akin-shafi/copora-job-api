@@ -49,7 +49,7 @@ class UserController {
       });
 
       const { access_token } = tokenResponse.data;
-      
+
 
       // Fetch LinkedIn user data
       const profileResponse = await axios.get('https://api.linkedin.com/v2/me', {
@@ -126,7 +126,8 @@ class UserController {
       // Send relevant email based on creator
       await this.sendRelevantEmail(createdBy, { email: normalizedEmail, firstName, password, role, verificationToken });
 
-      return res.status(201).json({
+      return res.status(200).json({ 
+        statusCode: 200,
         message: `${role} registered successfully and an email has been sent.`
       });
 

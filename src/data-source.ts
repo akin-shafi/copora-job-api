@@ -8,6 +8,9 @@ dotenv.config();
 import { User } from './entities/UserEntity';
 import { Application } from './entities/ApplicationEntity';
 import { PersonalDetails } from './entities/PersonalDetailsEntity';
+import { GeneralInfo } from './entities/GeneralInfoEntity';
+import { NextOfKin } from './entities/NextOfKinEntity';
+
 import { ContactDetails } from './entities/ContactDetailsEntity';
 import { ProfessionalDetails } from './entities/ProfessionalDetailsEntity';
 import { EducationalDetails } from './entities/EducationalDetailsEntity';
@@ -28,7 +31,9 @@ export const AppDataSource = new DataSource({
     User,
     Application,
     PersonalDetails,
+    GeneralInfo,
     ContactDetails,
+    NextOfKin,
     ProfessionalDetails,
     EducationalDetails,
     HealthAndDisability,
@@ -37,13 +42,13 @@ export const AppDataSource = new DataSource({
     AgreementConsent,
     Reference
   ],
-  synchronize: false, // Set to false in production
+  synchronize: false, // Set to true in production
   logging: false,
   migrations: [],
   subscribers: [],
-  ssl: {
-    rejectUnauthorized: false, // This is necessary if you don't have the SSL certificate; set to true if you have it.
-  },
+  // ssl: {
+  //   rejectUnauthorized: false, // This is necessary if you don't have the SSL certificate; set to true if you have it.
+  // },
 });
 
 AppDataSource.initialize()

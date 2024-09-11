@@ -25,7 +25,7 @@ export class User {
   @Column()
   profilePicture: string;
 
-  @Column()
+  @Column({default: 0})
   onboardingStep: string;
 
   @Column({

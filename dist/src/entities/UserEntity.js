@@ -44,7 +44,7 @@ var User = /** @class */ (function () {
         __metadata("design:type", String)
     ], User.prototype, "profilePicture", void 0);
     __decorate([
-        (0, typeorm_1.Column)(),
+        (0, typeorm_1.Column)({ default: 0 }),
         __metadata("design:type", String)
     ], User.prototype, "onboardingStep", void 0);
     __decorate([

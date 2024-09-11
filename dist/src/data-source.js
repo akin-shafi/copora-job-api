@@ -12,6 +12,8 @@ dotenv_1.default.config();
 var UserEntity_1 = require("./entities/UserEntity");
 var ApplicationEntity_1 = require("./entities/ApplicationEntity");
 var PersonalDetailsEntity_1 = require("./entities/PersonalDetailsEntity");
+var GeneralInfoEntity_1 = require("./entities/GeneralInfoEntity");
+var NextOfKinEntity_1 = require("./entities/NextOfKinEntity");
 var ContactDetailsEntity_1 = require("./entities/ContactDetailsEntity");
 var ProfessionalDetailsEntity_1 = require("./entities/ProfessionalDetailsEntity");
 var EducationalDetailsEntity_1 = require("./entities/EducationalDetailsEntity");
@@ -31,7 +33,9 @@ exports.AppDataSource = new typeorm_1.DataSource({
         UserEntity_1.User,
         ApplicationEntity_1.Application,
         PersonalDetailsEntity_1.PersonalDetails,
+        GeneralInfoEntity_1.GeneralInfo,
         ContactDetailsEntity_1.ContactDetails,
+        NextOfKinEntity_1.NextOfKin,
         ProfessionalDetailsEntity_1.ProfessionalDetails,
         EducationalDetailsEntity_1.EducationalDetails,
         HealthAndDisabilityEntity_1.HealthAndDisability,
@@ -40,13 +44,13 @@ exports.AppDataSource = new typeorm_1.DataSource({
         AgreementConsentEntity_1.AgreementConsent,
         ReferenceEntity_1.Reference
     ],
-    synchronize: false, // Set to false in production
+    synchronize: false, // Set to true in production
     logging: false,
     migrations: [],
     subscribers: [],
-    ssl: {
-        rejectUnauthorized: false, // This is necessary if you don't have the SSL certificate; set to true if you have it.
-    },
+    // ssl: {
+    //   rejectUnauthorized: false, // This is necessary if you don't have the SSL certificate; set to true if you have it.
+    // },
 });
 exports.AppDataSource.initialize()
     .then(function () {

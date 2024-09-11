@@ -175,7 +175,8 @@ var UserController = /** @class */ (function () {
                     case 6:
                         // Send relevant email based on creator
                         _b.sent();
-                        return [2 /*return*/, res.status(201).json({
+                        return [2 /*return*/, res.status(200).json({
+                                statusCode: 200,
                                 message: "".concat(role, " registered successfully and an email has been sent.")
                             })];
                     case 7:
