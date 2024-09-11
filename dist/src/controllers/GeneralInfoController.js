@@ -39,22 +39,40 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.GeneralInfoController = void 0;
 var data_source_1 = require("../data-source");
 var GeneralInfoEntity_1 = require("../entities/GeneralInfoEntity");
+var GeneralInfoService_1 = require("../services/GeneralInfoService");
+var UserService_1 = require("../services/UserService");
 var GeneralInfoController = /** @class */ (function () {
     function GeneralInfoController() {
         this.generalInfoRepository = data_source_1.AppDataSource.getRepository(GeneralInfoEntity_1.GeneralInfo);
     }
     GeneralInfoController.prototype.create = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            var generalInfo;
+            var applicationNo, existingApplicant, existingEntry, updatedEntry, generalInfo;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        generalInfo = this.generalInfoRepository.create(req.body);
-                        return [4 /*yield*/, this.generalInfoRepository.save(generalInfo)];
+                        applicationNo = req.body.applicationNo;
+                        return [4 /*yield*/, UserService_1.UserService.findApplicationNo(applicationNo)];
                     case 1:
-                        _a.sent();
-                        res.status(201).send(generalInfo);
-                        return [2 /*return*/];
+                        existingApplicant = _a.sent();
+                        if (!existingApplicant) {
+                            res.status(400).json({ statusCode: 400, message: 'Applicant does not exist' });
+                            return [2 /*return*/]; // Ensure to return here to avoid further execution
+                        }
+                        return [4 /*yield*/, GeneralInfoService_1.GeneralInfoService.getByApplicationNo(applicationNo)];
+                    case 2:
+                        existingEntry = _a.sent();
+                        if (!existingEntry) return [3 /*break*/, 4];
+                        return [4 /*yield*/, GeneralInfoService_1.GeneralInfoService.updateByApplicationNo(applicationNo, req.body)];
+                    case 3:
+                        updatedEntry = _a.sent();
+                        res.status(200).json({ message: 'General Info updated', data: updatedEntry });
+                        return [3 /*break*/, 5];
+                    case 4:
+                        generalInfo = this.generalInfoRepository.create(req.body);
+                        res.status(201).json({ message: 'General Info created', data: generalInfo });
+                        _a.label = 5;
+                    case 5: return [2 /*return*/];
                 }
             });
         });

@@ -139,7 +139,6 @@ export class UserService {
     }
   }
 
-
   // Get all users
   async getAll(): Promise<User[]> {
     return userRepository.find();
@@ -234,63 +233,63 @@ export class UserService {
         console.error('Error generating or sending two-factor token:', error);
         throw new Error('Could not generate or send two-factor token');
     }
-}
-
-async verifyTwoFactorCode(email: string, twoFactorCode: string): Promise<string> {
-  try {
-      const hashedCode = crypto.createHash('sha256').update(twoFactorCode).digest('hex');
-
-      const user = await userRepository.findOne({
-          where: {
-              email,
-              twoFactorToken: hashedCode,
-              twoFactorExpires: MoreThan(new Date())
-          }
-      });
-
-      if (!user) {
-          // Check if the token has expired or if the user doesn't exist
-          const expiredUser = await userRepository.findOne({
-              where: {
-                  email,
-                  twoFactorExpires: LessThan(new Date())
-              }
-          });
-
-          if (expiredUser) {
-              return 'The two-factor code has expired. Please request a new one.';
-          }
-
-          return 'Invalid email or two-factor code.';
-      }
-
-      // Clear the two-factor token and expiry date after successful verification
-      user.twoFactorToken = null;
-      user.twoFactorExpires = null;
-      user.twoFactorEnabled = false;
-      await this.updateData(user);
-
-      return 'Two-factor verification successful.';
-  } catch (error) {
-      console.error('Error verifying two-factor code:', error);
-      throw new Error('Error verifying two-factor code');
   }
-}
 
-async updateData(user: User): Promise<User> {
-  try {
-    return await userRepository.save(user);
-  } catch (error) {
-    console.error('Error updating user:', error);
-    throw new Error('Could not update user');
+  async verifyTwoFactorCode(email: string, twoFactorCode: string): Promise<string> {
+    try {
+        const hashedCode = crypto.createHash('sha256').update(twoFactorCode).digest('hex');
+
+        const user = await userRepository.findOne({
+            where: {
+                email,
+                twoFactorToken: hashedCode,
+                twoFactorExpires: MoreThan(new Date())
+            }
+        });
+
+        if (!user) {
+            // Check if the token has expired or if the user doesn't exist
+            const expiredUser = await userRepository.findOne({
+                where: {
+                    email,
+                    twoFactorExpires: LessThan(new Date())
+                }
+            });
+
+            if (expiredUser) {
+                return 'The two-factor code has expired. Please request a new one.';
+            }
+
+            return 'Invalid email or two-factor code.';
+        }
+
+        // Clear the two-factor token and expiry date after successful verification
+        user.twoFactorToken = null;
+        user.twoFactorExpires = null;
+        user.twoFactorEnabled = false;
+        await this.updateData(user);
+
+        return 'Two-factor verification successful.';
+    } catch (error) {
+        console.error('Error verifying two-factor code:', error);
+        throw new Error('Error verifying two-factor code');
+    }
   }
-}
 
-async findUsersWithIncompleteOnboarding(): Promise<User[]> {
-  return userRepository.createQueryBuilder('user')
-      .where('user.onboardingStep < :step', { step: 5 })
-      .andWhere('user.role = :role', { role: 'applicant' })
-      .getMany();
+  async updateData(user: User): Promise<User> {
+    try {
+      return await userRepository.save(user);
+    } catch (error) {
+      console.error('Error updating user:', error);
+      throw new Error('Could not update user');
+    }
+  }
+
+  async findUsersWithIncompleteOnboarding(): Promise<User[]> {
+    return userRepository.createQueryBuilder('user')
+        .where('user.onboardingStep < :step', { step: 5 })
+        .andWhere('user.role = :role', { role: 'applicant' })
+        .getMany();
   }
 }
 

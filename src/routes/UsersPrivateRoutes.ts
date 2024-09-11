@@ -1,6 +1,8 @@
 import { Router } from 'express';
 import UserController from '../controllers/UserController';
-import multer from '../multerConfig'; // Import multer configuration
+// import multer from '../multerConfig'; // Import multer configuration
+import uploadDocumentsAndImages  from '../multerConfig'; // Import multer configuration
+
 import { authenticateToken, authorizeRoles } from '../middlewares/AuthMiddleware'; // Import the authentication middleware
 // import { isAdmin } from '../middlewares/AuthMiddleware'; // Middleware to check if user is admin
 
@@ -289,7 +291,7 @@ router.put('/:id',  authenticateToken, UserController.update);
  *     security:
  *       - bearerAuth: []  # Apply bearerAuth security scheme
  */
-router.put('/profile/:id',  authenticateToken, multer.single('profilePicture'), async (req, res) => {
+router.put('/profile/:id',  authenticateToken, uploadDocumentsAndImages.single('profilePicture'), async (req, res) => {
     try {
         if (req.file) {
         console.log('Uploaded file:', req.file);

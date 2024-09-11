@@ -3,32 +3,31 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-// multerConfig.ts
 var multer_1 = __importDefault(require("multer"));
-var path_1 = __importDefault(require("path"));
-// Multer configuration
-var storage = multer_1.default.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, "./uploads/"); // Destination folder for uploaded files
-    },
-    filename: function (req, file, cb) {
-        // Generate a unique filename for uploaded files
-        cb(null, Date.now() + path_1.default.extname(file.originalname));
-    },
-});
-// Function to filter file uploads (if needed)
-var fileFilter = function (req, file, cb) {
-    // Accept only specific file types
-    if (file.mimetype === "image/jpeg" || file.mimetype === "image/png") {
-        cb(null, true); // Accept the file
-    }
-    else {
-        cb(new Error("Unsupported file type"), false); // Reject the file
-    }
+// Define storage configuration (update as needed)
+var storage = multer_1.default.memoryStorage();
+// Helper function to create a dynamic file filter for multiple MIME types
+var dynamicFileFilter = function (allowedMimeTypes) {
+    return function (req, file, cb) {
+        if (allowedMimeTypes.includes(file.mimetype)) {
+            cb(null, true); // Accept the file
+        }
+        else {
+            cb(new Error('Invalid file type. Only specific document and image files are allowed.'), false); // Reject the file
+        }
+    };
 };
-// Export multer instance with configured settings
-var upload = (0, multer_1.default)({
+// Allowed MIME types for documents and images
+var allowedFileTypes = [
+    "application/pdf", // PDF
+    "application/vnd.openxmlformats-officedocument.wordprocessingml.document", // DOCX
+    "application/msword", // DOC
+    "image/jpeg", // JPEG images
+    "image/png" // PNG images
+];
+// Multer upload configuration for both documents and images
+var uploadDocumentsAndImages = (0, multer_1.default)({
     storage: storage,
-    fileFilter: fileFilter,
+    fileFilter: dynamicFileFilter(allowedFileTypes), // Allow specific document and image types
 });
-exports.default = upload;
+exports.default = uploadDocumentsAndImages;

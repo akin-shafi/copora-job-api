@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import UserController from '../controllers/UserController';
-import multer from '../multerConfig'; // Import multer configuration
+// import multer from '../multerConfig'; // Import multer configuration
+import uploadDocumentsAndImages from '../multerConfig'; // Import multer configuration
 
 const router = Router();
 
@@ -108,7 +109,7 @@ const router = Router();
  *       '500':
  *         description: Server error.
  */
-  router.post('/register', multer.single('profilePicture'), async (req, res) => {
+  router.post('/register', uploadDocumentsAndImages.single('profilePicture'), async (req, res) => {
     try {
       // Call UserController method for registration
       await UserController.register(req, res);
@@ -469,7 +470,40 @@ const router = Router();
   router.patch('/update-onboarding-step', UserController.updateOnboardingStep);
 
 
+  /**
+   * @swagger
+   * /users/auth/linkedin/callback:
+   *   get:
+   *     summary: LinkedIn OAuth callback
+   *     tags: [Authentication]
+   *     parameters:
+   *       - name: code
+   *         in: query
+   *         required: true
+   *         schema:
+   *           type: string
+   *     responses:
+   *       200:
+   *         description: LinkedIn user data
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: object
+   *               properties:
+   *                 name:
+   *                   type: string
+   *                   description: Full name of the user
+   *                 email:
+   *                   type: string
+   *                   description: User email address
+   *       500:
+   *         description: Server error
+   * 
+   */
+  router.get('/auth/linkedin/callback', UserController.linkedinCallback);
 
+
+  
 
 export default router;
 

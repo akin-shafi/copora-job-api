@@ -41,6 +41,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var express_1 = require("express");
 var UserController_1 = __importDefault(require("../controllers/UserController"));
+// import multer from '../multerConfig'; // Import multer configuration
 var multerConfig_1 = __importDefault(require("../multerConfig")); // Import multer configuration
 var AuthMiddleware_1 = require("../middlewares/AuthMiddleware"); // Import the authentication middleware
 // import { isAdmin } from '../middlewares/AuthMiddleware'; // Middleware to check if user is admin

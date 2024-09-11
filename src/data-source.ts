@@ -41,9 +41,9 @@ export const AppDataSource = new DataSource({
   logging: false,
   migrations: [],
   subscribers: [],
-  ssl: {
-    rejectUnauthorized: false, // This is necessary if you don't have the SSL certificate; set to true if you have it.
-  },
+  // ssl: {
+  //   rejectUnauthorized: false, // This is necessary if you don't have the SSL certificate; set to true if you have it.
+  // },
 });
 
 AppDataSource.initialize()

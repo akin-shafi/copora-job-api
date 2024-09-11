@@ -41,6 +41,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var express_1 = require("express");
 var UserController_1 = __importDefault(require("../controllers/UserController"));
+// import multer from '../multerConfig'; // Import multer configuration
 var multerConfig_1 = __importDefault(require("../multerConfig")); // Import multer configuration
 var router = (0, express_1.Router)();
 /**
@@ -509,4 +510,35 @@ router.post('/verify-two-factor', UserController_1.default.verifyTwoFactorCode);
  *                   example: "Server error"
  */
 router.patch('/update-onboarding-step', UserController_1.default.updateOnboardingStep);
+/**
+ * @swagger
+ * /users/auth/linkedin/callback:
+ *   get:
+ *     summary: LinkedIn OAuth callback
+ *     tags: [Authentication]
+ *     parameters:
+ *       - name: code
+ *         in: query
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: LinkedIn user data
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 name:
+ *                   type: string
+ *                   description: Full name of the user
+ *                 email:
+ *                   type: string
+ *                   description: User email address
+ *       500:
+ *         description: Server error
+ *
+ */
+router.get('/auth/linkedin/callback', UserController_1.default.linkedinCallback);
 exports.default = router;

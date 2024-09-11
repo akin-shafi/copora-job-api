@@ -60,6 +60,7 @@ var cloudinary_1 = require("cloudinary");
 var emailActions_1 = require("../lib/emailActions");
 var uuid_1 = require("uuid"); // For generating verification tokens
 var config_1 = require("../config");
+var axios_1 = __importDefault(require("axios")); // Add axios for HTTP requests
 var userService = new UserService_1.UserService();
 // Configure Cloudinary
 cloudinary_1.v2.config({
@@ -71,9 +72,60 @@ var UserController = /** @class */ (function () {
     function UserController() {
         this.register = this.register.bind(this);
     }
+    UserController.prototype.linkedinCallback = function (req, res) {
+        return __awaiter(this, void 0, void 0, function () {
+            var authorizationCode, tokenResponse, access_token, profileResponse, emailResponse, profileData, email, error_1;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        authorizationCode = req.query.code;
+                        if (!authorizationCode) {
+                            return [2 /*return*/, res.status(400).json({ message: 'Authorization code is missing' })];
+                        }
+                        _a.label = 1;
+                    case 1:
+                        _a.trys.push([1, 5, , 6]);
+                        return [4 /*yield*/, axios_1.default.post('https://www.linkedin.com/oauth/v2/accessToken', null, {
+                                params: {
+                                    grant_type: 'authorization_code',
+                                    code: authorizationCode,
+                                    redirect_uri: process.env.LINKEDIN_REDIRECT_URI,
+                                    client_id: process.env.LINKEDIN_CLIENT_ID,
+                                    client_secret: process.env.LINKEDIN_CLIENT_SECRET
+                                }
+                            })];
+                    case 2:
+                        tokenResponse = _a.sent();
+                        access_token = tokenResponse.data.access_token;
+                        return [4 /*yield*/, axios_1.default.get('https://api.linkedin.com/v2/me', {
+                                headers: { Authorization: "Bearer ".concat(access_token) }
+                            })];
+                    case 3:
+                        profileResponse = _a.sent();
+                        return [4 /*yield*/, axios_1.default.get('https://api.linkedin.com/v2/emailAddress?q=members&projection=(elements*(handle~))', {
+                                headers: { Authorization: "Bearer ".concat(access_token) }
+                            })];
+                    case 4:
+                        emailResponse = _a.sent();
+                        profileData = profileResponse.data;
+                        email = emailResponse.data.elements[0]['handle~'].emailAddress;
+                        // Return LinkedIn user data
+                        return [2 /*return*/, res.json({
+                                name: "".concat(profileData.firstName.localized.en_US, " ").concat(profileData.lastName.localized.en_US),
+                                email: email
+                            })];
+                    case 5:
+                        error_1 = _a.sent();
+                        console.error('Error fetching LinkedIn data:', error_1);
+                        return [2 /*return*/, res.status(500).json({ message: 'Server error', error: error_1.message })];
+                    case 6: return [2 /*return*/];
+                }
+            });
+        });
+    };
     UserController.prototype.register = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            var _a, firstName, middleName, lastName, email, password, role, accountStatus, createdBy, normalizedEmail, existingUser, applicationNo, profilePictureUrl, hashedPassword, verificationToken, newUser, error_1;
+            var _a, firstName, middleName, lastName, email, password, role, accountStatus, createdBy, normalizedEmail, existingUser, applicationNo, profilePictureUrl, hashedPassword, verificationToken, newUser, error_2;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
@@ -127,10 +179,10 @@ var UserController = /** @class */ (function () {
                                 message: "".concat(role, " registered successfully and an email has been sent.")
                             })];
                     case 7:
-                        error_1 = _b.sent();
-                        console.error('Error during registration:', error_1);
+                        error_2 = _b.sent();
+                        console.error('Error during registration:', error_2);
                         return [2 /*return*/, !res.headersSent
-                                ? res.status(500).json({ message: 'Server error', error: error_1.message })
+                                ? res.status(500).json({ message: 'Server error', error: error_2.message })
                                 : undefined];
                     case 8: return [2 /*return*/];
                 }
@@ -205,7 +257,7 @@ var UserController = /** @class */ (function () {
     };
     UserController.prototype.forgetPassword = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            var email, normalizedEmail, user, resetToken, hashedToken, error_2;
+            var email, normalizedEmail, user, resetToken, hashedToken, error_3;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -243,12 +295,12 @@ var UserController = /** @class */ (function () {
                         });
                         return [3 /*break*/, 5];
                     case 4:
-                        error_2 = _a.sent();
-                        console.error('Error during forget-password:', error_2);
+                        error_3 = _a.sent();
+                        console.error('Error during forget-password:', error_3);
                         res.status(500).json({
                             statusCode: 500,
                             message: 'Server error',
-                            error: error_2.message
+                            error: error_3.message
                         });
                         return [3 /*break*/, 5];
                     case 5: return [2 /*return*/];
@@ -258,7 +310,7 @@ var UserController = /** @class */ (function () {
     };
     UserController.prototype.resetPassword = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            var _a, token, newPassword, hashedToken, user, hashedPassword, error_3;
+            var _a, token, newPassword, hashedToken, user, hashedPassword, error_4;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
@@ -288,9 +340,9 @@ var UserController = /** @class */ (function () {
                         res.status(200).json({ statusCode: 200, message: 'Password has been reset successfully' });
                         return [3 /*break*/, 5];
                     case 4:
-                        error_3 = _b.sent();
-                        console.error('Error during reset-password:', error_3);
-                        res.status(500).json({ message: 'Server error', error: error_3.message });
+                        error_4 = _b.sent();
+                        console.error('Error during reset-password:', error_4);
+                        res.status(500).json({ message: 'Server error', error: error_4.message });
                         return [3 /*break*/, 5];
                     case 5: return [2 /*return*/];
                 }
@@ -299,7 +351,7 @@ var UserController = /** @class */ (function () {
     };
     UserController.prototype.toggleTwoFactor = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            var userId, user, twoFactorToken, hashedToken, error_4;
+            var userId, user, twoFactorToken, hashedToken, error_5;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -340,9 +392,9 @@ var UserController = /** @class */ (function () {
                         _a.label = 6;
                     case 6: return [3 /*break*/, 8];
                     case 7:
-                        error_4 = _a.sent();
-                        console.error('Error toggling two-factor authentication:', error_4);
-                        res.status(500).json({ message: 'Server error', error: error_4.message });
+                        error_5 = _a.sent();
+                        console.error('Error toggling two-factor authentication:', error_5);
+                        res.status(500).json({ message: 'Server error', error: error_5.message });
                         return [3 /*break*/, 8];
                     case 8: return [2 /*return*/];
                 }
@@ -351,7 +403,7 @@ var UserController = /** @class */ (function () {
     };
     UserController.prototype.generateTwoFactorToken = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            var _a, email, loginType, user, userId, error_5;
+            var _a, email, loginType, user, userId, error_6;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
@@ -376,9 +428,9 @@ var UserController = /** @class */ (function () {
                         res.status(200).json({ message: 'Two-factor authentication token sent' });
                         return [3 /*break*/, 4];
                     case 3:
-                        error_5 = _b.sent();
-                        console.error('Error generating two-factor token:', error_5);
-                        res.status(500).json({ message: 'Server error', error: error_5.message });
+                        error_6 = _b.sent();
+                        console.error('Error generating two-factor token:', error_6);
+                        res.status(500).json({ message: 'Server error', error: error_6.message });
                         return [3 /*break*/, 4];
                     case 4: return [2 /*return*/];
                 }
@@ -387,7 +439,7 @@ var UserController = /** @class */ (function () {
     };
     UserController.prototype.login = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            var secret, userRepository, _a, email, password, user, isValidPassword, loginType, token, error_6;
+            var secret, userRepository, _a, email, password, user, isValidPassword, loginType, token, error_7;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
@@ -447,9 +499,9 @@ var UserController = /** @class */ (function () {
                         });
                         return [3 /*break*/, 6];
                     case 5:
-                        error_6 = _b.sent();
-                        console.error('Error during login:', error_6);
-                        res.status(500).json({ statusCode: 500, message: 'Server error', error: error_6.message });
+                        error_7 = _b.sent();
+                        console.error('Error during login:', error_7);
+                        res.status(500).json({ statusCode: 500, message: 'Server error', error: error_7.message });
                         return [3 /*break*/, 6];
                     case 6: return [2 /*return*/];
                 }
@@ -458,7 +510,7 @@ var UserController = /** @class */ (function () {
     };
     UserController.prototype.verifyTwoFactorCode = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            var _a, email, twoFactorCode, user, secret, token, error_7;
+            var _a, email, twoFactorCode, user, secret, token, error_8;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
@@ -493,9 +545,9 @@ var UserController = /** @class */ (function () {
                         });
                         return [3 /*break*/, 3];
                     case 2:
-                        error_7 = _b.sent();
-                        console.error('Error verifying two-factor code:', error_7);
-                        res.status(500).json({ statusCode: 500, message: 'Server error', error: error_7.message });
+                        error_8 = _b.sent();
+                        console.error('Error verifying two-factor code:', error_8);
+                        res.status(500).json({ statusCode: 500, message: 'Server error', error: error_8.message });
                         return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
                 }
@@ -504,7 +556,7 @@ var UserController = /** @class */ (function () {
     };
     UserController.prototype.updateProfile = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            var userRepository, userId, _a, firstName, middleName, lastName, country, stateOrProvince, postalCode, city, email, phoneNumber, file, user, result, error_8;
+            var userRepository, userId, _a, firstName, middleName, lastName, country, stateOrProvince, postalCode, city, email, phoneNumber, file, user, result, error_9;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
@@ -541,9 +593,9 @@ var UserController = /** @class */ (function () {
                         res.status(200).json({ message: 'Profile updated successfully' });
                         return [3 /*break*/, 6];
                     case 5:
-                        error_8 = _b.sent();
-                        console.error('Error updating profile:', error_8);
-                        res.status(500).json({ message: 'Server error', error: error_8.message });
+                        error_9 = _b.sent();
+                        console.error('Error updating profile:', error_9);
+                        res.status(500).json({ message: 'Server error', error: error_9.message });
                         return [3 /*break*/, 6];
                     case 6: return [2 /*return*/];
                 }
@@ -552,7 +604,7 @@ var UserController = /** @class */ (function () {
     };
     UserController.prototype.getUserProfile = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            var userId, user, error_9;
+            var userId, user, error_10;
             var _a;
             return __generator(this, function (_b) {
                 switch (_b.label) {
@@ -581,9 +633,9 @@ var UserController = /** @class */ (function () {
                         });
                         return [3 /*break*/, 3];
                     case 2:
-                        error_9 = _b.sent();
-                        console.error('Error fetching user profile:', error_9);
-                        res.status(500).json({ message: 'Server error', error: error_9.message });
+                        error_10 = _b.sent();
+                        console.error('Error fetching user profile:', error_10);
+                        res.status(500).json({ message: 'Server error', error: error_10.message });
                         return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
                 }
@@ -592,7 +644,7 @@ var UserController = /** @class */ (function () {
     };
     UserController.prototype.changeUserRole = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            var userId, role, allowedRoles, updatedUser, error_10;
+            var userId, role, allowedRoles, updatedUser, error_11;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -620,9 +672,9 @@ var UserController = /** @class */ (function () {
                         }
                         return [3 /*break*/, 4];
                     case 3:
-                        error_10 = _a.sent();
-                        console.error('Error updating user role:', error_10);
-                        return [2 /*return*/, res.status(500).json({ message: 'Server error', error: error_10.message })];
+                        error_11 = _a.sent();
+                        console.error('Error updating user role:', error_11);
+                        return [2 /*return*/, res.status(500).json({ message: 'Server error', error: error_11.message })];
                     case 4: return [2 /*return*/];
                 }
             });
@@ -631,7 +683,7 @@ var UserController = /** @class */ (function () {
     // Update onboarding step controller
     UserController.prototype.updateOnboardingStep = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            var _a, applicationNo, onboardingStep, userRepository, user, updatedUser, error_11;
+            var _a, applicationNo, onboardingStep, userRepository, user, updatedUser, error_12;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
@@ -665,11 +717,11 @@ var UserController = /** @class */ (function () {
                                 onboardingStep: updatedUser.onboardingStep,
                             })];
                     case 4:
-                        error_11 = _b.sent();
-                        console.error("Error updating onboarding step:", error_11);
+                        error_12 = _b.sent();
+                        console.error("Error updating onboarding step:", error_12);
                         return [2 /*return*/, res.status(500).json({
                                 message: "Server error",
-                                error: error_11.message,
+                                error: error_12.message,
                             })];
                     case 5: return [2 /*return*/];
                 }
@@ -680,7 +732,7 @@ var UserController = /** @class */ (function () {
     // Get all users
     UserController.prototype.getAll = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            var users, error_12;
+            var users, error_13;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -691,9 +743,9 @@ var UserController = /** @class */ (function () {
                         res.status(200).json(users);
                         return [3 /*break*/, 3];
                     case 2:
-                        error_12 = _a.sent();
-                        console.error('Error fetching users:', error_12);
-                        res.status(500).json({ message: 'Server error', error: error_12.message });
+                        error_13 = _a.sent();
+                        console.error('Error fetching users:', error_13);
+                        res.status(500).json({ message: 'Server error', error: error_13.message });
                         return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
                 }
@@ -703,7 +755,7 @@ var UserController = /** @class */ (function () {
     // Get user by ID
     UserController.prototype.getById = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            var userId, user, error_13;
+            var userId, user, error_14;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -717,9 +769,9 @@ var UserController = /** @class */ (function () {
                         }
                         return [2 /*return*/, res.status(200).json(user)];
                     case 2:
-                        error_13 = _a.sent();
-                        console.error('Error fetching user:', error_13);
-                        return [2 /*return*/, res.status(500).json({ message: 'Server error', error: error_13.message })];
+                        error_14 = _a.sent();
+                        console.error('Error fetching user:', error_14);
+                        return [2 /*return*/, res.status(500).json({ message: 'Server error', error: error_14.message })];
                     case 3: return [2 /*return*/];
                 }
             });
@@ -742,7 +794,7 @@ var UserController = /** @class */ (function () {
     // }
     UserController.prototype.update = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            var userId, userData, salt, _a, updatedUser, error_14;
+            var userId, userData, salt, _a, updatedUser, error_15;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0:
@@ -774,9 +826,9 @@ var UserController = /** @class */ (function () {
                                 data: updatedUser,
                             })];
                     case 5:
-                        error_14 = _b.sent();
-                        console.error('Error updating user:', error_14);
-                        return [2 /*return*/, res.status(500).json({ message: 'Server error', error: error_14.message })];
+                        error_15 = _b.sent();
+                        console.error('Error updating user:', error_15);
+                        return [2 /*return*/, res.status(500).json({ message: 'Server error', error: error_15.message })];
                     case 6: return [2 /*return*/];
                 }
             });
@@ -785,7 +837,7 @@ var UserController = /** @class */ (function () {
     // Delete user
     UserController.prototype.delete = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            var userId, error_15;
+            var userId, error_16;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -797,9 +849,9 @@ var UserController = /** @class */ (function () {
                         res.status(204).send(); // No content
                         return [3 /*break*/, 3];
                     case 2:
-                        error_15 = _a.sent();
-                        console.error('Error deleting user:', error_15);
-                        res.status(500).json({ message: 'Server error', error: error_15.message });
+                        error_16 = _a.sent();
+                        console.error('Error deleting user:', error_16);
+                        res.status(500).json({ message: 'Server error', error: error_16.message });
                         return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
                 }
@@ -808,7 +860,7 @@ var UserController = /** @class */ (function () {
     };
     UserController.prototype.verifyEmail = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            var verifyToken, user, error_16;
+            var verifyToken, user, error_17;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -837,9 +889,9 @@ var UserController = /** @class */ (function () {
                         _a.sent();
                         return [2 /*return*/, res.status(200).json({ message: 'Email verified successfully. You can now log in.' })];
                     case 4:
-                        error_16 = _a.sent();
-                        console.error('Error during email verification:', error_16);
-                        return [2 /*return*/, res.status(500).json({ message: 'Server error', error: error_16.message })];
+                        error_17 = _a.sent();
+                        console.error('Error during email verification:', error_17);
+                        return [2 /*return*/, res.status(500).json({ message: 'Server error', error: error_17.message })];
                     case 5: return [2 /*return*/];
                 }
             });

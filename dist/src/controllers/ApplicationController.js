@@ -35,12 +35,19 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ApplicationController = void 0;
 var ApplicationService_1 = require("../services/ApplicationService");
+var pdf_parse_1 = __importDefault(require("pdf-parse"));
 var ApplicationController = /** @class */ (function () {
     function ApplicationController() {
     }
+    // constructor() {
+    //   this.autoFillApplicationFormWithUploadedResume = this.autoFillApplicationFormWithUploadedResume.bind(this);
+    // }
     ApplicationController.createApplication = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
             var result, error_1;
@@ -167,6 +174,108 @@ var ApplicationController = /** @class */ (function () {
                         return [3 /*break*/, 3];
                     case 3: return [2 /*return*/];
                 }
+            });
+        });
+    };
+    // Method to handle auto-filling the application form using an uploaded resume
+    ApplicationController.autoFillApplicationFormWithUploadedResume = function (req, res) {
+        return __awaiter(this, void 0, void 0, function () {
+            var resumeBuffer, resumeText, extractedData, error_7;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 3, , 4]);
+                        if (!req.file) {
+                            return [2 /*return*/, res.status(400).json({ message: 'Resume file is required' })];
+                        }
+                        console.log("Received request to auto-fill form with resume.");
+                        console.log("Resume file received:", req.file.originalname);
+                        resumeBuffer = req.file.buffer;
+                        console.log("Extracting text from resume buffer...");
+                        // Validate buffer
+                        if (!Buffer.isBuffer(resumeBuffer)) {
+                            throw new Error("Uploaded file is not a valid buffer");
+                        }
+                        return [4 /*yield*/, (0, pdf_parse_1.default)(resumeBuffer)];
+                    case 1:
+                        resumeText = _a.sent();
+                        console.log("Text extracted from resume:", resumeText.text);
+                        return [4 /*yield*/, ApplicationController.extractDataFromResume(resumeText.text)];
+                    case 2:
+                        extractedData = _a.sent();
+                        return [2 /*return*/, res.status(200).json({
+                                message: 'Resume processed successfully',
+                                extractedData: extractedData,
+                            })];
+                    case 3:
+                        error_7 = _a.sent();
+                        console.error('Error processing resume:', error_7);
+                        return [2 /*return*/, res.status(500).json({ message: 'Error processing resume', error: error_7.message })];
+                    case 4: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    // Static function to extract specific fields from resume text
+    ApplicationController.extractDataFromResume = function (resumeText) {
+        return __awaiter(this, void 0, void 0, function () {
+            var extractedData, lines, nameRegex, nameLine, emailRegex, emailMatch, phoneRegex, phoneMatch, workExperienceRegex, workExperienceMatch, projectsRegex, projectsMatch, skillsRegex, skillsMatch;
+            return __generator(this, function (_a) {
+                console.log('Extracting data from resume text...');
+                extractedData = {};
+                lines = resumeText.split(/\r?\n/).map(function (line) { return line.trim(); }).filter(Boolean);
+                nameRegex = /^[A-Z][a-z]+\s+[A-Z][a-z]+(\s+[A-Z][a-z]+)?$/;
+                nameLine = lines.find(function (line) { return nameRegex.test(line); });
+                if (nameLine) {
+                    extractedData.name = nameLine;
+                    console.log('Extracted name:', extractedData.name);
+                }
+                else {
+                    console.log('Name not found in resume text.');
+                }
+                emailRegex = /\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/i;
+                emailMatch = resumeText.match(emailRegex);
+                if (emailMatch) {
+                    extractedData.email = emailMatch[0];
+                    console.log('Extracted email:', extractedData.email);
+                }
+                else {
+                    console.log('Email not found in resume text.');
+                }
+                phoneRegex = /\+?\d{1,3}?[-.\s]?\(?\d{1,4}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}/;
+                phoneMatch = resumeText.match(phoneRegex);
+                if (phoneMatch) {
+                    extractedData.phone = phoneMatch[0];
+                    console.log('Extracted phone number:', extractedData.phone);
+                }
+                else {
+                    console.log('Phone number not found in resume text.');
+                }
+                workExperienceRegex = /Work Experience[\s\S]+?(?=Projects|Education|Skills)/i;
+                workExperienceMatch = resumeText.match(workExperienceRegex);
+                if (workExperienceMatch) {
+                    extractedData.workExperience = workExperienceMatch[0].trim();
+                    console.log('Extracted work experience:', extractedData.workExperience);
+                }
+                else {
+                    console.log('Work experience not found in resume text.');
+                }
+                projectsRegex = /Projects[\s\S]+?(?=Education|Skills|Experience)/i;
+                projectsMatch = resumeText.match(projectsRegex);
+                if (projectsMatch) {
+                    extractedData.projects = projectsMatch[0].trim();
+                    console.log('Extracted projects:', extractedData.projects);
+                }
+                else {
+                    console.log('Projects not found in resume text.');
+                }
+                skillsRegex = /Skills[\s\S]+?(?=Projects|Work Experience|Education)/i;
+                skillsMatch = resumeText.match(skillsRegex);
+                if (skillsMatch) {
+                    extractedData.skills = skillsMatch[0].trim();
+                    console.log('Extracted skills:', extractedData.skills);
+                }
+                return [2 /*return*/, extractedData];
             });
         });
     };

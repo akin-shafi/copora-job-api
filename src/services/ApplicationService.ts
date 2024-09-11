@@ -10,6 +10,8 @@ import { FoodSafetyQuestionnaire } from '../entities/FoodSafetyQuestionnaireEnti
 import { BankDetails } from '../entities/BankDetailsEntity';
 import { AgreementConsent } from '../entities/AgreementConsentEntity';
 import { Reference } from '../entities/ReferenceEntity';
+import { GeneralInfo } from '../entities/GeneralInfoEntity';
+import { NextOfKin } from '../entities/NextOfKinEntity';
 
 export class ApplicationService {
   static async createApplication(data: any) {
@@ -51,6 +53,8 @@ export class ApplicationService {
   
       const educationalDetails = await AppDataSource.getRepository(EducationalDetails).find({ where: {applicationNo} });
       const healthAndDisability = await AppDataSource.getRepository(HealthAndDisability).findOneBy({ applicationNo });
+      const generalInfo = await AppDataSource.getRepository(GeneralInfo).findOneBy({ applicationNo });
+      const nextOfKin = await AppDataSource.getRepository(NextOfKin).findOneBy({ applicationNo });
       const foodSafetyQuestionnaire = await AppDataSource.getRepository(FoodSafetyQuestionnaire).findOneBy({ applicationNo });
       const bankDetails = await AppDataSource.getRepository(BankDetails).findOneBy({ applicationNo });
       const agreementConsent = await AppDataSource.getRepository(AgreementConsent).findOneBy({ applicationNo });
@@ -60,6 +64,8 @@ export class ApplicationService {
         user,
         personalDetails,
         contactDetails,
+        generalInfo,
+        nextOfKin,
         professionalDetails, // This will be an array
         educationalDetails,
         healthAndDisability,

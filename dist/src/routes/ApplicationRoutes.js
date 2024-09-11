@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var express_1 = __importDefault(require("express"));
 var ApplicationController_1 = require("../controllers/ApplicationController");
+var multerConfig_1 = __importDefault(require("../multerConfig")); // Import multer configuration
 var router = express_1.default.Router();
 /**
  * @swagger
@@ -152,4 +153,47 @@ router.get('/:applicationNo', ApplicationController_1.ApplicationController.getA
 //  *                   description: Error details
 //  */
 // router.get('/applicants', ApplicationController.getAllApplicants); // Fetch all applicants data
+/**
+   * @swagger
+   * /applicant/autofill-from-resume:
+   *   post:
+   *     summary: Autofill application form with uploaded resume
+   *     tags: [Applicants]
+   *     requestBody:
+   *       required: true
+   *       content:
+   *         multipart/form-data:
+   *           schema:
+   *             type: object
+   *             properties:
+   *               resume:
+   *                 type: string
+   *                 format: binary
+   *                 description: The uploaded resume file
+   *     responses:
+   *       200:
+   *         description: Resume processed and application form auto-filled
+   *         content:
+   *           application/json:
+   *             schema:
+   *               type: object
+   *               properties:
+   *                 extractedData:
+   *                   type: object
+   *                   description: Extracted fields from the resume
+   *       400:
+   *         description: Resume file is required
+   *       500:
+   *         description: Error processing resume
+   */
+router.post('/autofill-from-resume', multerConfig_1.default.single('resume'), ApplicationController_1.ApplicationController.autoFillApplicationFormWithUploadedResume);
+// Single file upload (can be either image or document)
+// router.post('/upload-file', uploadDocumentsAndImages.single('file'), async (req, res) => {
+//     // Handle the uploaded file in your controller logic
+//     res.json({ message: 'File uploaded successfully', file: req.file });
+// });
+// // Multiple file upload (both images and documents)
+// router.post('/upload-multiple', uploadDocumentsAndImages.array('files', 10), async (req, res) => {
+//     res.json({ message: 'Files uploaded successfully', files: req.files });
+// });
 exports.default = router;

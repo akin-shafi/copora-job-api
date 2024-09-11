@@ -49,6 +49,8 @@ var FoodSafetyQuestionnaireEntity_1 = require("../entities/FoodSafetyQuestionnai
 var BankDetailsEntity_1 = require("../entities/BankDetailsEntity");
 var AgreementConsentEntity_1 = require("../entities/AgreementConsentEntity");
 var ReferenceEntity_1 = require("../entities/ReferenceEntity");
+var GeneralInfoEntity_1 = require("../entities/GeneralInfoEntity");
+var NextOfKinEntity_1 = require("../entities/NextOfKinEntity");
 var ApplicationService = /** @class */ (function () {
     function ApplicationService() {
     }
@@ -97,11 +99,11 @@ var ApplicationService = /** @class */ (function () {
     };
     ApplicationService.getApplicantData = function (applicationNo) {
         return __awaiter(this, void 0, void 0, function () {
-            var user, personalDetails, contactDetails, professionalDetails, educationalDetails, healthAndDisability, foodSafetyQuestionnaire, bankDetails, agreementConsent, reference, error_2;
+            var user, personalDetails, contactDetails, professionalDetails, educationalDetails, healthAndDisability, generalInfo, nextOfKin, foodSafetyQuestionnaire, bankDetails, agreementConsent, reference, error_2;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        _a.trys.push([0, 11, , 12]);
+                        _a.trys.push([0, 13, , 14]);
                         return [4 /*yield*/, data_source_1.AppDataSource.getRepository(UserEntity_1.User).findOneBy({ applicationNo: applicationNo })];
                     case 1:
                         user = _a.sent();
@@ -122,22 +124,30 @@ var ApplicationService = /** @class */ (function () {
                         return [4 /*yield*/, data_source_1.AppDataSource.getRepository(HealthAndDisabilityEntity_1.HealthAndDisability).findOneBy({ applicationNo: applicationNo })];
                     case 6:
                         healthAndDisability = _a.sent();
-                        return [4 /*yield*/, data_source_1.AppDataSource.getRepository(FoodSafetyQuestionnaireEntity_1.FoodSafetyQuestionnaire).findOneBy({ applicationNo: applicationNo })];
+                        return [4 /*yield*/, data_source_1.AppDataSource.getRepository(GeneralInfoEntity_1.GeneralInfo).findOneBy({ applicationNo: applicationNo })];
                     case 7:
+                        generalInfo = _a.sent();
+                        return [4 /*yield*/, data_source_1.AppDataSource.getRepository(NextOfKinEntity_1.NextOfKin).findOneBy({ applicationNo: applicationNo })];
+                    case 8:
+                        nextOfKin = _a.sent();
+                        return [4 /*yield*/, data_source_1.AppDataSource.getRepository(FoodSafetyQuestionnaireEntity_1.FoodSafetyQuestionnaire).findOneBy({ applicationNo: applicationNo })];
+                    case 9:
                         foodSafetyQuestionnaire = _a.sent();
                         return [4 /*yield*/, data_source_1.AppDataSource.getRepository(BankDetailsEntity_1.BankDetails).findOneBy({ applicationNo: applicationNo })];
-                    case 8:
+                    case 10:
                         bankDetails = _a.sent();
                         return [4 /*yield*/, data_source_1.AppDataSource.getRepository(AgreementConsentEntity_1.AgreementConsent).findOneBy({ applicationNo: applicationNo })];
-                    case 9:
+                    case 11:
                         agreementConsent = _a.sent();
                         return [4 /*yield*/, data_source_1.AppDataSource.getRepository(ReferenceEntity_1.Reference).findOneBy({ applicationNo: applicationNo })];
-                    case 10:
+                    case 12:
                         reference = _a.sent();
                         return [2 /*return*/, {
                                 user: user,
                                 personalDetails: personalDetails,
                                 contactDetails: contactDetails,
+                                generalInfo: generalInfo,
+                                nextOfKin: nextOfKin,
                                 professionalDetails: professionalDetails, // This will be an array
                                 educationalDetails: educationalDetails,
                                 healthAndDisability: healthAndDisability,
@@ -146,10 +156,10 @@ var ApplicationService = /** @class */ (function () {
                                 agreementConsent: agreementConsent,
                                 reference: reference,
                             }];
-                    case 11:
+                    case 13:
                         error_2 = _a.sent();
                         throw new Error("Error retrieving applicant data: ".concat(error_2.message));
-                    case 12: return [2 /*return*/];
+                    case 14: return [2 /*return*/];
                 }
             });
         });

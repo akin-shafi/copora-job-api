@@ -9,7 +9,8 @@ import { v2 as cloudinary } from 'cloudinary';
 import { sendInvitationToOnboard, sendResetPasswordEmail, sendTwoFactorCodeEmail, sendVerificationEmail } from '../lib/emailActions';
 import { v4 as uuidv4 } from 'uuid'; // For generating verification tokens
 import { BASE_URL } from '../config';
- 
+import axios from 'axios'; // Add axios for HTTP requests
+import pdfParse from 'pdf-parse';
 
 const userService = new UserService();
 
@@ -25,6 +26,55 @@ class UserController {
   constructor() {
     this.register = this.register.bind(this);
   }
+
+
+
+  async linkedinCallback(req: Request, res: Response): Promise<Response> {
+    const authorizationCode = req.query.code as string;
+
+    if (!authorizationCode) {
+      return res.status(400).json({ message: 'Authorization code is missing' });
+    }
+
+    try {
+      // Exchange authorization code for access token
+      const tokenResponse = await axios.post('https://www.linkedin.com/oauth/v2/accessToken', null, {
+        params: {
+          grant_type: 'authorization_code',
+          code: authorizationCode,
+          redirect_uri: process.env.LINKEDIN_REDIRECT_URI,
+          client_id: process.env.LINKEDIN_CLIENT_ID,
+          client_secret: process.env.LINKEDIN_CLIENT_SECRET
+        }
+      });
+
+      const { access_token } = tokenResponse.data;
+
+      // Fetch LinkedIn user data
+      const profileResponse = await axios.get('https://api.linkedin.com/v2/me', {
+        headers: { Authorization: `Bearer ${access_token}` }
+      });
+
+      const emailResponse = await axios.get('https://api.linkedin.com/v2/emailAddress?q=members&projection=(elements*(handle~))', {
+        headers: { Authorization: `Bearer ${access_token}` }
+      });
+
+      const profileData = profileResponse.data;
+      const email = emailResponse.data.elements[0]['handle~'].emailAddress;
+
+      // Return LinkedIn user data
+      return res.json({
+        name: `${profileData.firstName.localized.en_US} ${profileData.lastName.localized.en_US}`,
+        email
+      });
+
+    } catch (error) {
+      console.error('Error fetching LinkedIn data:', error);
+      return res.status(500).json({ message: 'Server error', error: error.message });
+    }
+  }
+
+
 
   async register(req: Request, res: Response): Promise<Response> {
     try {

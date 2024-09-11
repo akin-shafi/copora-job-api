@@ -71,6 +71,14 @@ var swaggerOptions = {
                 description: "Endpoints related to food safety questionnaires"
             },
             {
+                name: "Next Of Kin",
+                description: "Endpoint related to Next Of Kin"
+            },
+            {
+                name: "GeneralInfo",
+                description: "Endpoint related to GeneralInfo"
+            },
+            {
                 name: "HealthAndDisability",
                 description: "Endpoints related to health and disability"
             },
