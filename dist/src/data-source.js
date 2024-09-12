@@ -33,8 +33,8 @@ exports.AppDataSource = new typeorm_1.DataSource({
         UserEntity_1.User,
         ApplicationEntity_1.Application,
         PersonalDetailsEntity_1.PersonalDetails,
-        GeneralInfoEntity_1.GeneralInfo,
         ContactDetailsEntity_1.ContactDetails,
+        GeneralInfoEntity_1.GeneralInfo,
         NextOfKinEntity_1.NextOfKin,
         ProfessionalDetailsEntity_1.ProfessionalDetails,
         EducationalDetailsEntity_1.EducationalDetails,
@@ -48,9 +48,9 @@ exports.AppDataSource = new typeorm_1.DataSource({
     logging: false,
     migrations: [],
     subscribers: [],
-    ssl: {
-        rejectUnauthorized: false, // This is necessary if you don't have the SSL certificate; set to true if you have it.
-    },
+    // ssl: {
+    //   rejectUnauthorized: false, // This is necessary if you don't have the SSL certificate; set to true if you have it.
+    // },
 });
 exports.AppDataSource.initialize()
     .then(function () {

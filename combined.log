@@ -372,3 +372,13 @@
 2024-09-11T16:35:51.231Z [[32minfo[39m]: HTTP GET /applicant/APP-161DD80E
 2024-09-11T16:36:06.330Z [[32minfo[39m]: HTTP GET /applicant/APP-161DD80E
 2024-09-11T16:38:08.747Z [[32minfo[39m]: HTTP GET /applicant/APP-161DD80E
+2024-09-11T19:11:13.882Z [[32minfo[39m]: HTTP GET /api-docs
+2024-09-11T19:11:13.992Z [[32minfo[39m]: HTTP GET /api-docs/
+2024-09-11T19:11:14.075Z [[32minfo[39m]: HTTP GET /api-docs/swagger-ui.css
+2024-09-11T19:11:14.133Z [[32minfo[39m]: HTTP GET /api-docs/swagger-ui-standalone-preset.js
+2024-09-11T19:11:14.232Z [[32minfo[39m]: HTTP GET /api-docs/swagger-ui-init.js
+2024-09-11T19:11:14.300Z [[32minfo[39m]: HTTP GET /api-docs/swagger-ui-bundle.js
+2024-09-11T19:11:33.374Z [[32minfo[39m]: HTTP POST /applicant/autofill-from-resume
+2024-09-11T19:12:43.514Z [[32minfo[39m]: HTTP POST /applicant/autofill-from-resume
+2024-09-11T19:13:05.587Z [[32minfo[39m]: HTTP POST /applicant/autofill-from-resume
+2024-09-11T19:13:23.376Z [[32minfo[39m]: HTTP POST /applicant/autofill-from-resume

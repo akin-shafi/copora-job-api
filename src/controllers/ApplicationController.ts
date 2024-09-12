@@ -102,46 +102,118 @@ export class ApplicationController {
 }
 
 // Static function to extract specific fields from resume text
+// static async extractDataFromResume(resumeText: string) {
+//   console.log('Extracting data from resume text...');
+
+//   const extractedData: any = {};
+
+//   // Split the text into lines to analyze the content more accurately
+//   const lines = resumeText.split(/\r?\n/).map(line => line.trim()).filter(Boolean);
+
+//   // Extract Name (look for typical name-like patterns, ignoring sections like "Work Experience")
+//   const nameRegex = /^[A-Z][a-z]+\s+[A-Z][a-z]+(\s+[A-Z][a-z]+)?$/;
+//   const nameLine = lines.find(line => nameRegex.test(line));
+//   if (nameLine) {
+//     extractedData.name = nameLine;
+//     console.log('Extracted name:', extractedData.name);
+//   } else {
+//     console.log('Name not found in resume text.');
+//   }
+
+//   // Extract Email
+//   const emailRegex = /\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/i;
+//   const emailMatch = resumeText.match(emailRegex);
+//   if (emailMatch) {
+//     extractedData.email = emailMatch[0];
+//     console.log('Extracted email:', extractedData.email);
+//   } else {
+//     console.log('Email not found in resume text.');
+//   }
+
+//   // Extract Phone Number (handling international, local, or different delimiters)
+//   const phoneRegex = /\+?\d{1,3}?[-.\s]?\(?\d{1,4}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}/;
+//   const phoneMatch = resumeText.match(phoneRegex);
+//   if (phoneMatch) {
+//     extractedData.phone = phoneMatch[0];
+//     console.log('Extracted phone number:', extractedData.phone);
+//   } else {
+//     console.log('Phone number not found in resume text.');
+//   }
+
+//   // Extract Work Experience (find between headers like "Work Experience" and "Projects" or "Education")
+//   const workExperienceRegex = /Work Experience[\s\S]+?(?=Projects|Education|Skills)/i;
+//   const workExperienceMatch = resumeText.match(workExperienceRegex);
+//   if (workExperienceMatch) {
+//     extractedData.workExperience = workExperienceMatch[0].trim();
+//     console.log('Extracted work experience:', extractedData.workExperience);
+//   } else {
+//     console.log('Work experience not found in resume text.');
+//   }
+
+//   // Extract Projects (similar to work experience)
+//   const projectsRegex = /Projects[\s\S]+?(?=Education|Skills|Experience)/i;
+//   const projectsMatch = resumeText.match(projectsRegex);
+//   if (projectsMatch) {
+//     extractedData.projects = projectsMatch[0].trim();
+//     console.log('Extracted projects:', extractedData.projects);
+//   } else {
+//     console.log('Projects not found in resume text.');
+//   }
+
+//   // Optionally extract additional sections like "Skills", "Education"
+//   // Example for "Skills"
+//   const skillsRegex = /Skills[\s\S]+?(?=Projects|Work Experience|Education)/i;
+//   const skillsMatch = resumeText.match(skillsRegex);
+//   if (skillsMatch) {
+//     extractedData.skills = skillsMatch[0].trim();
+//     console.log('Extracted skills:', extractedData.skills);
+//   }
+
+//   return extractedData;
+// }
+
+
 static async extractDataFromResume(resumeText: string) {
   console.log('Extracting data from resume text...');
 
   const extractedData: any = {};
 
-  // Split the text into lines to analyze the content more accurately
-  const lines = resumeText.split(/\r?\n/).map(line => line.trim()).filter(Boolean);
+  // Step 1: Normalize the text (remove unnecessary whitespaces, standardize new lines)
+  resumeText = resumeText.replace(/\r?\n|\r/g, "\n").trim();
 
-  // Extract Name (look for typical name-like patterns, ignoring sections like "Work Experience")
-  const nameRegex = /^[A-Z][a-z]+\s+[A-Z][a-z]+(\s+[A-Z][a-z]+)?$/;
-  const nameLine = lines.find(line => nameRegex.test(line));
-  if (nameLine) {
-    extractedData.name = nameLine;
+  // Step 2: Extract Name (Account for name-like patterns or contextual cues)
+  // Example: Look for "Name" or assume first proper noun is the name
+  const nameRegex = /(?:Name[:\s]*)?([A-Z][a-z]+(?: [A-Z][a-z]+)+)/;
+  const nameMatch = resumeText.match(nameRegex);
+  if (nameMatch) {
+    extractedData.name = nameMatch[1].trim();
     console.log('Extracted name:', extractedData.name);
   } else {
     console.log('Name not found in resume text.');
   }
 
-  // Extract Email
-  const emailRegex = /\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/i;
+  // Step 3: Extract Email (More precise regex for email)
+  const emailRegex = /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b/;
   const emailMatch = resumeText.match(emailRegex);
   if (emailMatch) {
-    extractedData.email = emailMatch[0];
+    extractedData.email = emailMatch[0].trim();
     console.log('Extracted email:', extractedData.email);
   } else {
     console.log('Email not found in resume text.');
   }
 
-  // Extract Phone Number (handling international, local, or different delimiters)
-  const phoneRegex = /\+?\d{1,3}?[-.\s]?\(?\d{1,4}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}/;
+  // Step 4: Extract Phone Number (Handle different phone formats)
+  const phoneRegex = /(\+?\d{1,3}[-.\s]?\(?\d{1,4}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9})/;
   const phoneMatch = resumeText.match(phoneRegex);
   if (phoneMatch) {
-    extractedData.phone = phoneMatch[0];
+    extractedData.phone = phoneMatch[0].trim();
     console.log('Extracted phone number:', extractedData.phone);
   } else {
     console.log('Phone number not found in resume text.');
   }
 
-  // Extract Work Experience (find between headers like "Work Experience" and "Projects" or "Education")
-  const workExperienceRegex = /Work Experience[\s\S]+?(?=Projects|Education|Skills)/i;
+  // Step 5: Extract Work Experience (Section-based extraction with keyword search)
+  const workExperienceRegex = /(?:Work Experience|Experience|Professional Experience)[\s\S]+?(?=Projects|Education|Skills)/i;
   const workExperienceMatch = resumeText.match(workExperienceRegex);
   if (workExperienceMatch) {
     extractedData.workExperience = workExperienceMatch[0].trim();
@@ -150,8 +222,8 @@ static async extractDataFromResume(resumeText: string) {
     console.log('Work experience not found in resume text.');
   }
 
-  // Extract Projects (similar to work experience)
-  const projectsRegex = /Projects[\s\S]+?(?=Education|Skills|Experience)/i;
+  // Step 6: Extract Projects (Similar logic as Work Experience)
+  const projectsRegex = /(?:Projects|Project Experience|Key Projects)[\s\S]+?(?=Education|Skills|Certifications)/i;
   const projectsMatch = resumeText.match(projectsRegex);
   if (projectsMatch) {
     extractedData.projects = projectsMatch[0].trim();
@@ -160,13 +232,24 @@ static async extractDataFromResume(resumeText: string) {
     console.log('Projects not found in resume text.');
   }
 
-  // Optionally extract additional sections like "Skills", "Education"
-  // Example for "Skills"
-  const skillsRegex = /Skills[\s\S]+?(?=Projects|Work Experience|Education)/i;
+  // Step 7: Extract Education (Similar logic for education section)
+  const educationRegex = /(?:Education|Academic Background|Degrees)[\s\S]+?(?=Skills|Certifications|Projects)/i;
+  const educationMatch = resumeText.match(educationRegex);
+  if (educationMatch) {
+    extractedData.education = educationMatch[0].trim();
+    console.log('Extracted education:', extractedData.education);
+  } else {
+    console.log('Education not found in resume text.');
+  }
+
+  // Step 8: Extract Skills
+  const skillsRegex = /(?:Skills|Technical Skills|Core Competencies)[\s\S]+?(?=Education|Experience|Projects|Certifications)/i;
   const skillsMatch = resumeText.match(skillsRegex);
   if (skillsMatch) {
     extractedData.skills = skillsMatch[0].trim();
     console.log('Extracted skills:', extractedData.skills);
+  } else {
+    console.log('Skills not found in resume text.');
   }
 
   return extractedData;
