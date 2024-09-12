@@ -382,3 +382,7 @@
 2024-09-11T19:12:43.514Z [[32minfo[39m]: HTTP POST /applicant/autofill-from-resume
 2024-09-11T19:13:05.587Z [[32minfo[39m]: HTTP POST /applicant/autofill-from-resume
 2024-09-11T19:13:23.376Z [[32minfo[39m]: HTTP POST /applicant/autofill-from-resume
+2024-09-12T03:51:28.052Z [[32minfo[39m]: HTTP GET /api-docs/swagger-ui-init.js
+2024-09-12T03:51:28.122Z [[32minfo[39m]: HTTP GET /api-docs/swagger-ui-standalone-preset.js
+2024-09-12T03:51:28.130Z [[32minfo[39m]: HTTP GET /api-docs/swagger-ui-bundle.js
+2024-09-12T03:51:28.134Z [[32minfo[39m]: HTTP GET /api-docs/swagger-ui.css

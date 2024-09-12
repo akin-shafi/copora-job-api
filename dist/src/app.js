@@ -15,6 +15,8 @@ var ApplicationRoutes_1 = __importDefault(require("./routes/ApplicationRoutes"))
 var AgreementConsentRoutes_1 = __importDefault(require("./routes/AgreementConsentRoutes"));
 var ApplicationRoutes_2 = __importDefault(require("./routes/ApplicationRoutes"));
 var BankDetailsRoutes_1 = __importDefault(require("./routes/BankDetailsRoutes"));
+var NextOfKinRoutes_1 = __importDefault(require("./routes/NextOfKinRoutes"));
+var GeneralInfoRoutes_1 = __importDefault(require("./routes/GeneralInfoRoutes"));
 var ContactDetailsRoutes_1 = __importDefault(require("./routes/ContactDetailsRoutes"));
 var EducationalDetailsRoutes_1 = __importDefault(require("./routes/EducationalDetailsRoutes"));
 var FoodSafetyQuestionnaireRoutes_1 = __importDefault(require("./routes/FoodSafetyQuestionnaireRoutes"));
@@ -69,6 +71,8 @@ data_source_1.AppDataSource.initialize()
     app.use("/application", ApplicationRoutes_2.default);
     app.use("/bank-details", BankDetailsRoutes_1.default);
     app.use("/contact-details", ContactDetailsRoutes_1.default);
+    app.use("/next-of-kin", NextOfKinRoutes_1.default);
+    app.use("/general-info", GeneralInfoRoutes_1.default);
     app.use("/education-details", EducationalDetailsRoutes_1.default);
     app.use("/food-safety", FoodSafetyQuestionnaireRoutes_1.default);
     app.use("/health-and-disability", HealthAndDisabilityRoutes_1.default);
