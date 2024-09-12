@@ -14,7 +14,7 @@ export class Reference {
     @Column()
     contactName: string;
 
-    @Column()
+    @Column({ nullable: false })
     phone: string;
 
     @Column()

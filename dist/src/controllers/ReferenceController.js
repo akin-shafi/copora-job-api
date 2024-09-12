@@ -1,4 +1,15 @@
 "use strict";
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -35,6 +46,17 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __rest = (this && this.__rest) || function (s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
+    return t;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ReferenceController = void 0;
 var ReferenceService_1 = require("../services/ReferenceService");
@@ -45,30 +67,71 @@ var ReferenceController = /** @class */ (function () {
     // Create or update Reference
     ReferenceController.createOrUpdateReference = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            var applicationNo, existingApplicant, reference, error_1;
-            return __generator(this, function (_a) {
-                switch (_a.label) {
+            var _a, applicationNo, referenceDetails, existingApplicant, entries, updatedEntries, newEntries, _i, entries_1, entry, phone, restOfEntry, existingEntry, newEntry, error_1;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
                     case 0:
-                        applicationNo = req.params.applicationNo;
-                        _a.label = 1;
-                    case 1:
-                        _a.trys.push([1, 4, , 5]);
+                        _b.trys.push([0, 9, , 10]);
+                        _a = req.body, applicationNo = _a.applicationNo, referenceDetails = __rest(_a, ["applicationNo"]);
+                        // Validate applicationNo
+                        if (!applicationNo) {
+                            return [2 /*return*/, res.status(400).json({ statusCode: 400, message: 'Application number is required' })];
+                        }
                         return [4 /*yield*/, UserService_1.UserService.findApplicationNo(applicationNo)];
-                    case 2:
-                        existingApplicant = _a.sent();
+                    case 1:
+                        existingApplicant = _b.sent();
                         if (!existingApplicant) {
                             return [2 /*return*/, res.status(400).json({ statusCode: 400, message: 'Applicant does not exist' })];
                         }
-                        return [4 /*yield*/, ReferenceService_1.ReferenceService.createOrUpdate(req.body)];
+                        // Ensure referenceDetails is in the correct format
+                        if (typeof referenceDetails !== 'object' || Array.isArray(referenceDetails)) {
+                            return [2 /*return*/, res.status(400).json({ statusCode: 400, message: 'Invalid reference details format' })];
+                        }
+                        entries = Object.values(referenceDetails).filter(function (value) { return typeof value === 'object' && value !== null; });
+                        if (entries.length === 0) {
+                            return [2 /*return*/, res.status(400).json({ statusCode: 400, message: 'No valid reference details provided' })];
+                        }
+                        updatedEntries = [];
+                        newEntries = [];
+                        _i = 0, entries_1 = entries;
+                        _b.label = 2;
+                    case 2:
+                        if (!(_i < entries_1.length)) return [3 /*break*/, 8];
+                        entry = entries_1[_i];
+                        if (!(entry && typeof entry === 'object')) return [3 /*break*/, 7];
+                        phone = entry.phone, restOfEntry = __rest(entry, ["phone"]);
+                        if (!phone) {
+                            return [2 /*return*/, res.status(400).json({ statusCode: 400, message: 'Reference contact phone is required' })];
+                        }
+                        return [4 /*yield*/, ReferenceService_1.ReferenceService.findByPhone(phone)];
                     case 3:
-                        reference = _a.sent();
-                        res.status(201).send(reference);
-                        return [3 /*break*/, 5];
+                        existingEntry = _b.sent();
+                        if (!existingEntry) return [3 /*break*/, 5];
+                        // Update existing entry
+                        return [4 /*yield*/, ReferenceService_1.ReferenceService.update(existingEntry.id, __assign(__assign({}, restOfEntry), { applicationNo: applicationNo }))];
                     case 4:
-                        error_1 = _a.sent();
-                        res.status(400).send({ message: 'Error creating or updating reference', error: error_1.message });
-                        return [3 /*break*/, 5];
-                    case 5: return [2 /*return*/];
+                        // Update existing entry
+                        _b.sent();
+                        updatedEntries.push(__assign(__assign({}, existingEntry), restOfEntry));
+                        return [3 /*break*/, 7];
+                    case 5: return [4 /*yield*/, ReferenceService_1.ReferenceService.create(__assign({ applicationNo: applicationNo }, entry))];
+                    case 6:
+                        newEntry = _b.sent();
+                        newEntries.push(newEntry);
+                        _b.label = 7;
+                    case 7:
+                        _i++;
+                        return [3 /*break*/, 2];
+                    case 8: return [2 /*return*/, res.status(201).json({
+                            message: 'reference details processed',
+                            data: { updatedEntries: updatedEntries, newEntries: newEntries }
+                        })];
+                    case 9:
+                        error_1 = _b.sent();
+                        console.error('Error creating or updating reference details:', error_1);
+                        res.status(500).json({ message: 'Error creating or updating reference details', error: error_1.message });
+                        return [3 /*break*/, 10];
+                    case 10: return [2 /*return*/];
                 }
             });
         });

@@ -10,7 +10,6 @@ import { Application } from './entities/ApplicationEntity';
 import { PersonalDetails } from './entities/PersonalDetailsEntity';
 import { GeneralInfo } from './entities/GeneralInfoEntity';
 import { NextOfKin } from './entities/NextOfKinEntity';
-
 import { ContactDetails } from './entities/ContactDetailsEntity';
 import { ProfessionalDetails } from './entities/ProfessionalDetailsEntity';
 import { EducationalDetails } from './entities/EducationalDetailsEntity';

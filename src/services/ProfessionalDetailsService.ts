@@ -52,19 +52,19 @@ export class ProfessionalDetailsService {
             console.error('Error finding professional details by referenceContactPhone:', error);
             throw new Error('Error retrieving professional details');
         }
-      }
+    }
 
-      static async update(id: number, data: Partial<ProfessionalDetails>): Promise<ProfessionalDetails | null> {
+    static async update(id: number, data: Partial<ProfessionalDetails>): Promise<ProfessionalDetails | null> {
         try {
-          const entry = await professionalDetailsRepository.findOneBy({ id });
-          if (entry) {
+            const entry = await professionalDetailsRepository.findOneBy({ id });
+            if (entry) {
             Object.assign(entry, data);
             return await professionalDetailsRepository.save(entry);
-          }
-          return null;
+            }
+            return null;
         } catch (error) {
-          console.error('Error updating professional details:', error);
-          throw new Error('Error updating professional details');
+            console.error('Error updating professional details:', error);
+            throw new Error('Error updating professional details');
         }
-      }
+    }
 }
