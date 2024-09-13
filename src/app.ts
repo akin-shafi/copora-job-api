@@ -42,8 +42,8 @@ AppDataSource.initialize()
     const port = process.env.PORT || 8000;
     const url = isLocal ? process.env.LOCAL_URL : process.env.REMOTE_URL;
 
-    // app.use(Sentry.Handlers.requestHandler()); // Sentry request handler first
-    // app.use(Sentry.Handlers.tracingHandler());
+    // Trust the proxy (important when running behind a load balancer or proxy)
+    app.set('trust proxy', true);  // Add this line
 
     app.use(cors({
       origin: [
@@ -68,14 +68,13 @@ AppDataSource.initialize()
       ignoreRoute: function (req, res) { return false; } // Ignore logging some routes
     }));
 
-    // API routes with optional prefix
-    // const prefix = '/api';
+    // API routes
     app.use(`/users`, userRoutes);
     app.use(`/applicant`, userApplicant);
     app.use(`/auth/users`, userPrivateRoutes);
-    app.use(`/agreement-consent`, AgreementConsentRoutes); 
-    app.use(`/application`, ApplicationRoutes); 
-    app.use(`/bank-details`, BankDetailsRoutes); 
+    app.use(`/agreement-consent`, AgreementConsentRoutes);
+    app.use(`/application`, ApplicationRoutes);
+    app.use(`/bank-details`, BankDetailsRoutes);
     app.use(`/contact-details`, ContactDetailsRoutes);
     app.use(`/next-of-kin`, NextOfKinRoutes);
     app.use(`/general-info`, GeneralInfoRoutes);
@@ -93,9 +92,6 @@ AppDataSource.initialize()
     app.use(expressWinston.errorLogger({
       winstonInstance: logger
     }));
-
-    // Sentry error handler
-    // app.use(Sentry.Handlers.errorHandler());
 
     // Global error handler (optional)
     app.use((err, req, res, next) => {

@@ -41,8 +41,8 @@ data_source_1.AppDataSource.initialize()
     var isLocal = process.env.NODE_ENV === 'development'; // Check if running in development mode
     var port = process.env.PORT || 8000;
     var url = isLocal ? process.env.LOCAL_URL : process.env.REMOTE_URL;
-    // app.use(Sentry.Handlers.requestHandler()); // Sentry request handler first
-    // app.use(Sentry.Handlers.tracingHandler());
+    // Trust the proxy (important when running behind a load balancer or proxy)
+    app.set('trust proxy', true); // Add this line
     app.use((0, cors_1.default)({
         origin: [
             'http://localhost:3000', // React
@@ -62,8 +62,7 @@ data_source_1.AppDataSource.initialize()
         colorize: false,
         ignoreRoute: function (req, res) { return false; } // Ignore logging some routes
     }));
-    // API routes with optional prefix
-    // const prefix = '/api';
+    // API routes
     app.use("/users", UserRoutes_1.default);
     app.use("/applicant", ApplicationRoutes_1.default);
     app.use("/auth/users", UsersPrivateRoutes_1.default);
@@ -85,8 +84,6 @@ data_source_1.AppDataSource.initialize()
     app.use(express_winston_1.default.errorLogger({
         winstonInstance: logger_1.default
     }));
-    // Sentry error handler
-    // app.use(Sentry.Handlers.errorHandler());
     // Global error handler (optional)
     app.use(function (err, req, res, next) {
         console.error(err.stack);
