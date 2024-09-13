@@ -79,7 +79,7 @@ AppDataSource.initialize()
     app.use(`/next-of-kin`, NextOfKinRoutes);
     app.use(`/general-info`, GeneralInfoRoutes);
     app.use(`/educational-details`, EducationalDetailsRoutes);
-    app.use(`/food-safety`, FoodSafetyQuestionnaireRoutes);
+    app.use(`/food-safety-questionnaire`, FoodSafetyQuestionnaireRoutes);
     app.use(`/health-and-disability`, HealthAndDisabilityRoutes);
     app.use(`/personal-details`, personalDetailsRoutes);
     app.use(`/professional-details`, ProfessionalDetailsRoutes);
