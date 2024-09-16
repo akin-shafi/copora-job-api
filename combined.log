@@ -416,3 +416,6 @@
 2024-09-16T19:08:54.680Z [[32minfo[39m]: HTTP GET /api-docs/swagger-ui-init.js
 2024-09-16T19:08:54.683Z [[32minfo[39m]: HTTP GET /api-docs/swagger-ui-standalone-preset.js
 2024-09-16T19:08:56.480Z [[32minfo[39m]: HTTP GET /api-docs/favicon-32x32.png
+2024-09-16T19:12:13.159Z [[32minfo[39m]: HTTP POST /users/login
+2024-09-16T19:21:54.250Z [[32minfo[39m]: HTTP POST /users/login
+2024-09-16T19:22:30.431Z [[32minfo[39m]: HTTP POST /users/login
