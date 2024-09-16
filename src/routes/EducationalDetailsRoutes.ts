@@ -25,32 +25,84 @@ const router = Router();
  *             properties:
  *               applicationNo:
  *                 type: string
- *                 example: "APP12345"
- *               educationalDetails:
- *                 type: array
- *                 items:
- *                   type: object
- *                   properties:
- *                     schoolName:
- *                       type: string
- *                       example: "Springfield University"
- *                     certificateObtained:
- *                       type: string
- *                       example: "Bachelor of Science"
- *                     courseOfStudy:
- *                       type: string
- *                       example: "Computer Science"
- *                     yearAdmitted:
- *                       type: number
- *                       example: 2015
- *                     yearGraduated:
- *                       type: number
- *                       example: 2019
+ *                 example: "APP-3E5E1BE8"
+ *               0:
+ *                 type: object
+ *                 properties:
+ *                   schoolName:
+ *                     type: string
+ *                     example: "Springfield University"
+ *                   certificateObtained:
+ *                     type: string
+ *                     example: "Bachelor of Science"
+ *                   courseOfStudy:
+ *                     type: string
+ *                     example: "Computer Science"
+ *                   yearAdmitted:
+ *                     type: number
+ *                     example: 2015
+ *                   yearGraduated:
+ *                     type: number
+ *                     example: 2019
+ *               1:
+ *                 type: object
+ *                 properties:
+ *                   schoolName:
+ *                     type: string
+ *                     example: "Greenfield College"
+ *                   certificateObtained:
+ *                     type: string
+ *                     example: "Associate Degree"
+ *                   courseOfStudy:
+ *                     type: string
+ *                     example: "Software Engineering"
+ *                   yearAdmitted:
+ *                     type: number
+ *                     example: 2013
+ *                   yearGraduated:
+ *                     type: number
+ *                     example: 2015
  *     responses:
  *       201:
  *         description: Educational Details records created or updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Educational details processed successfully"
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: integer
+ *                         example: 1
+ *                       applicationNo:
+ *                         type: string
+ *                         example: "APP-3E5E1BE8"
+ *                       schoolName:
+ *                         type: string
+ *                         example: "Springfield University"
+ *                       certificateObtained:
+ *                         type: string
+ *                         example: "Bachelor of Science"
+ *                       courseOfStudy:
+ *                         type: string
+ *                         example: "Computer Science"
+ *                       yearAdmitted:
+ *                         type: number
+ *                         example: 2015
+ *                       yearGraduated:
+ *                         type: number
+ *                         example: 2019
  *       400:
- *         description: Bad request
+ *         description: Bad request - Invalid input format or application number not found
+ *       500:
+ *         description: Internal server error
  */
 router.post('/', EducationalDetailsController.createEducationalDetails);
 

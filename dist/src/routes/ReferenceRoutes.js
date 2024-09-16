@@ -40,6 +40,23 @@ var router = (0, express_1.Router)();
  *               address:
  *                 type: string
  *                 example: "123 Main St, Anytown, AN"
+ *               referenceDetails:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *                   properties:
+ *                     phone:
+ *                       type: string
+ *                       example: "+1234567890"
+ *                     contactName:
+ *                       type: string
+ *                       example: "Jane Smith"
+ *                     email:
+ *                       type: string
+ *                       example: "jane.smith@example.com"
+ *                     address:
+ *                       type: string
+ *                       example: "456 Elm St, Othertown, OT"
  *     responses:
  *       201:
  *         description: Reference record created or updated successfully

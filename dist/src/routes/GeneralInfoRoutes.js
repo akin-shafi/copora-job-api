@@ -134,13 +134,13 @@ var generalInfoController = new GeneralInfoController_1.GeneralInfoController();
  *       500:
  *         description: Server error
  */
-router.post('/general-info', function (req, res) { return generalInfoController.create(req, res); });
+router.post('/', function (req, res) { return generalInfoController.create(req, res); });
 // Route to get all GeneralInfo entries
-router.get('/general-info', function (req, res) { return generalInfoController.getAll(req, res); });
+router.get('/', function (req, res) { return generalInfoController.getAll(req, res); });
 // Route to get a specific GeneralInfo entry by ID
-router.get('/general-info/:id', function (req, res) { return generalInfoController.getById(req, res); });
+router.get('/:id', function (req, res) { return generalInfoController.getById(req, res); });
 // Route to update a GeneralInfo entry by ID
-router.put('/general-info/:id', function (req, res) { return generalInfoController.update(req, res); });
+router.put('/:id', function (req, res) { return generalInfoController.update(req, res); });
 // Route to delete a GeneralInfo entry by ID
-router.delete('/general-info/:id', function (req, res) { return generalInfoController.delete(req, res); });
+router.delete('/:id', function (req, res) { return generalInfoController.delete(req, res); });
 exports.default = router;
