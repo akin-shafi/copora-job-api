@@ -135,18 +135,18 @@ const generalInfoController = new GeneralInfoController();
  *       500:
  *         description: Server error
  */
-router.post('/general-info', (req, res) => generalInfoController.create(req, res));
+router.post('/', (req, res) => generalInfoController.create(req, res));
 
 // Route to get all GeneralInfo entries
-router.get('/general-info', (req, res) => generalInfoController.getAll(req, res));
+router.get('/', (req, res) => generalInfoController.getAll(req, res));
 
 // Route to get a specific GeneralInfo entry by ID
-router.get('/general-info/:id', (req, res) => generalInfoController.getById(req, res));
+router.get('/:id', (req, res) => generalInfoController.getById(req, res));
 
 // Route to update a GeneralInfo entry by ID
-router.put('/general-info/:id', (req, res) => generalInfoController.update(req, res));
+router.put('/:id', (req, res) => generalInfoController.update(req, res));
 
 // Route to delete a GeneralInfo entry by ID
-router.delete('/general-info/:id', (req, res) => generalInfoController.delete(req, res));
+router.delete('/:id', (req, res) => generalInfoController.delete(req, res));
 
 export default router;
