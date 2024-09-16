@@ -8,39 +8,35 @@ export class EducationalDetailsController {
     // Create or update educational details based on applicationNo
     static async createEducationalDetails(req: Request, res: Response) {
         try {
-            const { applicationNo, educationalDetails } = req.body;
-
+            const { applicationNo, ...educationalDetails } = req.body;
+    
             // Validate applicationNo
             if (!applicationNo) {
                 return res.status(400).json({ statusCode: 400, message: 'Application number is required' });
             }
-
+    
             const existingApplicant = await UserService.findApplicationNo(applicationNo);
-
+    
             if (!existingApplicant) {
                 return res.status(400).json({ statusCode: 400, message: 'Applicant does not exist' });
             }
-
-            // Ensure educationalDetails is an array
-            if (!Array.isArray(educationalDetails) || educationalDetails.length === 0) {
-                return res.status(400).json({ statusCode: 400, message: 'Educational details must be a non-empty array' });
-            }
-
+    
+            // Process each entry
             const updatedEntries = [];
             const newEntries = [];
-
-            for (const entry of educationalDetails) {
+    
+            for (const key in educationalDetails) {
+                const entry = educationalDetails[key];
+    
                 if (entry && typeof entry === 'object') {
                     const { courseOfStudy, ...restOfEntry } = entry;
-
-                    // Ensure `courseOfStudy` is provided
+    
                     if (!courseOfStudy) {
                         return res.status(400).json({ statusCode: 400, message: 'Course of study is required' });
                     }
-
-                    // Check if an entry with the given `courseOfStudy` already exists
-                    const existingEntry = await EducationalDetailsService.findByCourseOfStudy(courseOfStudy);
-
+    
+                    const existingEntry = await EducationalDetailsService.findByApplicationNoAndCourseOfStudy(applicationNo, courseOfStudy);
+    
                     if (existingEntry) {
                         // Update existing entry
                         await EducationalDetailsService.update(existingEntry.id, {
@@ -58,17 +54,19 @@ export class EducationalDetailsController {
                     }
                 }
             }
-
+    
             return res.status(201).json({
                 message: 'Educational details processed',
                 data: { updatedEntries, newEntries }
             });
-
+    
         } catch (error) {
             console.error('Error creating or updating educational details:', error);
             return res.status(500).json({ message: 'Error creating or updating educational details', error: error.message });
         }
     }
+    
+    
 
     // Get Educational Details by applicationNo
     static async getEducationalDetailsByNo(req: Request, res: Response) {

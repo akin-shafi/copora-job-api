@@ -68,55 +68,57 @@ var EducationalDetailsController = /** @class */ (function () {
     // Create or update educational details based on applicationNo
     EducationalDetailsController.createEducationalDetails = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            var _a, applicationNo, educationalDetails, existingApplicant, updatedEntries, newEntries, _i, educationalDetails_1, entry, courseOfStudy, restOfEntry, existingEntry, newEntry, error_1;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
+            var _a, applicationNo, educationalDetails, existingApplicant, updatedEntries, newEntries, _b, _c, _d, _i, key, entry, courseOfStudy, restOfEntry, existingEntry, newEntry, error_1;
+            return __generator(this, function (_e) {
+                switch (_e.label) {
                     case 0:
-                        _b.trys.push([0, 9, , 10]);
-                        _a = req.body, applicationNo = _a.applicationNo, educationalDetails = _a.educationalDetails;
+                        _e.trys.push([0, 9, , 10]);
+                        _a = req.body, applicationNo = _a.applicationNo, educationalDetails = __rest(_a, ["applicationNo"]);
                         // Validate applicationNo
                         if (!applicationNo) {
                             return [2 /*return*/, res.status(400).json({ statusCode: 400, message: 'Application number is required' })];
                         }
                         return [4 /*yield*/, UserService_1.UserService.findApplicationNo(applicationNo)];
                     case 1:
-                        existingApplicant = _b.sent();
+                        existingApplicant = _e.sent();
                         if (!existingApplicant) {
                             return [2 /*return*/, res.status(400).json({ statusCode: 400, message: 'Applicant does not exist' })];
                         }
-                        // Ensure educationalDetails is an array
-                        if (!Array.isArray(educationalDetails) || educationalDetails.length === 0) {
-                            return [2 /*return*/, res.status(400).json({ statusCode: 400, message: 'Educational details must be a non-empty array' })];
-                        }
                         updatedEntries = [];
                         newEntries = [];
-                        _i = 0, educationalDetails_1 = educationalDetails;
-                        _b.label = 2;
+                        _b = educationalDetails;
+                        _c = [];
+                        for (_d in _b)
+                            _c.push(_d);
+                        _i = 0;
+                        _e.label = 2;
                     case 2:
-                        if (!(_i < educationalDetails_1.length)) return [3 /*break*/, 8];
-                        entry = educationalDetails_1[_i];
+                        if (!(_i < _c.length)) return [3 /*break*/, 8];
+                        _d = _c[_i];
+                        if (!(_d in _b)) return [3 /*break*/, 7];
+                        key = _d;
+                        entry = educationalDetails[key];
                         if (!(entry && typeof entry === 'object')) return [3 /*break*/, 7];
                         courseOfStudy = entry.courseOfStudy, restOfEntry = __rest(entry, ["courseOfStudy"]);
-                        // Ensure `courseOfStudy` is provided
                         if (!courseOfStudy) {
                             return [2 /*return*/, res.status(400).json({ statusCode: 400, message: 'Course of study is required' })];
                         }
-                        return [4 /*yield*/, EducationalDetailsService_1.EducationalDetailsService.findByCourseOfStudy(courseOfStudy)];
+                        return [4 /*yield*/, EducationalDetailsService_1.EducationalDetailsService.findByApplicationNoAndCourseOfStudy(applicationNo, courseOfStudy)];
                     case 3:
-                        existingEntry = _b.sent();
+                        existingEntry = _e.sent();
                         if (!existingEntry) return [3 /*break*/, 5];
                         // Update existing entry
                         return [4 /*yield*/, EducationalDetailsService_1.EducationalDetailsService.update(existingEntry.id, __assign(__assign({}, restOfEntry), { applicationNo: applicationNo }))];
                     case 4:
                         // Update existing entry
-                        _b.sent();
+                        _e.sent();
                         updatedEntries.push(__assign(__assign({}, existingEntry), restOfEntry));
                         return [3 /*break*/, 7];
                     case 5: return [4 /*yield*/, EducationalDetailsService_1.EducationalDetailsService.create(__assign({ applicationNo: applicationNo }, entry))];
                     case 6:
-                        newEntry = _b.sent();
+                        newEntry = _e.sent();
                         newEntries.push(newEntry);
-                        _b.label = 7;
+                        _e.label = 7;
                     case 7:
                         _i++;
                         return [3 /*break*/, 2];
@@ -125,7 +127,7 @@ var EducationalDetailsController = /** @class */ (function () {
                             data: { updatedEntries: updatedEntries, newEntries: newEntries }
                         })];
                     case 9:
-                        error_1 = _b.sent();
+                        error_1 = _e.sent();
                         console.error('Error creating or updating educational details:', error_1);
                         return [2 /*return*/, res.status(500).json({ message: 'Error creating or updating educational details', error: error_1.message })];
                     case 10: return [2 /*return*/];

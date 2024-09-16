@@ -55,18 +55,25 @@ var EducationalDetailsService = /** @class */ (function () {
     function EducationalDetailsService() {
     }
     // Find educational details by course of study
-    EducationalDetailsService.findByCourseOfStudy = function (courseOfStudy) {
+    EducationalDetailsService.findByApplicationNoAndCourseOfStudy = function (applicationNo, courseOfStudy) {
         return __awaiter(this, void 0, void 0, function () {
             var error_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
-                        return [4 /*yield*/, educationalDetailsRepository.findOneBy({ courseOfStudy: courseOfStudy })];
-                    case 1: return [2 /*return*/, _a.sent()];
+                        return [4 /*yield*/, educationalDetailsRepository.findOne({
+                                where: {
+                                    applicationNo: applicationNo,
+                                    courseOfStudy: courseOfStudy
+                                }
+                            })];
+                    case 1: 
+                    // Find educational details by both applicationNo and courseOfStudy
+                    return [2 /*return*/, _a.sent()];
                     case 2:
                         error_1 = _a.sent();
-                        throw new Error("Error finding educational details by course of study: ".concat(error_1.message));
+                        throw new Error("Error finding educational details by application number and course of study: ".concat(error_1.message));
                     case 3: return [2 /*return*/];
                 }
             });

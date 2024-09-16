@@ -5,7 +5,7 @@ export class EducationalDetails {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column({ unique: true })
+    @Column()
     applicationNo: string;
 
     @Column()

@@ -6,13 +6,20 @@ export class EducationalDetailsService {
     
 
     // Find educational details by course of study
-    static async findByCourseOfStudy(courseOfStudy: string) {
+    static async findByApplicationNoAndCourseOfStudy(applicationNo: string, courseOfStudy: string) {
         try {
-            return await educationalDetailsRepository.findOneBy({ courseOfStudy });
+            // Find educational details by both applicationNo and courseOfStudy
+            return await educationalDetailsRepository.findOne({
+                where: {
+                    applicationNo,
+                    courseOfStudy
+                }
+            });
         } catch (error) {
-            throw new Error(`Error finding educational details by course of study: ${error.message}`);
+            throw new Error(`Error finding educational details by application number and course of study: ${error.message}`);
         }
     }
+    
 
     // Create a new educational detail
     static async create(data: Partial<EducationalDetails>): Promise<EducationalDetails> {

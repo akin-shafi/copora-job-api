@@ -42,7 +42,8 @@ data_source_1.AppDataSource.initialize()
     var port = process.env.PORT || 8000;
     var url = isLocal ? process.env.LOCAL_URL : process.env.REMOTE_URL;
     // Trust the proxy (important when running behind a load balancer or proxy)
-    app.set('trust proxy', true); // Add this line
+    // app.set('trust proxy', true);  // Add this line
+    app.set('trust proxy', 1); // Trust the first proxy (like Nginx)
     app.use((0, cors_1.default)({
         origin: [
             'http://localhost:3000', // React

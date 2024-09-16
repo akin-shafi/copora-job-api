@@ -19,7 +19,7 @@ var EducationalDetails = /** @class */ (function () {
         __metadata("design:type", Number)
     ], EducationalDetails.prototype, "id", void 0);
     __decorate([
-        (0, typeorm_1.Column)({ unique: true }),
+        (0, typeorm_1.Column)(),
         __metadata("design:type", String)
     ], EducationalDetails.prototype, "applicationNo", void 0);
     __decorate([

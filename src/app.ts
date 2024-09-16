@@ -43,7 +43,8 @@ AppDataSource.initialize()
     const url = isLocal ? process.env.LOCAL_URL : process.env.REMOTE_URL;
 
     // Trust the proxy (important when running behind a load balancer or proxy)
-    app.set('trust proxy', true);  // Add this line
+    // app.set('trust proxy', true);  // Add this line
+    app.set('trust proxy', 1); // Trust the first proxy (like Nginx)
 
     app.use(cors({
       origin: [
