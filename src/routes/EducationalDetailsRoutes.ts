@@ -14,7 +14,7 @@ const router = Router();
  * @swagger
  * /educational-details:
  *   post:
- *     summary: Create a new Educational Details record
+ *     summary: Create or update multiple Educational Details records
  *     tags: [EducationalDetails]
  *     requestBody:
  *       required: true
@@ -26,24 +26,29 @@ const router = Router();
  *               applicationNo:
  *                 type: string
  *                 example: "APP12345"
- *               schoolName:
- *                 type: string
- *                 example: "Springfield University"
- *               certificateObtained:
- *                 type: string
- *                 example: "Bachelor of Science"
- *               courseOfStudy:
- *                 type: string
- *                 example: "Computer Science"
- *               yearAdmitted:
- *                 type: number
- *                 example: 2015
- *               yearGraduated:
- *                 type: number
- *                 example: 2019
+ *               educationalDetails:
+ *                 type: array
+ *                 items:
+ *                   type: object
+ *                   properties:
+ *                     schoolName:
+ *                       type: string
+ *                       example: "Springfield University"
+ *                     certificateObtained:
+ *                       type: string
+ *                       example: "Bachelor of Science"
+ *                     courseOfStudy:
+ *                       type: string
+ *                       example: "Computer Science"
+ *                     yearAdmitted:
+ *                       type: number
+ *                       example: 2015
+ *                     yearGraduated:
+ *                       type: number
+ *                       example: 2019
  *     responses:
  *       201:
- *         description: Educational Details record created successfully
+ *         description: Educational Details records created or updated successfully
  *       400:
  *         description: Bad request
  */
