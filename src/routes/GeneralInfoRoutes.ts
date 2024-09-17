@@ -16,7 +16,7 @@ const generalInfoController = new GeneralInfoController();
  *     requestBody:
  *       required: true
  *       content:
- *         application/json:
+ *         multipart/form-data:
  *           schema:
  *             type: object
  *             properties:
@@ -49,19 +49,22 @@ const generalInfoController = new GeneralInfoController();
  *                 description: The level 2 food hygiene certificate.
  *               level2FoodHygieneCertificateUpload:
  *                 type: string
- *                 description: The upload URL for the level 2 food hygiene certificate.
+ *                 format: binary
+ *                 description: The upload file for the level 2 food hygiene certificate.
  *               personalLicenseHolder:
  *                 type: boolean
  *                 description: Whether the applicant is a personal license holder.
  *               personalLicenseCertificateUpload:
  *                 type: string
- *                 description: The upload URL for the personal license certificate.
+ *                 format: binary
+ *                 description: The upload file for the personal license certificate.
  *               dbsDisclosureAndBarringService:
  *                 type: boolean
  *                 description: Whether DBS (Disclosure and Barring Service) is passed.
  *               dbsCertificateUpload:
  *                 type: string
- *                 description: The upload URL for the DBS certificate.
+ *                 format: binary
+ *                 description: The upload file for the DBS certificate.
  *             required:
  *               - applicationNo
  *               - plateWaiting
@@ -117,19 +120,22 @@ const generalInfoController = new GeneralInfoController();
  *                   description: The level 2 food hygiene certificate.
  *                 level2FoodHygieneCertificateUpload:
  *                   type: string
- *                   description: The upload URL for the level 2 food hygiene certificate.
+ *                   format: binary
+ *                   description: The upload file for the level 2 food hygiene certificate.
  *                 personalLicenseHolder:
  *                   type: boolean
  *                   description: Whether the applicant is a personal license holder.
  *                 personalLicenseCertificateUpload:
  *                   type: string
- *                   description: The upload URL for the personal license certificate.
+ *                   format: binary
+ *                   description: The upload file for the personal license certificate.
  *                 dbsDisclosureAndBarringService:
  *                   type: boolean
  *                   description: Whether DBS (Disclosure and Barring Service) is passed.
  *                 dbsCertificateUpload:
  *                   type: string
- *                   description: The upload URL for the DBS certificate.
+ *                   format: binary
+ *                   description: The upload file for the DBS certificate.
  *       400:
  *         description: Bad request, required fields are missing or invalid
  *       500:

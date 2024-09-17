@@ -2,33 +2,60 @@ import { Request, Response } from 'express';
 import { AppDataSource } from '../data-source';
 import { GeneralInfo } from '../entities/GeneralInfoEntity';
 import { GeneralInfoService } from '../services/GeneralInfoService';
-
 import { UserService } from '../services/UserService';
+import path from 'path';
+import fs from 'fs';
+import uploadDocumentsAndImages from '../multerConfig'; // Import multer config
 
 export class GeneralInfoController {
     private generalInfoRepository = AppDataSource.getRepository(GeneralInfo);
 
     async create(req: Request, res: Response) {
-        const { applicationNo } = req.body;
+        // Use Multer middleware to handle file uploads
+        uploadDocumentsAndImages.fields([
+            { name: 'level2FoodHygieneCertificateUpload', maxCount: 1 },
+            { name: 'personalLicenseCertificateUpload', maxCount: 1 },
+            { name: 'dbsCertificateUpload', maxCount: 1 }
+        ])(req, res, async (err: any) => {
+            if (err) {
+                return res.status(400).json({ statusCode: 400, message: 'File upload error', error: err.message });
+            }
 
-        const existingApplicant = await UserService.findApplicationNo(applicationNo);
+            const { applicationNo } = req.body;
 
-        if (!existingApplicant) {
-            res.status(400).json({ statusCode: 400, message: 'Applicant does not exist' });
-            return; // Ensure to return here to avoid further execution
-        }
+            // Check if applicant exists
+            const existingApplicant = await UserService.findApplicationNo(applicationNo);
+            if (!existingApplicant) {
+                return res.status(400).json({ statusCode: 400, message: 'Applicant does not exist' });
+            }
 
-        const existingEntry = await GeneralInfoService.getByApplicationNo(applicationNo);
+            // Check if general info for the application already exists
+            const existingEntry = await GeneralInfoService.getByApplicationNo(applicationNo);
 
-        if (existingEntry) {
-            const updatedEntry = await GeneralInfoService.updateByApplicationNo(applicationNo, req.body);
-            res.status(200).json({ message: 'General Info updated', data: updatedEntry });
-          } else {
-            const generalInfo = this.generalInfoRepository.create(req.body);
-            res.status(201).json({ message: 'General Info created', data: generalInfo });
-          }
+            // Prepare file paths if files are uploaded
+            const level2FoodHygieneCertificateUpload = req.files?.['level2FoodHygieneCertificateUpload']?.[0]?.path || null;
+            const personalLicenseCertificateUpload = req.files?.['personalLicenseCertificateUpload']?.[0]?.path || null;
+            const dbsCertificateUpload = req.files?.['dbsCertificateUpload']?.[0]?.path || null;
 
+            const generalInfoData = {
+                ...req.body,
+                level2FoodHygieneCertificateUpload,
+                personalLicenseCertificateUpload,
+                dbsCertificateUpload
+            };
+
+            // Update existing entry or create a new one
+            if (existingEntry) {
+                const updatedEntry = await GeneralInfoService.updateByApplicationNo(applicationNo, generalInfoData);
+                return res.status(200).json({ message: 'General Info updated', data: updatedEntry });
+            } else {
+                const newEntry = this.generalInfoRepository.create(generalInfoData);
+                const savedEntry = await this.generalInfoRepository.save(newEntry);
+                return res.status(201).json({ message: 'General Info created', data: savedEntry });
+            }
+        });
     }
+
 
     async getAll(req: Request, res: Response) {
         const generalInfo = await this.generalInfoRepository.find();

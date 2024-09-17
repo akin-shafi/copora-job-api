@@ -1,4 +1,15 @@
 "use strict";
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -35,45 +46,67 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.GeneralInfoController = void 0;
 var data_source_1 = require("../data-source");
 var GeneralInfoEntity_1 = require("../entities/GeneralInfoEntity");
 var GeneralInfoService_1 = require("../services/GeneralInfoService");
 var UserService_1 = require("../services/UserService");
+var multerConfig_1 = __importDefault(require("../multerConfig")); // Import multer config
 var GeneralInfoController = /** @class */ (function () {
     function GeneralInfoController() {
         this.generalInfoRepository = data_source_1.AppDataSource.getRepository(GeneralInfoEntity_1.GeneralInfo);
     }
     GeneralInfoController.prototype.create = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
-            var applicationNo, existingApplicant, existingEntry, updatedEntry, generalInfo;
+            var _this = this;
             return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        applicationNo = req.body.applicationNo;
-                        return [4 /*yield*/, UserService_1.UserService.findApplicationNo(applicationNo)];
-                    case 1:
-                        existingApplicant = _a.sent();
-                        if (!existingApplicant) {
-                            res.status(400).json({ statusCode: 400, message: 'Applicant does not exist' });
-                            return [2 /*return*/]; // Ensure to return here to avoid further execution
+                // Use Multer middleware to handle file uploads
+                multerConfig_1.default.fields([
+                    { name: 'level2FoodHygieneCertificateUpload', maxCount: 1 },
+                    { name: 'personalLicenseCertificateUpload', maxCount: 1 },
+                    { name: 'dbsCertificateUpload', maxCount: 1 }
+                ])(req, res, function (err) { return __awaiter(_this, void 0, void 0, function () {
+                    var applicationNo, existingApplicant, existingEntry, level2FoodHygieneCertificateUpload, personalLicenseCertificateUpload, dbsCertificateUpload, generalInfoData, updatedEntry, newEntry, savedEntry;
+                    var _a, _b, _c, _d, _e, _f, _g, _h, _j;
+                    return __generator(this, function (_k) {
+                        switch (_k.label) {
+                            case 0:
+                                if (err) {
+                                    return [2 /*return*/, res.status(400).json({ statusCode: 400, message: 'File upload error', error: err.message })];
+                                }
+                                applicationNo = req.body.applicationNo;
+                                return [4 /*yield*/, UserService_1.UserService.findApplicationNo(applicationNo)];
+                            case 1:
+                                existingApplicant = _k.sent();
+                                if (!existingApplicant) {
+                                    return [2 /*return*/, res.status(400).json({ statusCode: 400, message: 'Applicant does not exist' })];
+                                }
+                                return [4 /*yield*/, GeneralInfoService_1.GeneralInfoService.getByApplicationNo(applicationNo)];
+                            case 2:
+                                existingEntry = _k.sent();
+                                level2FoodHygieneCertificateUpload = ((_c = (_b = (_a = req.files) === null || _a === void 0 ? void 0 : _a['level2FoodHygieneCertificateUpload']) === null || _b === void 0 ? void 0 : _b[0]) === null || _c === void 0 ? void 0 : _c.path) || null;
+                                personalLicenseCertificateUpload = ((_f = (_e = (_d = req.files) === null || _d === void 0 ? void 0 : _d['personalLicenseCertificateUpload']) === null || _e === void 0 ? void 0 : _e[0]) === null || _f === void 0 ? void 0 : _f.path) || null;
+                                dbsCertificateUpload = ((_j = (_h = (_g = req.files) === null || _g === void 0 ? void 0 : _g['dbsCertificateUpload']) === null || _h === void 0 ? void 0 : _h[0]) === null || _j === void 0 ? void 0 : _j.path) || null;
+                                generalInfoData = __assign(__assign({}, req.body), { level2FoodHygieneCertificateUpload: level2FoodHygieneCertificateUpload, personalLicenseCertificateUpload: personalLicenseCertificateUpload, dbsCertificateUpload: dbsCertificateUpload });
+                                if (!existingEntry) return [3 /*break*/, 4];
+                                return [4 /*yield*/, GeneralInfoService_1.GeneralInfoService.updateByApplicationNo(applicationNo, generalInfoData)];
+                            case 3:
+                                updatedEntry = _k.sent();
+                                return [2 /*return*/, res.status(200).json({ message: 'General Info updated', data: updatedEntry })];
+                            case 4:
+                                newEntry = this.generalInfoRepository.create(generalInfoData);
+                                return [4 /*yield*/, this.generalInfoRepository.save(newEntry)];
+                            case 5:
+                                savedEntry = _k.sent();
+                                return [2 /*return*/, res.status(201).json({ message: 'General Info created', data: savedEntry })];
                         }
-                        return [4 /*yield*/, GeneralInfoService_1.GeneralInfoService.getByApplicationNo(applicationNo)];
-                    case 2:
-                        existingEntry = _a.sent();
-                        if (!existingEntry) return [3 /*break*/, 4];
-                        return [4 /*yield*/, GeneralInfoService_1.GeneralInfoService.updateByApplicationNo(applicationNo, req.body)];
-                    case 3:
-                        updatedEntry = _a.sent();
-                        res.status(200).json({ message: 'General Info updated', data: updatedEntry });
-                        return [3 /*break*/, 5];
-                    case 4:
-                        generalInfo = this.generalInfoRepository.create(req.body);
-                        res.status(201).json({ message: 'General Info created', data: generalInfo });
-                        _a.label = 5;
-                    case 5: return [2 /*return*/];
-                }
+                    });
+                }); });
+                return [2 /*return*/];
             });
         });
     };
