@@ -74,11 +74,11 @@ var generalInfoController = new GeneralInfoController_1.GeneralInfoController();
  *               - barista
  *               - supervising
  *               - level2FoodHygieneCertificate
- *               - level2FoodHygieneCertificateUpload
+ 
  *               - personalLicenseHolder
- *               - personalLicenseCertificateUpload
+
  *               - dbsDisclosureAndBarringService
- *               - dbsCertificateUpload
+
  *     responses:
  *       201:
  *         description: Successfully created the General Info entry
