@@ -128,7 +128,7 @@ var ReferenceService = /** @class */ (function () {
             });
         });
     };
-    ReferenceService.findByPhone = function (phone) {
+    ReferenceService.findByApplicationNoAndPhone = function (applicationNo, phone) {
         return __awaiter(this, void 0, void 0, function () {
             var entry, error_1;
             return __generator(this, function (_a) {
@@ -136,15 +136,18 @@ var ReferenceService = /** @class */ (function () {
                     case 0:
                         _a.trys.push([0, 2, , 3]);
                         return [4 /*yield*/, referenceRepository.findOne({
-                                where: { phone: phone }
+                                where: {
+                                    applicationNo: applicationNo,
+                                    phone: phone
+                                }
                             })];
                     case 1:
                         entry = _a.sent();
                         return [2 /*return*/, entry || null]; // Return null if entry is not found
                     case 2:
                         error_1 = _a.sent();
-                        console.error('Error finding professional details by referenceContactPhone:', error_1);
-                        throw new Error('Error retrieving professional details');
+                        console.error('Error finding reference details by applicationNo and phone:', error_1);
+                        throw new Error('Error retrieving reference details');
                     case 3: return [2 /*return*/];
                 }
             });

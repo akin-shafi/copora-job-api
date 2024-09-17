@@ -49,20 +49,23 @@ export class ReferenceService {
         return 'Reference deleted';
     }
 
-
-    static async findByPhone(phone: string): Promise<Reference | null> {
+    static async findByApplicationNoAndPhone(applicationNo: string, phone: string): Promise<Reference | null> {
         try {
-            // Find the professional details by phone
+            // Find the reference details by applicationNo and phone
             const entry = await referenceRepository.findOne({
-                where: { phone }
+                where: {
+                    applicationNo,
+                    phone
+                }
             });
-      
+    
             return entry || null; // Return null if entry is not found
         } catch (error) {
-            console.error('Error finding professional details by referenceContactPhone:', error);
-            throw new Error('Error retrieving professional details');
+            console.error('Error finding reference details by applicationNo and phone:', error);
+            throw new Error('Error retrieving reference details');
         }
     }
+    
 
 
     static async update(id: number, data: Partial<Reference>): Promise<Reference| null> {
