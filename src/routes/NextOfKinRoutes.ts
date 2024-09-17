@@ -95,11 +95,11 @@ const nextOfKinController = new NextOfKinController();
  *       500:
  *         description: Internal Server Error
  */
-router.post('/next-of-kin', (req, res) => nextOfKinController.create(req, res));
+router.post('/', (req, res) => nextOfKinController.create(req, res));
 
-router.get('/next-of-kin', (req, res) => nextOfKinController.getAll(req, res));
-router.get('/next-of-kin/:id', (req, res) => nextOfKinController.getById(req, res));
-router.put('/next-of-kin/:id', (req, res) => nextOfKinController.update(req, res));
-router.delete('/next-of-kin/:id', (req, res) => nextOfKinController.delete(req, res));
+router.get('/', (req, res) => nextOfKinController.getAll(req, res));
+router.get('/:id', (req, res) => nextOfKinController.getById(req, res));
+router.put('/:id', (req, res) => nextOfKinController.update(req, res));
+router.delete('/:id', (req, res) => nextOfKinController.delete(req, res));
 
 export default router;

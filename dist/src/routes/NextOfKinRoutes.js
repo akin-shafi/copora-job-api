@@ -95,9 +95,9 @@ var nextOfKinController = new NextOfKinController_1.NextOfKinController();
  *       500:
  *         description: Internal Server Error
  */
-router.post('/next-of-kin', function (req, res) { return nextOfKinController.create(req, res); });
-router.get('/next-of-kin', function (req, res) { return nextOfKinController.getAll(req, res); });
-router.get('/next-of-kin/:id', function (req, res) { return nextOfKinController.getById(req, res); });
-router.put('/next-of-kin/:id', function (req, res) { return nextOfKinController.update(req, res); });
-router.delete('/next-of-kin/:id', function (req, res) { return nextOfKinController.delete(req, res); });
+router.post('/', function (req, res) { return nextOfKinController.create(req, res); });
+router.get('/', function (req, res) { return nextOfKinController.getAll(req, res); });
+router.get('/:id', function (req, res) { return nextOfKinController.getById(req, res); });
+router.put('/:id', function (req, res) { return nextOfKinController.update(req, res); });
+router.delete('/:id', function (req, res) { return nextOfKinController.delete(req, res); });
 exports.default = router;
