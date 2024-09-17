@@ -18,15 +18,15 @@ export class NextOfKin {
     @Column()
     lastname: string;
 
-    @Column()
+    @Column({nullable: true })
     relationship: string;
 
-    @Column()
+    @Column({nullable: true })
     address: string;
 
     @Column()
     email: string;
 
-    @Column()
+    @Column({nullable: true })
     phone: string;
 }

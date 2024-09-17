@@ -31,11 +31,11 @@ var NextOfKin = /** @class */ (function () {
         __metadata("design:type", String)
     ], NextOfKin.prototype, "lastname", void 0);
     __decorate([
-        (0, typeorm_1.Column)(),
+        (0, typeorm_1.Column)({ nullable: true }),
         __metadata("design:type", String)
     ], NextOfKin.prototype, "relationship", void 0);
     __decorate([
-        (0, typeorm_1.Column)(),
+        (0, typeorm_1.Column)({ nullable: true }),
         __metadata("design:type", String)
     ], NextOfKin.prototype, "address", void 0);
     __decorate([
@@ -43,7 +43,7 @@ var NextOfKin = /** @class */ (function () {
         __metadata("design:type", String)
     ], NextOfKin.prototype, "email", void 0);
     __decorate([
-        (0, typeorm_1.Column)(),
+        (0, typeorm_1.Column)({ nullable: true }),
         __metadata("design:type", String)
     ], NextOfKin.prototype, "phone", void 0);
     NextOfKin = __decorate([

@@ -21,13 +21,19 @@ var nextOfKinController = new NextOfKinController_1.NextOfKinController();
  *               applicationNo:
  *                 type: string
  *                 description: The application number of the applicant
- *               name:
+ *               firstname:
  *                 type: string
- *                 description: Name of the Next of Kin
+ *                 description: FirstName of the Next of Kin
+ *               lastname:
+ *                 type: string
+ *                 description: lastName of the Next of Kin
  *               relationship:
  *                 type: string
  *                 description: Relationship of the Next of Kin to the applicant
- *               phoneNumber:
+ *               email:
+ *                 type: string
+ *                 description: email of the Next of Kin
+ *               phone:
  *                 type: string
  *                 description: Phone number of the Next of Kin
  *               address:
@@ -35,7 +41,8 @@ var nextOfKinController = new NextOfKinController_1.NextOfKinController();
  *                 description: Address of the Next of Kin
  *             required:
  *               - applicationNo
- *               - name
+ *               - firstname
+ *               - lastname
  *               - relationship
  *     responses:
  *       201:
@@ -56,9 +63,13 @@ var nextOfKinController = new NextOfKinController_1.NextOfKinController();
  *                       description: ID of the newly created entry
  *                     applicationNo:
  *                       type: string
- *                     name:
+ *                     firstname:
+ *                       type: string
+ *                     lastname:
  *                       type: string
  *                     relationship:
+ *                       type: string
+ *                     email:
  *                       type: string
  *                     phoneNumber:
  *                       type: string
@@ -82,7 +93,11 @@ var nextOfKinController = new NextOfKinController_1.NextOfKinController();
  *                       description: ID of the updated entry
  *                     applicationNo:
  *                       type: string
- *                     name:
+ *                     firstname:
+ *                       type: string
+ *                     lastname:
+ *                       type: string
+ *                     email:
  *                       type: string
  *                     relationship:
  *                       type: string
