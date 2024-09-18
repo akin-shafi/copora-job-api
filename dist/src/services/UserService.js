@@ -316,9 +316,37 @@ var UserService = /** @class */ (function () {
             });
         });
     };
+    UserService.updateOnboardingStatus = function (applicationNo, status) {
+        return __awaiter(this, void 0, void 0, function () {
+            var user, error_5;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 3, , 4]);
+                        return [4 /*yield*/, userRepository.findOne({ where: { applicationNo: applicationNo } })];
+                    case 1:
+                        user = _a.sent();
+                        if (!user) {
+                            throw new Error("User with application number ".concat(applicationNo, " not found"));
+                        }
+                        // Update the onboarding status
+                        user.onboardingStatus = status;
+                        return [4 /*yield*/, userRepository.save(user)];
+                    case 2: 
+                    // Save the updated user entity
+                    return [2 /*return*/, _a.sent()];
+                    case 3:
+                        error_5 = _a.sent();
+                        console.error('Error updating onboarding status:', error_5);
+                        throw new Error('Could not update onboarding status');
+                    case 4: return [2 /*return*/];
+                }
+            });
+        });
+    };
     UserService.prototype.findByResetToken = function (resetPasswordToken) {
         return __awaiter(this, void 0, void 0, function () {
-            var error_5;
+            var error_6;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -331,8 +359,8 @@ var UserService = /** @class */ (function () {
                             })];
                     case 1: return [2 /*return*/, _a.sent()];
                     case 2:
-                        error_5 = _a.sent();
-                        console.error('Error finding user by reset token:', error_5);
+                        error_6 = _a.sent();
+                        console.error('Error finding user by reset token:', error_6);
                         throw new Error('Could not find user by reset token');
                     case 3: return [2 /*return*/];
                 }
@@ -341,7 +369,7 @@ var UserService = /** @class */ (function () {
     };
     UserService.prototype.generateAndSendTwoFactorToken = function (id, loginType) {
         return __awaiter(this, void 0, void 0, function () {
-            var user, twoFactorToken, error_6;
+            var user, twoFactorToken, error_7;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -371,8 +399,8 @@ var UserService = /** @class */ (function () {
                         _a.label = 6;
                     case 6: return [3 /*break*/, 8];
                     case 7:
-                        error_6 = _a.sent();
-                        console.error('Error generating or sending two-factor token:', error_6);
+                        error_7 = _a.sent();
+                        console.error('Error generating or sending two-factor token:', error_7);
                         throw new Error('Could not generate or send two-factor token');
                     case 8: return [2 /*return*/];
                 }
@@ -381,7 +409,7 @@ var UserService = /** @class */ (function () {
     };
     UserService.prototype.verifyTwoFactorCode = function (email, twoFactorCode) {
         return __awaiter(this, void 0, void 0, function () {
-            var hashedCode, user, expiredUser, error_7;
+            var hashedCode, user, expiredUser, error_8;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -419,8 +447,8 @@ var UserService = /** @class */ (function () {
                         _a.sent();
                         return [2 /*return*/, 'Two-factor verification successful.'];
                     case 5:
-                        error_7 = _a.sent();
-                        console.error('Error verifying two-factor code:', error_7);
+                        error_8 = _a.sent();
+                        console.error('Error verifying two-factor code:', error_8);
                         throw new Error('Error verifying two-factor code');
                     case 6: return [2 /*return*/];
                 }
@@ -429,7 +457,7 @@ var UserService = /** @class */ (function () {
     };
     UserService.prototype.updateData = function (user) {
         return __awaiter(this, void 0, void 0, function () {
-            var error_8;
+            var error_9;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -437,8 +465,8 @@ var UserService = /** @class */ (function () {
                         return [4 /*yield*/, userRepository.save(user)];
                     case 1: return [2 /*return*/, _a.sent()];
                     case 2:
-                        error_8 = _a.sent();
-                        console.error('Error updating user:', error_8);
+                        error_9 = _a.sent();
+                        console.error('Error updating user:', error_9);
                         throw new Error('Could not update user');
                     case 3: return [2 /*return*/];
                 }

@@ -3,6 +3,7 @@ import { AgreementConsentService } from '../services/AgreementConsentService';
 import { UserService } from '../services/UserService';
 import {  sendOnboardingCompletionEmail } from '../lib/emailActions';
 import { AgreementConsent } from '../entities/AgreementConsentEntity';
+import { OnboardingStatus } from '../constants';
 
  
 export class AgreementConsentController {
@@ -32,6 +33,10 @@ export class AgreementConsentController {
                 agreementConsent = await AgreementConsentService.create(req.body);
                 res.status(201).send({ message: 'Agreement Consent created', data: agreementConsent });
             }
+
+            // Update the user's onboarding status to "OnboardingCompleted"
+            // existingApplicant.onboardingStatus = OnboardingStatus.OnboardingCompleted;
+            await UserService.updateOnboardingStatus(applicationNo, OnboardingStatus.OnboardingCompleted);
 
             // Fetch the user's email and send the onboarding completion email
             const userEmail = existingApplicant.email;

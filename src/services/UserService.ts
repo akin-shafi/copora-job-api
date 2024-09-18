@@ -6,6 +6,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import crypto from 'crypto';
 import { sendTwoFactorCodeEmail, sendLoginLink } from '../lib/emailActions';
+import { OnboardingStatus } from '../constants';
 
 const  userRepository = AppDataSource.getRepository(User);
 
@@ -193,6 +194,26 @@ export class UserService {
   static async findApplicationNo(applicationNo: string) {
     return await userRepository.findOneBy({ applicationNo });
   }
+
+  static async updateOnboardingStatus(applicationNo: string, status: OnboardingStatus): Promise<User> {
+    try {
+        // Find the user by application number
+        const user = await userRepository.findOne({ where: { applicationNo } });
+
+        if (!user) {
+            throw new Error(`User with application number ${applicationNo} not found`);
+        }
+
+        // Update the onboarding status
+        user.onboardingStatus = status;
+
+        // Save the updated user entity
+        return await userRepository.save(user);
+    } catch (error) {
+        console.error('Error updating onboarding status:', error);
+        throw new Error('Could not update onboarding status');
+    }
+}
 
   async findByResetToken(resetPasswordToken: string): Promise<User | null> {
     try {

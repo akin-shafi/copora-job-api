@@ -40,6 +40,7 @@ exports.AgreementConsentController = void 0;
 var AgreementConsentService_1 = require("../services/AgreementConsentService");
 var UserService_1 = require("../services/UserService");
 var emailActions_1 = require("../lib/emailActions");
+var constants_1 = require("../constants");
 var AgreementConsentController = /** @class */ (function () {
     function AgreementConsentController() {
     }
@@ -50,7 +51,7 @@ var AgreementConsentController = /** @class */ (function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        _a.trys.push([0, 8, , 9]);
+                        _a.trys.push([0, 9, , 10]);
                         applicationNo = req.body.applicationNo;
                         return [4 /*yield*/, UserService_1.UserService.findApplicationNo(applicationNo)];
                     case 1:
@@ -75,21 +76,28 @@ var AgreementConsentController = /** @class */ (function () {
                         agreementConsent = _a.sent();
                         res.status(201).send({ message: 'Agreement Consent created', data: agreementConsent });
                         _a.label = 6;
-                    case 6:
+                    case 6: 
+                    // Update the user's onboarding status to "OnboardingCompleted"
+                    // existingApplicant.onboardingStatus = OnboardingStatus.OnboardingCompleted;
+                    return [4 /*yield*/, UserService_1.UserService.updateOnboardingStatus(applicationNo, constants_1.OnboardingStatus.OnboardingCompleted)];
+                    case 7:
+                        // Update the user's onboarding status to "OnboardingCompleted"
+                        // existingApplicant.onboardingStatus = OnboardingStatus.OnboardingCompleted;
+                        _a.sent();
                         userEmail = existingApplicant.email;
                         emailData = {
                             firstName: existingApplicant.firstName,
                             email: userEmail,
                         };
                         return [4 /*yield*/, (0, emailActions_1.sendOnboardingCompletionEmail)(emailData)];
-                    case 7:
-                        _a.sent();
-                        return [3 /*break*/, 9];
                     case 8:
+                        _a.sent();
+                        return [3 /*break*/, 10];
+                    case 9:
                         error_1 = _a.sent();
                         res.status(500).send({ message: 'Error creating or updating Agreement Consent', error: error_1.message });
-                        return [3 /*break*/, 9];
-                    case 9: return [2 /*return*/];
+                        return [3 /*break*/, 10];
+                    case 10: return [2 /*return*/];
                 }
             });
         });

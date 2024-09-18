@@ -11,6 +11,8 @@ import { v4 as uuidv4 } from 'uuid'; // For generating verification tokens
 import { BASE_URL } from '../config';
 import axios from 'axios'; // Add axios for HTTP requests
 import pdfParse from 'pdf-parse';
+import { OnboardingStatus } from '../constants';
+
 
 const userService = new UserService();
 
@@ -241,6 +243,7 @@ class UserController {
       user.resetPasswordToken = null;
       user.resetPasswordExpires = null;
       user.accountStatus = true;
+      user.onboardingStatus = OnboardingStatus.OnboardingNotCompleted;
       await userService.updateData(user);
 
       res.status(200).json({ statusCode: 200, message: 'Password has been reset successfully' });

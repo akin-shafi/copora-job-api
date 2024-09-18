@@ -61,6 +61,7 @@ var emailActions_1 = require("../lib/emailActions");
 var uuid_1 = require("uuid"); // For generating verification tokens
 var config_1 = require("../config");
 var axios_1 = __importDefault(require("axios")); // Add axios for HTTP requests
+var constants_1 = require("../constants");
 var userService = new UserService_1.UserService();
 // Configure Cloudinary
 cloudinary_1.v2.config({
@@ -335,6 +336,7 @@ var UserController = /** @class */ (function () {
                         user.resetPasswordToken = null;
                         user.resetPasswordExpires = null;
                         user.accountStatus = true;
+                        user.onboardingStatus = constants_1.OnboardingStatus.OnboardingNotCompleted;
                         return [4 /*yield*/, userService.updateData(user)];
                     case 3:
                         _b.sent();
