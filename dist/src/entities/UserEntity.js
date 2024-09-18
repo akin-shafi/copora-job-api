@@ -50,6 +50,7 @@ var User = /** @class */ (function () {
     __decorate([
         (0, typeorm_1.Column)({
             type: 'varchar',
+            nullable: true,
             default: constants_1.OnboardingStatus.InvitationSent,
         }),
         __metadata("design:type", String)

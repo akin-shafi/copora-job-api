@@ -5,7 +5,7 @@ export class GeneralInfo {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column({ unique: true })
+    @Column({ unique: true, nullable: true })
     applicationNo: string;
 
     @Column()
@@ -29,7 +29,7 @@ export class GeneralInfo {
     @Column()
     supervising: boolean;
 
-    @Column()
+    @Column({ nullable: true })
     level2FoodHygieneCertificate: string;
 
     @Column()

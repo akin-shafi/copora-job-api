@@ -20,3 +20,9 @@ var OnboardingStatus;
     OnboardingStatus["OnboardingCompleted"] = "Onboarding Completed";
     OnboardingStatus["Approved"] = "Approved";
 })(OnboardingStatus || (exports.OnboardingStatus = OnboardingStatus = {}));
+// export enum Status {
+//   InvitationSent = 1,
+//   OnboardingNotCompleted,
+//   OnboardingCompleted,
+//   Approved,
+// }

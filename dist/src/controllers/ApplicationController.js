@@ -41,6 +41,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ApplicationController = void 0;
 var ApplicationService_1 = require("../services/ApplicationService");
+var constants_1 = require("../constants");
 var pdf_parse_1 = __importDefault(require("pdf-parse"));
 var ApplicationController = /** @class */ (function () {
     function ApplicationController() {
@@ -48,6 +49,17 @@ var ApplicationController = /** @class */ (function () {
     // constructor() {
     //   this.autoFillApplicationFormWithUploadedResume = this.autoFillApplicationFormWithUploadedResume.bind(this);
     // }
+    ApplicationController.getOnboardingStatus = function (req, res) {
+        return __awaiter(this, void 0, void 0, function () {
+            var statuses;
+            return __generator(this, function (_a) {
+                console.log('Onboarding status route hit');
+                statuses = Object.values(constants_1.OnboardingStatus);
+                res.status(200).json({ success: true, data: statuses });
+                return [2 /*return*/];
+            });
+        });
+    };
     ApplicationController.createApplication = function (req, res) {
         return __awaiter(this, void 0, void 0, function () {
             var result, error_1;

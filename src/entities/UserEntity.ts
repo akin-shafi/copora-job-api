@@ -30,6 +30,7 @@ export class User {
 
   @Column({
     type: 'varchar',
+    nullable: true,
     default: OnboardingStatus.InvitationSent,
   })
   onboardingStatus: OnboardingStatus;

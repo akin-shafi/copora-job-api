@@ -19,7 +19,7 @@ var GeneralInfo = /** @class */ (function () {
         __metadata("design:type", Number)
     ], GeneralInfo.prototype, "id", void 0);
     __decorate([
-        (0, typeorm_1.Column)({ unique: true }),
+        (0, typeorm_1.Column)({ unique: true, nullable: true }),
         __metadata("design:type", String)
     ], GeneralInfo.prototype, "applicationNo", void 0);
     __decorate([
@@ -51,7 +51,7 @@ var GeneralInfo = /** @class */ (function () {
         __metadata("design:type", Boolean)
     ], GeneralInfo.prototype, "supervising", void 0);
     __decorate([
-        (0, typeorm_1.Column)(),
+        (0, typeorm_1.Column)({ nullable: true }),
         __metadata("design:type", String)
     ], GeneralInfo.prototype, "level2FoodHygieneCertificate", void 0);
     __decorate([

@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { ApplicationService } from '../services/ApplicationService';
+import { OnboardingStatus } from '../constants';
 import pdfParse from 'pdf-parse';
 
 export class ApplicationController {
@@ -8,6 +9,14 @@ export class ApplicationController {
   //   this.autoFillApplicationFormWithUploadedResume = this.autoFillApplicationFormWithUploadedResume.bind(this);
 
   // }
+
+  static async getOnboardingStatus(req: Request, res: Response) {
+    console.log('Onboarding status route hit');
+    const statuses = Object.values(OnboardingStatus);
+    res.status(200).json({ success: true, data: statuses });
+  }
+
+  
   static async createApplication(req: Request, res: Response) {
     try {
       const result = await ApplicationService.createApplication(req.body);

@@ -17,4 +17,11 @@
     OnboardingCompleted = "Onboarding Completed",
     Approved = "Approved",
   }
+
+  // export enum Status {
+  //   InvitationSent = 1,
+  //   OnboardingNotCompleted,
+  //   OnboardingCompleted,
+  //   Approved,
+  // }
   
