@@ -49,6 +49,13 @@ var User = /** @class */ (function () {
     ], User.prototype, "onboardingStep", void 0);
     __decorate([
         (0, typeorm_1.Column)({
+            type: 'varchar',
+            default: constants_1.OnboardingStatus.InvitationSent,
+        }),
+        __metadata("design:type", String)
+    ], User.prototype, "onboardingStatus", void 0);
+    __decorate([
+        (0, typeorm_1.Column)({
             type: 'boolean',
             default: false,
         }),

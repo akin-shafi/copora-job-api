@@ -1,4 +1,4 @@
-import { UserRole, AccountStatus } from '../constants';
+import { UserRole, AccountStatus, OnboardingStatus } from '../constants';
 import { Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn } from 'typeorm';
 import { Application } from './ApplicationEntity';
 
@@ -27,6 +27,12 @@ export class User {
 
   @Column({default: 0})
   onboardingStep: string;
+
+  @Column({
+    type: 'varchar',
+    default: OnboardingStatus.InvitationSent,
+  })
+  onboardingStatus: OnboardingStatus;
 
   @Column({
     type: 'boolean',  
