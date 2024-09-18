@@ -18,7 +18,7 @@ var router = (0, express_1.Router)();
  *     requestBody:
  *       required: true
  *       content:
- *         application/json:
+ *         multipart/form-data:
  *           schema:
  *             type: object
  *             properties:
@@ -38,6 +38,9 @@ var router = (0, express_1.Router)();
  *               nationalInsuranceNumber:
  *                 type: string
  *                 example: "AB123456C"
+ *               passportPhoto:
+ *                 type: string
+ *                 format: binary
  *     responses:
  *       201:
  *         description: Personal Details record created successfully

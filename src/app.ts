@@ -52,7 +52,7 @@ AppDataSource.initialize()
         'http://localhost:8080', // Vue
         'http://localhost:4200', // Angular
         'http://localhost:5173',  // Vite
-        'https://coporasystem-fe.vercel.app/'
+        'https://coporasystem-fe.vercel.app'
       ]
     }));
 

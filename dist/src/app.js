@@ -49,7 +49,8 @@ data_source_1.AppDataSource.initialize()
             'http://localhost:3000', // React
             'http://localhost:8080', // Vue
             'http://localhost:4200', // Angular
-            'http://localhost:5173' // Vite
+            'http://localhost:5173', // Vite
+            'https://coporasystem-fe.vercel.app'
         ]
     }));
     app.use(express_1.default.json());
