@@ -1,5 +1,4 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from 'typeorm';
-import { Application } from './ApplicationEntity';
 
 @Entity()
 export class PersonalDetails {

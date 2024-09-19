@@ -36,7 +36,7 @@ export class PersonalDetailsController {
     try {
       const { applicationNo } = req.body;
       const file = req.file;
-
+      console.log("req.body", req.body);
       const existingApplicant = await UserService.findApplicationNo(applicationNo);
 
       if (!existingApplicant) {
@@ -55,6 +55,7 @@ export class PersonalDetailsController {
 
       // Include the passportPhoto in the body data if it's available
       const dataToSave = { ...req.body, passportPhoto: passportPhoto };
+      console.log("dataToSave", dataToSave);
 
       if (existingEntry) {
         // Update the existing record

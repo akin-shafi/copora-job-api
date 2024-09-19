@@ -96,6 +96,7 @@ var PersonalDetailsController = /** @class */ (function () {
                         _a.trys.push([0, 9, , 10]);
                         applicationNo = req.body.applicationNo;
                         file = req.file;
+                        console.log("req.body", req.body);
                         return [4 /*yield*/, UserService_1.UserService.findApplicationNo(applicationNo)];
                     case 1:
                         existingApplicant = _a.sent();
@@ -114,6 +115,7 @@ var PersonalDetailsController = /** @class */ (function () {
                         _a.label = 4;
                     case 4:
                         dataToSave = __assign(__assign({}, req.body), { passportPhoto: passportPhoto });
+                        console.log("dataToSave", dataToSave);
                         if (!existingEntry) return [3 /*break*/, 6];
                         return [4 /*yield*/, PersonalDetailsService_1.PersonalDetailsService.updateByApplicationNo(applicationNo, dataToSave)];
                     case 5:

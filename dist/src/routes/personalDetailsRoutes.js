@@ -1,7 +1,11 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var express_1 = require("express");
 var PersonalDetailsController_1 = require("../controllers/PersonalDetailsController");
+var multerConfig_1 = __importDefault(require("../multerConfig"));
 var router = (0, express_1.Router)();
 /**
  * @swagger
@@ -47,7 +51,8 @@ var router = (0, express_1.Router)();
  *       400:
  *         description: Bad request
  */
-router.post('/', PersonalDetailsController_1.PersonalDetailsController.createOrUpdatePersonalDetails);
+// router.post('/', PersonalDetailsController.createOrUpdatePersonalDetails);
+router.post('/', multerConfig_1.default.single('passportPhoto'), PersonalDetailsController_1.PersonalDetailsController.createOrUpdatePersonalDetails);
 /**
  * @swagger
  * /personal-details/{applicationNo}:

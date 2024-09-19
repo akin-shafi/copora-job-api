@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { PersonalDetailsController } from '../controllers/PersonalDetailsController';
+import uploadDocumentsAndImages from '../multerConfig';
 
 const router = Router();
 
@@ -48,7 +49,9 @@ const router = Router();
  *       400:
  *         description: Bad request
  */
-router.post('/', PersonalDetailsController.createOrUpdatePersonalDetails);
+// router.post('/', PersonalDetailsController.createOrUpdatePersonalDetails);
+router.post('/', uploadDocumentsAndImages.single('passportPhoto'), PersonalDetailsController.createOrUpdatePersonalDetails);
+
 
 /**
  * @swagger
