@@ -32,18 +32,18 @@ export class GeneralInfo {
     @Column({ nullable: true })
     level2FoodHygieneCertificate: string;
 
-    @Column()
+    @Column({ nullable: true })
     level2FoodHygieneCertificateUpload: string;
 
     @Column()
     personalLicenseHolder: boolean;
 
-    @Column()
+    @Column({ nullable: true })
     personalLicenseCertificateUpload: string;
 
     @Column()
     dbsDisclosureAndBarringService: boolean;
 
-    @Column()
+    @Column({ nullable: true })
     dbsCertificateUpload: string;
 }

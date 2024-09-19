@@ -682,3 +682,7 @@
 2024-09-19T11:30:51.231Z [[32minfo[39m]: HTTP POST /users/login
 2024-09-19T11:32:43.637Z [[32minfo[39m]: HTTP POST /auth/users/register
 2024-09-19T11:48:29.337Z [[32minfo[39m]: HTTP POST /personal-details
+2024-09-19T11:50:04.971Z [[32minfo[39m]: HTTP POST /personal-details
+2024-09-19T12:41:32.459Z [[32minfo[39m]: HTTP POST /general-info
+2024-09-19T12:55:21.427Z [[32minfo[39m]: HTTP POST /general-info
+2024-09-19T12:59:11.165Z [[32minfo[39m]: HTTP GET /applicant/ADM-D0672DE2

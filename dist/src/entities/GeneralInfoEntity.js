@@ -55,7 +55,7 @@ var GeneralInfo = /** @class */ (function () {
         __metadata("design:type", String)
     ], GeneralInfo.prototype, "level2FoodHygieneCertificate", void 0);
     __decorate([
-        (0, typeorm_1.Column)(),
+        (0, typeorm_1.Column)({ nullable: true }),
         __metadata("design:type", String)
     ], GeneralInfo.prototype, "level2FoodHygieneCertificateUpload", void 0);
     __decorate([
@@ -63,7 +63,7 @@ var GeneralInfo = /** @class */ (function () {
         __metadata("design:type", Boolean)
     ], GeneralInfo.prototype, "personalLicenseHolder", void 0);
     __decorate([
-        (0, typeorm_1.Column)(),
+        (0, typeorm_1.Column)({ nullable: true }),
         __metadata("design:type", String)
     ], GeneralInfo.prototype, "personalLicenseCertificateUpload", void 0);
     __decorate([
@@ -71,7 +71,7 @@ var GeneralInfo = /** @class */ (function () {
         __metadata("design:type", Boolean)
     ], GeneralInfo.prototype, "dbsDisclosureAndBarringService", void 0);
     __decorate([
-        (0, typeorm_1.Column)(),
+        (0, typeorm_1.Column)({ nullable: true }),
         __metadata("design:type", String)
     ], GeneralInfo.prototype, "dbsCertificateUpload", void 0);
     GeneralInfo = __decorate([
