@@ -13,10 +13,10 @@ export class NextOfKin {
     applicationNo: string;
 
     @Column()
-    firstname: string;
+    name: string;
 
-    @Column()
-    lastname: string;
+    // @Column()
+    // lastname: string;
 
     @Column({nullable: true })
     relationship: string;
