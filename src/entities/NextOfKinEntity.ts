@@ -28,5 +28,5 @@ export class NextOfKin {
     email: string;
 
     @Column({nullable: true })
-    phone: string;
+    phoneNumber: string;
 }

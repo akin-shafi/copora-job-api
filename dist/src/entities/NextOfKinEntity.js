@@ -41,7 +41,7 @@ var NextOfKin = /** @class */ (function () {
     __decorate([
         (0, typeorm_1.Column)({ nullable: true }),
         __metadata("design:type", String)
-    ], NextOfKin.prototype, "phone", void 0);
+    ], NextOfKin.prototype, "phoneNumber", void 0);
     NextOfKin = __decorate([
         (0, typeorm_1.Entity)()
     ], NextOfKin);
