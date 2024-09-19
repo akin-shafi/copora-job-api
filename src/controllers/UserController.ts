@@ -8,7 +8,7 @@ import crypto from 'crypto';
 import { v2 as cloudinary } from 'cloudinary';
 import { sendInvitationToOnboard, sendResetPasswordEmail, sendTwoFactorCodeEmail, sendVerificationEmail } from '../lib/emailActions';
 import { v4 as uuidv4 } from 'uuid'; // For generating verification tokens
-import { BASE_URL } from '../config';
+import { FRONTEND_LOGIN } from '../config';
 import axios from 'axios'; // Add axios for HTTP requests
 import pdfParse from 'pdf-parse';
 import { OnboardingStatus } from '../constants';
@@ -167,7 +167,7 @@ class UserController {
         await sendInvitationToOnboard({
           email,
           firstName,
-          loginLink: `${BASE_URL}/login`,
+          loginLink: `${FRONTEND_LOGIN}/login`,
           temporaryPassword: password
         });
         

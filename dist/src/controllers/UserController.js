@@ -241,7 +241,7 @@ var UserController = /** @class */ (function () {
                     case 2: return [4 /*yield*/, (0, emailActions_1.sendInvitationToOnboard)({
                             email: email,
                             firstName: firstName,
-                            loginLink: "".concat(config_1.BASE_URL, "/login"),
+                            loginLink: "".concat(config_1.FRONTEND_LOGIN, "/login"),
                             temporaryPassword: password
                         })];
                     case 3:
