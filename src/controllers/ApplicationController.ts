@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import { ApplicationService } from '../services/ApplicationService';
 import { OnboardingStatus } from '../constants';
 import pdfParse from 'pdf-parse';
+import { Parser } from 'json2csv'; // Import json2csv for converting JSON to CSV
 
 export class ApplicationController {
 
@@ -262,6 +263,121 @@ static async extractDataFromResume(resumeText: string) {
   }
 
   return extractedData;
+}
+
+// static async downloadApplicantDataCsv(req: Request, res: Response) {
+//   try {
+//     const { applicationNo } = req.params;
+//     const applicantData = await ApplicationService.getApplicantData(applicationNo);
+    
+//     if (!applicantData) {
+//       return res.status(404).json({ message: 'Applicant not found' });
+//     }
+
+//     // Combine applicant data into a single object
+//     const combinedData = {
+//       user: applicantData.user,
+//       personalDetails: applicantData.personalDetails,
+//       contactDetails: applicantData.contactDetails,
+//       professionalDetails: applicantData.professionalDetails,
+//       educationalDetails: applicantData.educationalDetails,
+//       healthAndDisability: applicantData.healthAndDisability,
+//       foodSafetyQuestionnaire: applicantData.foodSafetyQuestionnaire,
+//       bankDetails: applicantData.bankDetails,
+//       agreementConsent: applicantData.agreementConsent,
+//       reference: applicantData.reference,
+//     };
+
+//     // Convert the data to CSV
+//     const fields = Object.keys(combinedData);
+//     const json2csvParser = new Parser({ fields });
+//     const csv = json2csvParser.parse(combinedData);
+
+//     // Set headers for file download
+//     res.header('Content-Type', 'text/csv');
+//     res.attachment(`applicant_${applicationNo}.csv`);
+//     return res.send(csv);
+
+//   } catch (error) {
+//     return res.status(500).json({ error: error.message });
+//   }
+// }
+
+// New method for downloading applicant data as CSV
+static async downloadApplicantDataCsv(req: Request, res: Response) {
+  try {
+    const { applicationNo } = req.params;
+    const applicantData = await ApplicationService.getApplicantData(applicationNo);
+    
+    if (!applicantData) {
+      return res.status(404).json({ message: 'Applicant not found' });
+    }
+
+    // Map applicant data into the CSV structure
+    const csvData = {
+      Title: applicantData.personalDetails?.title,
+      Forename1: applicantData.user?.firstName,
+      Forename2: applicantData.user?.middleName,
+      Surname: applicantData.user?.lastName,
+      PreferredName: applicantData.user?.firstName,
+      Telephone: applicantData.contactDetails?.phone,
+      Mobile: applicantData.contactDetails?.phone, // Assuming phone is used for both
+      Email: applicantData.user?.email,
+      Address: `${applicantData.contactDetails?.street}, ${applicantData.contactDetails?.town}, ${applicantData.contactDetails?.postcode}`,
+      Country: applicantData.contactDetails?.country,
+      Gender: applicantData.personalDetails?.gender,
+      Birthday: applicantData.personalDetails?.dateOfBirth,
+      PassportNumber: applicantData.personalDetails?.passportPhoto, // Assuming passport photo contains passport info
+      NINumber: applicantData.personalDetails?.nationalInsuranceNumber,
+      WorksNumber: '', // This field is not mapped in your data
+      Department: '', // This field is not mapped in your data
+      JobTitle: applicantData.professionalDetails?.[0]?.jobTitle,
+      College: applicantData.educationalDetails?.[0]?.schoolName,
+      DateStarted: applicantData.professionalDetails?.[0]?.startDate,
+      DateLeft: applicantData.professionalDetails?.[0]?.endDate,
+      Director: '', // This field is not mapped in your data
+      DirectorStartDate: '', // This field is not mapped in your data
+      DirectorEndDate: '', // This field is not mapped in your data
+      AlternativeDirectorsNIC: '', // This field is not mapped in your data
+      PrimaryNICOnly: '', // This field is not mapped in your data
+      PayFrequency: '', // This field is not mapped in your data
+      PayMethod: '', // This field is not mapped in your data
+      DeliveryMethod: '', // This field is not mapped in your data
+      BankName: applicantData.bankDetails?.bankName,
+      BranchName: '', // This field is not mapped in your data
+      SortCode: applicantData.bankDetails?.sortCode,
+      AccountName: applicantData.bankDetails?.accountName,
+      AccountNumber: applicantData.bankDetails?.accountNumber,
+      PaymentReference: '', // This field is not mapped in your data
+      BuildingSocietyReference: '', // This field is not mapped in your data
+      BankTelephone: '', // This field is not mapped in your data
+      BankAddress: '', // This field is not mapped in your data
+      AEExcluded: '', // This field is not mapped in your data
+      PostponedUntil: '', // This field is not mapped in your data
+      AEPension: '', // This field is not mapped in your data
+      AEJoined: '', // This field is not mapped in your data
+      AEOptedIn: '', // This field is not mapped in your data
+      AELeft: '', // This field is not mapped in your data
+      AEOptedOut: '', // This field is not mapped in your data
+      Group: '', // This field is not mapped in your data
+      EmployeePercentage: '', // This field is not mapped in your data
+      EmployerPercentage: '', // This field is not mapped in your data
+      AVCPercentage: '' // This field is not mapped in your data
+    };
+
+    // Convert the data to CSV
+    const fields = Object.keys(csvData);
+    const json2csvParser = new Parser({ fields });
+    const csv = json2csvParser.parse([csvData]); // Wrap csvData in an array to avoid issue with a single row
+
+    // Set headers for file download
+    res.header('Content-Type', 'text/csv');
+    res.attachment(`applicant_${applicationNo}.csv`);
+    return res.send(csv);
+
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
 }
 
 

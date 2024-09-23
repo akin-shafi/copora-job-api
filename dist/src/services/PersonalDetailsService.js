@@ -46,13 +46,19 @@ var PersonalDetailsService = /** @class */ (function () {
     // Create a new PersonalDetails entry
     PersonalDetailsService.create = function (data) {
         return __awaiter(this, void 0, void 0, function () {
-            var entry;
+            var entry, error_1;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
+                        _a.trys.push([0, 2, , 3]);
                         entry = personalDetailsRepository.create(data);
                         return [4 /*yield*/, personalDetailsRepository.save(entry)];
                     case 1: return [2 /*return*/, _a.sent()];
+                    case 2:
+                        error_1 = _a.sent();
+                        console.error('Error creating personal details:', error_1);
+                        throw new Error('Error creating personal details');
+                    case 3: return [2 /*return*/];
                 }
             });
         });
@@ -60,10 +66,18 @@ var PersonalDetailsService = /** @class */ (function () {
     // Get all PersonalDetails entries
     PersonalDetailsService.getAll = function () {
         return __awaiter(this, void 0, void 0, function () {
+            var error_2;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, personalDetailsRepository.find()];
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, personalDetailsRepository.find()];
                     case 1: return [2 /*return*/, _a.sent()];
+                    case 2:
+                        error_2 = _a.sent();
+                        console.error('Error fetching all personal details:', error_2);
+                        throw new Error('Error fetching all personal details');
+                    case 3: return [2 /*return*/];
                 }
             });
         });
@@ -71,10 +85,23 @@ var PersonalDetailsService = /** @class */ (function () {
     // Get PersonalDetails entry by applicationNo
     PersonalDetailsService.getByApplicationNo = function (applicationNo) {
         return __awaiter(this, void 0, void 0, function () {
+            var personalDetails, error_3;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, personalDetailsRepository.findOneBy({ applicationNo: applicationNo })];
-                    case 1: return [2 /*return*/, _a.sent()];
+                    case 0:
+                        console.log("here", applicationNo);
+                        _a.label = 1;
+                    case 1:
+                        _a.trys.push([1, 3, , 4]);
+                        return [4 /*yield*/, data_source_1.AppDataSource.getRepository(PersonalDetailsEntity_1.PersonalDetails).findOneBy({ applicationNo: applicationNo })];
+                    case 2:
+                        personalDetails = _a.sent();
+                        return [2 /*return*/, personalDetails || null];
+                    case 3:
+                        error_3 = _a.sent();
+                        console.error('Error fetching personal details by application number:', error_3);
+                        throw new Error('Error fetching personal details by application number');
+                    case 4: return [2 /*return*/];
                 }
             });
         });
@@ -82,10 +109,12 @@ var PersonalDetailsService = /** @class */ (function () {
     // Update PersonalDetails entry by applicationNo
     PersonalDetailsService.updateByApplicationNo = function (applicationNo, data) {
         return __awaiter(this, void 0, void 0, function () {
-            var entry;
+            var entry, error_4;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, this.getByApplicationNo(applicationNo)];
+                    case 0:
+                        _a.trys.push([0, 3, , 4]);
+                        return [4 /*yield*/, this.getByApplicationNo(applicationNo)];
                     case 1:
                         entry = _a.sent();
                         if (!entry) {
@@ -94,6 +123,11 @@ var PersonalDetailsService = /** @class */ (function () {
                         Object.assign(entry, data);
                         return [4 /*yield*/, personalDetailsRepository.save(entry)];
                     case 2: return [2 /*return*/, _a.sent()];
+                    case 3:
+                        error_4 = _a.sent();
+                        console.error('Error updating personal details:', error_4);
+                        throw new Error('Error updating personal details');
+                    case 4: return [2 /*return*/];
                 }
             });
         });
@@ -101,16 +135,23 @@ var PersonalDetailsService = /** @class */ (function () {
     // Delete PersonalDetails entry by applicationNo
     PersonalDetailsService.deleteByApplicationNo = function (applicationNo) {
         return __awaiter(this, void 0, void 0, function () {
-            var result;
+            var result, error_5;
             return __generator(this, function (_a) {
                 switch (_a.label) {
-                    case 0: return [4 /*yield*/, personalDetailsRepository.delete({ applicationNo: applicationNo })];
+                    case 0:
+                        _a.trys.push([0, 2, , 3]);
+                        return [4 /*yield*/, personalDetailsRepository.delete({ applicationNo: applicationNo })];
                     case 1:
                         result = _a.sent();
                         if (result.affected === 0) {
                             throw new Error('Personal details not found');
                         }
                         return [2 /*return*/, 'Personal details deleted'];
+                    case 2:
+                        error_5 = _a.sent();
+                        console.error('Error deleting personal details:', error_5);
+                        throw new Error('Error deleting personal details');
+                    case 3: return [2 /*return*/];
                 }
             });
         });

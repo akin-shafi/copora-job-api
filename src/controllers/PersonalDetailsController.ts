@@ -80,6 +80,8 @@ export class PersonalDetailsController {
         try {
             const { applicationNo } = req.params;
             const entry = await PersonalDetailsService.getByApplicationNo(applicationNo);
+            console.log("entry:", entry)
+
             if (!entry) {
                 return res.status(404).send({ message: 'Personal details not found' });
             }

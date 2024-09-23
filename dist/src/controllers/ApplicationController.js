@@ -43,6 +43,7 @@ exports.ApplicationController = void 0;
 var ApplicationService_1 = require("../services/ApplicationService");
 var constants_1 = require("../constants");
 var pdf_parse_1 = __importDefault(require("pdf-parse"));
+var json2csv_1 = require("json2csv"); // Import json2csv for converting JSON to CSV
 var ApplicationController = /** @class */ (function () {
     function ApplicationController() {
     }
@@ -361,6 +362,119 @@ var ApplicationController = /** @class */ (function () {
                     console.log('Skills not found in resume text.');
                 }
                 return [2 /*return*/, extractedData];
+            });
+        });
+    };
+    // static async downloadApplicantDataCsv(req: Request, res: Response) {
+    //   try {
+    //     const { applicationNo } = req.params;
+    //     const applicantData = await ApplicationService.getApplicantData(applicationNo);
+    //     if (!applicantData) {
+    //       return res.status(404).json({ message: 'Applicant not found' });
+    //     }
+    //     // Combine applicant data into a single object
+    //     const combinedData = {
+    //       user: applicantData.user,
+    //       personalDetails: applicantData.personalDetails,
+    //       contactDetails: applicantData.contactDetails,
+    //       professionalDetails: applicantData.professionalDetails,
+    //       educationalDetails: applicantData.educationalDetails,
+    //       healthAndDisability: applicantData.healthAndDisability,
+    //       foodSafetyQuestionnaire: applicantData.foodSafetyQuestionnaire,
+    //       bankDetails: applicantData.bankDetails,
+    //       agreementConsent: applicantData.agreementConsent,
+    //       reference: applicantData.reference,
+    //     };
+    //     // Convert the data to CSV
+    //     const fields = Object.keys(combinedData);
+    //     const json2csvParser = new Parser({ fields });
+    //     const csv = json2csvParser.parse(combinedData);
+    //     // Set headers for file download
+    //     res.header('Content-Type', 'text/csv');
+    //     res.attachment(`applicant_${applicationNo}.csv`);
+    //     return res.send(csv);
+    //   } catch (error) {
+    //     return res.status(500).json({ error: error.message });
+    //   }
+    // }
+    // New method for downloading applicant data as CSV
+    ApplicationController.downloadApplicantDataCsv = function (req, res) {
+        return __awaiter(this, void 0, void 0, function () {
+            var applicationNo, applicantData, csvData, fields, json2csvParser, csv, error_8;
+            var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t, _u, _v, _w, _x, _y, _z, _0, _1, _2, _3;
+            return __generator(this, function (_4) {
+                switch (_4.label) {
+                    case 0:
+                        _4.trys.push([0, 2, , 3]);
+                        applicationNo = req.params.applicationNo;
+                        return [4 /*yield*/, ApplicationService_1.ApplicationService.getApplicantData(applicationNo)];
+                    case 1:
+                        applicantData = _4.sent();
+                        if (!applicantData) {
+                            return [2 /*return*/, res.status(404).json({ message: 'Applicant not found' })];
+                        }
+                        csvData = {
+                            Title: (_a = applicantData.personalDetails) === null || _a === void 0 ? void 0 : _a.title,
+                            Forename1: (_b = applicantData.user) === null || _b === void 0 ? void 0 : _b.firstName,
+                            Forename2: (_c = applicantData.user) === null || _c === void 0 ? void 0 : _c.middleName,
+                            Surname: (_d = applicantData.user) === null || _d === void 0 ? void 0 : _d.lastName,
+                            PreferredName: (_e = applicantData.user) === null || _e === void 0 ? void 0 : _e.firstName,
+                            Telephone: (_f = applicantData.contactDetails) === null || _f === void 0 ? void 0 : _f.phone,
+                            Mobile: (_g = applicantData.contactDetails) === null || _g === void 0 ? void 0 : _g.phone, // Assuming phone is used for both
+                            Email: (_h = applicantData.user) === null || _h === void 0 ? void 0 : _h.email,
+                            Address: "".concat((_j = applicantData.contactDetails) === null || _j === void 0 ? void 0 : _j.street, ", ").concat((_k = applicantData.contactDetails) === null || _k === void 0 ? void 0 : _k.town, ", ").concat((_l = applicantData.contactDetails) === null || _l === void 0 ? void 0 : _l.postcode),
+                            Country: (_m = applicantData.contactDetails) === null || _m === void 0 ? void 0 : _m.country,
+                            Gender: (_o = applicantData.personalDetails) === null || _o === void 0 ? void 0 : _o.gender,
+                            Birthday: (_p = applicantData.personalDetails) === null || _p === void 0 ? void 0 : _p.dateOfBirth,
+                            PassportNumber: (_q = applicantData.personalDetails) === null || _q === void 0 ? void 0 : _q.passportPhoto, // Assuming passport photo contains passport info
+                            NINumber: (_r = applicantData.personalDetails) === null || _r === void 0 ? void 0 : _r.nationalInsuranceNumber,
+                            WorksNumber: '', // This field is not mapped in your data
+                            Department: '', // This field is not mapped in your data
+                            JobTitle: (_t = (_s = applicantData.professionalDetails) === null || _s === void 0 ? void 0 : _s[0]) === null || _t === void 0 ? void 0 : _t.jobTitle,
+                            College: (_v = (_u = applicantData.educationalDetails) === null || _u === void 0 ? void 0 : _u[0]) === null || _v === void 0 ? void 0 : _v.schoolName,
+                            DateStarted: (_x = (_w = applicantData.professionalDetails) === null || _w === void 0 ? void 0 : _w[0]) === null || _x === void 0 ? void 0 : _x.startDate,
+                            DateLeft: (_z = (_y = applicantData.professionalDetails) === null || _y === void 0 ? void 0 : _y[0]) === null || _z === void 0 ? void 0 : _z.endDate,
+                            Director: '', // This field is not mapped in your data
+                            DirectorStartDate: '', // This field is not mapped in your data
+                            DirectorEndDate: '', // This field is not mapped in your data
+                            AlternativeDirectorsNIC: '', // This field is not mapped in your data
+                            PrimaryNICOnly: '', // This field is not mapped in your data
+                            PayFrequency: '', // This field is not mapped in your data
+                            PayMethod: '', // This field is not mapped in your data
+                            DeliveryMethod: '', // This field is not mapped in your data
+                            BankName: (_0 = applicantData.bankDetails) === null || _0 === void 0 ? void 0 : _0.bankName,
+                            BranchName: '', // This field is not mapped in your data
+                            SortCode: (_1 = applicantData.bankDetails) === null || _1 === void 0 ? void 0 : _1.sortCode,
+                            AccountName: (_2 = applicantData.bankDetails) === null || _2 === void 0 ? void 0 : _2.accountName,
+                            AccountNumber: (_3 = applicantData.bankDetails) === null || _3 === void 0 ? void 0 : _3.accountNumber,
+                            PaymentReference: '', // This field is not mapped in your data
+                            BuildingSocietyReference: '', // This field is not mapped in your data
+                            BankTelephone: '', // This field is not mapped in your data
+                            BankAddress: '', // This field is not mapped in your data
+                            AEExcluded: '', // This field is not mapped in your data
+                            PostponedUntil: '', // This field is not mapped in your data
+                            AEPension: '', // This field is not mapped in your data
+                            AEJoined: '', // This field is not mapped in your data
+                            AEOptedIn: '', // This field is not mapped in your data
+                            AELeft: '', // This field is not mapped in your data
+                            AEOptedOut: '', // This field is not mapped in your data
+                            Group: '', // This field is not mapped in your data
+                            EmployeePercentage: '', // This field is not mapped in your data
+                            EmployerPercentage: '', // This field is not mapped in your data
+                            AVCPercentage: '' // This field is not mapped in your data
+                        };
+                        fields = Object.keys(csvData);
+                        json2csvParser = new json2csv_1.Parser({ fields: fields });
+                        csv = json2csvParser.parse([csvData]);
+                        // Set headers for file download
+                        res.header('Content-Type', 'text/csv');
+                        res.attachment("applicant_".concat(applicationNo, ".csv"));
+                        return [2 /*return*/, res.send(csv)];
+                    case 2:
+                        error_8 = _4.sent();
+                        return [2 /*return*/, res.status(500).json({ error: error_8.message })];
+                    case 3: return [2 /*return*/];
+                }
             });
         });
     };

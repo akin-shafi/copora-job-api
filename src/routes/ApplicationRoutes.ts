@@ -180,6 +180,50 @@ router.get('/:applicationNo', ApplicationController.getApplicantData); // Fetch 
 
 
 /**
+ * @swagger
+ * /applicant/download/{applicationNo}:
+ *   get:
+ *     summary: Download applicant data as CSV
+ *     tags: [Applicants]
+ *     parameters:
+ *       - in: path
+ *         name: applicationNo
+ *         required: true
+ *         description: The application number of the applicant
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: CSV file with applicant details
+ *         content:
+ *           text/csv:
+ *             schema:
+ *               type: string
+ *               format: binary
+ *       404:
+ *         description: Applicant not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   description: Error message
+ *       500:
+ *         description: Internal server error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   description: Error details
+ */
+router.get('/download/:applicationNo', ApplicationController.downloadApplicantDataCsv);
+
+/**
    * @swagger
    * /applicant/autofill-from-resume:
    *   post:

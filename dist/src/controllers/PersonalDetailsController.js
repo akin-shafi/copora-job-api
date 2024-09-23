@@ -153,6 +153,7 @@ var PersonalDetailsController = /** @class */ (function () {
                         return [4 /*yield*/, PersonalDetailsService_1.PersonalDetailsService.getByApplicationNo(applicationNo)];
                     case 2:
                         entry = _a.sent();
+                        console.log("entry:", entry);
                         if (!entry) {
                             return [2 /*return*/, res.status(404).send({ message: 'Personal details not found' })];
                         }
