@@ -33,6 +33,24 @@ var router = express_1.default.Router();
  *         description: Internal server error
  */
 router.get('/onboarding-status', ApplicationController_1.ApplicationController.getOnboardingStatus);
+/**
+ * @swagger
+ * /applicant/download/csv:
+ *   get:
+ *     summary: Download all applicants' data as CSV
+ *     tags:
+ *       - Applicants
+ *     responses:
+ *       200:
+ *         description: CSV file downloaded successfully
+ *         content:
+ *           text/csv:
+ *             schema:
+ *               type: string
+ *       500:
+ *         description: Server error
+ */
+router.get('/download/csv', ApplicationController_1.ApplicationController.downloadAllApplicantsCsv);
 // /**
 //  * @swagger
 //  * /applicants:
@@ -216,6 +234,33 @@ router.get('/:applicationNo', ApplicationController_1.ApplicationController.getA
  *                   description: Error details
  */
 router.get('/download/:applicationNo', ApplicationController_1.ApplicationController.downloadApplicantDataCsv);
+/**
+ * @swagger
+ * /applicant/download/{applicationNo}/pdf:
+ *   get:
+ *     summary: Download applicant data as PDF
+ *     tags:
+ *       - Applicants
+ *     parameters:
+ *       - in: path
+ *         name: applicationNo
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Application number
+ *     responses:
+ *       200:
+ *         description: PDF file downloaded successfully
+ *         content:
+ *           application/pdf:
+ *             schema:
+ *               type: string
+ *       404:
+ *         description: Applicant not found
+ *       500:
+ *         description: Server error
+ */
+router.get('/download/:applicationNo/pdf', ApplicationController_1.ApplicationController.downloadApplicantDataPdf);
 /**
    * @swagger
    * /applicant/autofill-from-resume:

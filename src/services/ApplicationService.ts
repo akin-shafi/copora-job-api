@@ -78,6 +78,52 @@ export class ApplicationService {
       throw new Error(`Error retrieving applicant data: ${error.message}`);
     }
   }
+
+   // Updated getAllApplicants method with relations
+  static async getAllApplicantsData() {
+    try {
+      // Fetch all users (applicants)
+      const users = await AppDataSource.getRepository(User).find();
+  
+      // Create an array to hold applicant data
+      const allApplicants = await Promise.all(users.map(async (user) => {
+        const applicationNo = user.applicationNo; // Assuming applicationNo is a property of User
+  
+        // Fetch details for each applicant
+        const personalDetails = await AppDataSource.getRepository(PersonalDetails).findOneBy({ applicationNo });
+        const contactDetails = await AppDataSource.getRepository(ContactDetails).findOneBy({ applicationNo });
+        const professionalDetails = await AppDataSource.getRepository(ProfessionalDetails).find({ where: { applicationNo } });
+        const educationalDetails = await AppDataSource.getRepository(EducationalDetails).find({ where: { applicationNo } });
+        const healthAndDisability = await AppDataSource.getRepository(HealthAndDisability).findOneBy({ applicationNo });
+        const generalInfo = await AppDataSource.getRepository(GeneralInfo).findOneBy({ applicationNo });
+        const nextOfKin = await AppDataSource.getRepository(NextOfKin).findOneBy({ applicationNo });
+        const foodSafetyQuestionnaire = await AppDataSource.getRepository(FoodSafetyQuestionnaire).findOneBy({ applicationNo });
+        const bankDetails = await AppDataSource.getRepository(BankDetails).findOneBy({ applicationNo });
+        const agreementConsent = await AppDataSource.getRepository(AgreementConsent).findOneBy({ applicationNo });
+        const reference = await AppDataSource.getRepository(Reference).findOneBy({ applicationNo });
+  
+        return {
+          user,
+          personalDetails,
+          contactDetails,
+          generalInfo,
+          nextOfKin,
+          professionalDetails,
+          educationalDetails,
+          healthAndDisability,
+          foodSafetyQuestionnaire,
+          bankDetails,
+          agreementConsent,
+          reference,
+        };
+      }));
+  
+      return allApplicants;
+    } catch (error) {
+      throw new Error(`Error retrieving all applicants: ${error.message}`);
+    }
+  }
+  
   
 
   static async getAllApplicants() {

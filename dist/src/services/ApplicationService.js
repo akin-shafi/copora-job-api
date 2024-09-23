@@ -164,9 +164,88 @@ var ApplicationService = /** @class */ (function () {
             });
         });
     };
+    // Updated getAllApplicants method with relations
+    ApplicationService.getAllApplicantsData = function () {
+        return __awaiter(this, void 0, void 0, function () {
+            var users, allApplicants, error_3;
+            var _this = this;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        _a.trys.push([0, 3, , 4]);
+                        return [4 /*yield*/, data_source_1.AppDataSource.getRepository(UserEntity_1.User).find()];
+                    case 1:
+                        users = _a.sent();
+                        return [4 /*yield*/, Promise.all(users.map(function (user) { return __awaiter(_this, void 0, void 0, function () {
+                                var applicationNo, personalDetails, contactDetails, professionalDetails, educationalDetails, healthAndDisability, generalInfo, nextOfKin, foodSafetyQuestionnaire, bankDetails, agreementConsent, reference;
+                                return __generator(this, function (_a) {
+                                    switch (_a.label) {
+                                        case 0:
+                                            applicationNo = user.applicationNo;
+                                            return [4 /*yield*/, data_source_1.AppDataSource.getRepository(PersonalDetailsEntity_1.PersonalDetails).findOneBy({ applicationNo: applicationNo })];
+                                        case 1:
+                                            personalDetails = _a.sent();
+                                            return [4 /*yield*/, data_source_1.AppDataSource.getRepository(ContactDetailsEntity_1.ContactDetails).findOneBy({ applicationNo: applicationNo })];
+                                        case 2:
+                                            contactDetails = _a.sent();
+                                            return [4 /*yield*/, data_source_1.AppDataSource.getRepository(ProfessionalDetailsEntity_1.ProfessionalDetails).find({ where: { applicationNo: applicationNo } })];
+                                        case 3:
+                                            professionalDetails = _a.sent();
+                                            return [4 /*yield*/, data_source_1.AppDataSource.getRepository(EducationalDetailsEntity_1.EducationalDetails).find({ where: { applicationNo: applicationNo } })];
+                                        case 4:
+                                            educationalDetails = _a.sent();
+                                            return [4 /*yield*/, data_source_1.AppDataSource.getRepository(HealthAndDisabilityEntity_1.HealthAndDisability).findOneBy({ applicationNo: applicationNo })];
+                                        case 5:
+                                            healthAndDisability = _a.sent();
+                                            return [4 /*yield*/, data_source_1.AppDataSource.getRepository(GeneralInfoEntity_1.GeneralInfo).findOneBy({ applicationNo: applicationNo })];
+                                        case 6:
+                                            generalInfo = _a.sent();
+                                            return [4 /*yield*/, data_source_1.AppDataSource.getRepository(NextOfKinEntity_1.NextOfKin).findOneBy({ applicationNo: applicationNo })];
+                                        case 7:
+                                            nextOfKin = _a.sent();
+                                            return [4 /*yield*/, data_source_1.AppDataSource.getRepository(FoodSafetyQuestionnaireEntity_1.FoodSafetyQuestionnaire).findOneBy({ applicationNo: applicationNo })];
+                                        case 8:
+                                            foodSafetyQuestionnaire = _a.sent();
+                                            return [4 /*yield*/, data_source_1.AppDataSource.getRepository(BankDetailsEntity_1.BankDetails).findOneBy({ applicationNo: applicationNo })];
+                                        case 9:
+                                            bankDetails = _a.sent();
+                                            return [4 /*yield*/, data_source_1.AppDataSource.getRepository(AgreementConsentEntity_1.AgreementConsent).findOneBy({ applicationNo: applicationNo })];
+                                        case 10:
+                                            agreementConsent = _a.sent();
+                                            return [4 /*yield*/, data_source_1.AppDataSource.getRepository(ReferenceEntity_1.Reference).findOneBy({ applicationNo: applicationNo })];
+                                        case 11:
+                                            reference = _a.sent();
+                                            return [2 /*return*/, {
+                                                    user: user,
+                                                    personalDetails: personalDetails,
+                                                    contactDetails: contactDetails,
+                                                    generalInfo: generalInfo,
+                                                    nextOfKin: nextOfKin,
+                                                    professionalDetails: professionalDetails,
+                                                    educationalDetails: educationalDetails,
+                                                    healthAndDisability: healthAndDisability,
+                                                    foodSafetyQuestionnaire: foodSafetyQuestionnaire,
+                                                    bankDetails: bankDetails,
+                                                    agreementConsent: agreementConsent,
+                                                    reference: reference,
+                                                }];
+                                    }
+                                });
+                            }); }))];
+                    case 2:
+                        allApplicants = _a.sent();
+                        return [2 /*return*/, allApplicants];
+                    case 3:
+                        error_3 = _a.sent();
+                        throw new Error("Error retrieving all applicants: ".concat(error_3.message));
+                    case 4: return [2 /*return*/];
+                }
+            });
+        });
+    };
     ApplicationService.getAllApplicants = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var applications, error_3;
+            var applications, error_4;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -176,8 +255,8 @@ var ApplicationService = /** @class */ (function () {
                         applications = _a.sent();
                         return [2 /*return*/, applications];
                     case 2:
-                        error_3 = _a.sent();
-                        throw new Error("Error retrieving all applicants: ".concat(error_3.message));
+                        error_4 = _a.sent();
+                        throw new Error("Error retrieving all applicants: ".concat(error_4.message));
                     case 3: return [2 /*return*/];
                 }
             });

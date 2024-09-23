@@ -3,6 +3,7 @@ import { ApplicationService } from '../services/ApplicationService';
 import { OnboardingStatus } from '../constants';
 import pdfParse from 'pdf-parse';
 import { Parser } from 'json2csv'; // Import json2csv for converting JSON to CSV
+import PDFDocument from 'pdfkit'; // For PDF generation
 
 export class ApplicationController {
 
@@ -379,6 +380,147 @@ static async downloadApplicantDataCsv(req: Request, res: Response) {
     return res.status(500).json({ error: error.message });
   }
 }
+
+// New method for downloading all applicants' data as CSV
+static async downloadAllApplicantsCsv(req: Request, res: Response) {
+  try {
+    // Fetch all applicants from the service
+    const allApplicants = await ApplicationService.getAllApplicantsData(); // Update to the correct method name
+
+    if (!allApplicants || allApplicants.length === 0) {
+      return res.status(404).json({ message: 'No applicants found' });
+    }
+
+    // Map all applicants' data into the CSV structure
+    const csvData = allApplicants.map(applicant => {
+      const { personalDetails, user, contactDetails, professionalDetails, educationalDetails, bankDetails } = applicant;
+      
+      return {
+        Title: personalDetails?.title,
+        Forename1: user?.firstName,
+        Forename2: user?.middleName,
+        Surname: user?.lastName,
+        PreferredName: user?.firstName,
+        Telephone: contactDetails?.phone,
+        Mobile: contactDetails?.phone, // Assuming phone is used for both
+        Email: user?.email,
+        Address: `${contactDetails?.street}, ${contactDetails?.town}, ${contactDetails?.postcode}`,
+        Country: contactDetails?.country,
+        Gender: personalDetails?.gender,
+        Birthday: personalDetails?.dateOfBirth,
+        PassportNumber: personalDetails?.passportPhoto, // Assuming passport photo contains passport info
+        NINumber: personalDetails?.nationalInsuranceNumber,
+        WorksNumber: '', // Not mapped
+        Department: '', // Not mapped
+        JobTitle: professionalDetails?.[0]?.jobTitle,
+        College: educationalDetails?.[0]?.schoolName,
+        DateStarted: professionalDetails?.[0]?.startDate,
+        DateLeft: professionalDetails?.[0]?.endDate,
+        Director: '', // Not mapped
+        DirectorStartDate: '', // Not mapped
+        DirectorEndDate: '', // Not mapped
+        AlternativeDirectorsNIC: '', // Not mapped
+        PrimaryNICOnly: '', // Not mapped
+        PayFrequency: '', // Not mapped
+        PayMethod: '', // Not mapped
+        DeliveryMethod: '', // Not mapped
+        BankName: bankDetails?.bankName,
+        BranchName: '', // Not mapped
+        SortCode: bankDetails?.sortCode,
+        AccountName: bankDetails?.accountName,
+        AccountNumber: bankDetails?.accountNumber,
+        PaymentReference: '', // Not mapped
+        BuildingSocietyReference: '', // Not mapped
+        BankTelephone: '', // Not mapped
+        BankAddress: '', // Not mapped
+        AEExcluded: '', // Not mapped
+        PostponedUntil: '', // Not mapped
+        AEPension: '', // Not mapped
+        AEJoined: '', // Not mapped
+        AEOptedIn: '', // Not mapped
+        AELeft: '', // Not mapped
+        AEOptedOut: '', // Not mapped
+        Group: '', // Not mapped
+        EmployeePercentage: '', // Not mapped
+        EmployerPercentage: '', // Not mapped
+        AVCPercentage: '' // Not mapped
+      };
+    });
+
+    // Convert the data to CSV
+    const fields = Object.keys(csvData[0]);
+    const json2csvParser = new Parser({ fields });
+    const csv = json2csvParser.parse(csvData); // Parse all applicants' data into CSV
+
+    // Set headers for file download
+    res.header('Content-Type', 'text/csv');
+    res.attachment('all_applicants.csv');
+    return res.send(csv);
+
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+}
+
+
+
+
+ // New method for downloading applicant data as PDF
+ static async downloadApplicantDataPdf(req: Request, res: Response) {
+  try {
+    const { applicationNo } = req.params;
+    const applicantData = await ApplicationService.getApplicantData(applicationNo);
+
+    if (!applicantData) {
+      return res.status(404).json({ message: 'Applicant not found' });
+    }
+
+    // Initialize PDF document
+    const doc = new PDFDocument();
+    
+    // Set response headers for PDF download
+    res.setHeader('Content-disposition', `attachment; filename="applicant_${applicationNo}.pdf"`);
+    res.setHeader('Content-type', 'application/pdf');
+
+    // Pipe the PDF into the response
+    doc.pipe(res);
+
+    // Add content to the PDF
+    doc.fontSize(18).text(`Applicant Data - ${applicationNo}`, { align: 'center' });
+    doc.moveDown();
+
+    // Add applicant data to PDF
+    doc.fontSize(12).text(`Title: ${applicantData.personalDetails?.title || 'N/A'}`);
+    doc.text(`Forename1: ${applicantData.user?.firstName || 'N/A'}`);
+    doc.text(`Forename2: ${applicantData.user?.middleName || 'N/A'}`);
+    doc.text(`Surname: ${applicantData.user?.lastName || 'N/A'}`);
+    doc.text(`PreferredName: ${applicantData.user?.firstName || 'N/A'}`);
+    doc.text(`Telephone: ${applicantData.contactDetails?.phone || 'N/A'}`);
+    doc.text(`Mobile: ${applicantData.contactDetails?.phone || 'N/A'}`);
+    doc.text(`Email: ${applicantData.user?.email || 'N/A'}`);
+    doc.text(`Address: ${applicantData.contactDetails?.street || 'N/A'}, ${applicantData.contactDetails?.town || 'N/A'}, ${applicantData.contactDetails?.postcode || 'N/A'}`);
+    doc.text(`Country: ${applicantData.contactDetails?.country || 'N/A'}`);
+    doc.text(`Gender: ${applicantData.personalDetails?.gender || 'N/A'}`);
+    doc.text(`Birthday: ${applicantData.personalDetails?.dateOfBirth || 'N/A'}`);
+    doc.text(`PassportNumber: ${applicantData.personalDetails?.passportPhoto || 'N/A'}`);
+    doc.text(`NINumber: ${applicantData.personalDetails?.nationalInsuranceNumber || 'N/A'}`);
+    doc.text(`JobTitle: ${applicantData.professionalDetails?.[0]?.jobTitle || 'N/A'}`);
+    doc.text(`College: ${applicantData.educationalDetails?.[0]?.schoolName || 'N/A'}`);
+    doc.text(`DateStarted: ${applicantData.professionalDetails?.[0]?.startDate || 'N/A'}`);
+    doc.text(`DateLeft: ${applicantData.professionalDetails?.[0]?.endDate || 'N/A'}`);
+    doc.text(`BankName: ${applicantData.bankDetails?.bankName || 'N/A'}`);
+    doc.text(`SortCode: ${applicantData.bankDetails?.sortCode || 'N/A'}`);
+    doc.text(`AccountName: ${applicantData.bankDetails?.accountName || 'N/A'}`);
+    doc.text(`AccountNumber: ${applicantData.bankDetails?.accountNumber || 'N/A'}`);
+
+    // Finalize the PDF and end the stream
+    doc.end();
+
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+}
+
 
 
   
