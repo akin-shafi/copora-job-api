@@ -241,33 +241,33 @@ router.get('/:applicationNo', ApplicationController.getApplicantData); // Fetch 
  */
 router.get('/download/:applicationNo', ApplicationController.downloadApplicantDataCsv);
 
-// /**
-//  * @swagger
-//  * /applicant/download/{applicationNo}/pdf:
-//  *   get:
-//  *     summary: Download applicant data as PDF
-//  *     tags:
-//  *       - Applicants
-//  *     parameters:
-//  *       - in: path
-//  *         name: applicationNo
-//  *         schema:
-//  *           type: string
-//  *         required: true
-//  *         description: Application number
-//  *     responses:
-//  *       200:
-//  *         description: PDF file downloaded successfully
-//  *         content:
-//  *           application/pdf:
-//  *             schema:
-//  *               type: string
-//  *       404:
-//  *         description: Applicant not found
-//  *       500:
-//  *         description: Server error
-//  */
-// router.get('/download/:applicationNo/pdf', ApplicationController.downloadApplicantDataPdf);
+/**
+ * @swagger
+ * /applicant/download/{applicationNo}/pdf:
+ *   get:
+ *     summary: Download applicant data as PDF
+ *     tags:
+ *       - Applicants
+ *     parameters:
+ *       - in: path
+ *         name: applicationNo
+ *         schema:
+ *           type: string
+ *         required: true
+ *         description: Application number
+ *     responses:
+ *       200:
+ *         description: PDF file downloaded successfully
+ *         content:
+ *           application/pdf:
+ *             schema:
+ *               type: string
+ *       404:
+ *         description: Applicant not found
+ *       500:
+ *         description: Server error
+ */
+router.get('/download/:applicationNo/pdf', ApplicationController.downloadApplicantDataPdf);
 
 
 

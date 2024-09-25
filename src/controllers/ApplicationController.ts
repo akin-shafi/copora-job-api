@@ -466,60 +466,60 @@ static async downloadAllApplicantsCsv(req: Request, res: Response) {
 
 
  // New method for downloading applicant data as PDF
-// static async downloadApplicantDataPdf(req: Request, res: Response) {
-//   try {
-//     const { applicationNo } = req.params;
-//     const applicantData = await ApplicationService.getApplicantData(applicationNo);
+static async downloadApplicantDataPdf(req: Request, res: Response) {
+  try {
+    const { applicationNo } = req.params;
+    const applicantData = await ApplicationService.getApplicantData(applicationNo);
 
-//     if (!applicantData) {
-//       return res.status(404).json({ message: 'Applicant not found' });
-//     }
+    if (!applicantData) {
+      return res.status(404).json({ message: 'Applicant not found' });
+    }
 
-//     // Initialize PDF document
-//     const doc = new PDFDocument();
+    // Initialize PDF document
+    const doc = new PDFDocument();
     
-//     // Set response headers for PDF download
-//     res.setHeader('Content-disposition', `attachment; filename="applicant_${applicationNo}.pdf"`);
-//     res.setHeader('Content-type', 'application/pdf');
+    // Set response headers for PDF download
+    res.setHeader('Content-disposition', `attachment; filename="applicant_${applicationNo}.pdf"`);
+    res.setHeader('Content-type', 'application/pdf');
 
-//     // Pipe the PDF into the response
-//     doc.pipe(res);
+    // Pipe the PDF into the response
+    doc.pipe(res);
 
-//     // Add content to the PDF
-//     doc.fontSize(18).text(`Applicant Data - ${applicationNo}`, { align: 'center' });
-//     doc.moveDown();
+    // Add content to the PDF
+    doc.fontSize(18).text(`Applicant Data - ${applicationNo}`, { align: 'center' });
+    doc.moveDown();
 
-//     // Add applicant data to PDF
-//     doc.fontSize(12).text(`Title: ${applicantData.personalDetails?.title || 'N/A'}`);
-//     doc.text(`Forename1: ${applicantData.user?.firstName || 'N/A'}`);
-//     doc.text(`Forename2: ${applicantData.user?.middleName || 'N/A'}`);
-//     doc.text(`Surname: ${applicantData.user?.lastName || 'N/A'}`);
-//     doc.text(`PreferredName: ${applicantData.user?.firstName || 'N/A'}`);
-//     doc.text(`Telephone: ${applicantData.contactDetails?.phone || 'N/A'}`);
-//     doc.text(`Mobile: ${applicantData.contactDetails?.phone || 'N/A'}`);
-//     doc.text(`Email: ${applicantData.user?.email || 'N/A'}`);
-//     doc.text(`Address: ${applicantData.contactDetails?.street || 'N/A'}, ${applicantData.contactDetails?.town || 'N/A'}, ${applicantData.contactDetails?.postcode || 'N/A'}`);
-//     doc.text(`Country: ${applicantData.contactDetails?.country || 'N/A'}`);
-//     doc.text(`Gender: ${applicantData.personalDetails?.gender || 'N/A'}`);
-//     doc.text(`Birthday: ${applicantData.personalDetails?.dateOfBirth || 'N/A'}`);
-//     doc.text(`PassportNumber: ${applicantData.personalDetails?.passportPhoto || 'N/A'}`);
-//     doc.text(`NINumber: ${applicantData.personalDetails?.nationalInsuranceNumber || 'N/A'}`);
-//     doc.text(`JobTitle: ${applicantData.professionalDetails?.[0]?.jobTitle || 'N/A'}`);
-//     doc.text(`College: ${applicantData.educationalDetails?.[0]?.schoolName || 'N/A'}`);
-//     doc.text(`DateStarted: ${applicantData.professionalDetails?.[0]?.startDate || 'N/A'}`);
-//     doc.text(`DateLeft: ${applicantData.professionalDetails?.[0]?.endDate || 'N/A'}`);
-//     doc.text(`BankName: ${applicantData.bankDetails?.bankName || 'N/A'}`);
-//     doc.text(`SortCode: ${applicantData.bankDetails?.sortCode || 'N/A'}`);
-//     doc.text(`AccountName: ${applicantData.bankDetails?.accountName || 'N/A'}`);
-//     doc.text(`AccountNumber: ${applicantData.bankDetails?.accountNumber || 'N/A'}`);
+    // Add applicant data to PDF
+    doc.fontSize(12).text(`Title: ${applicantData.personalDetails?.title || 'N/A'}`);
+    doc.text(`Forename1: ${applicantData.user?.firstName || 'N/A'}`);
+    doc.text(`Forename2: ${applicantData.user?.middleName || 'N/A'}`);
+    doc.text(`Surname: ${applicantData.user?.lastName || 'N/A'}`);
+    doc.text(`PreferredName: ${applicantData.user?.firstName || 'N/A'}`);
+    doc.text(`Telephone: ${applicantData.contactDetails?.phone || 'N/A'}`);
+    doc.text(`Mobile: ${applicantData.contactDetails?.phone || 'N/A'}`);
+    doc.text(`Email: ${applicantData.user?.email || 'N/A'}`);
+    doc.text(`Address: ${applicantData.contactDetails?.street || 'N/A'}, ${applicantData.contactDetails?.town || 'N/A'}, ${applicantData.contactDetails?.postcode || 'N/A'}`);
+    doc.text(`Country: ${applicantData.contactDetails?.country || 'N/A'}`);
+    doc.text(`Gender: ${applicantData.personalDetails?.gender || 'N/A'}`);
+    doc.text(`Birthday: ${applicantData.personalDetails?.dateOfBirth || 'N/A'}`);
+    doc.text(`PassportNumber: ${applicantData.personalDetails?.passportPhoto || 'N/A'}`);
+    doc.text(`NINumber: ${applicantData.personalDetails?.nationalInsuranceNumber || 'N/A'}`);
+    doc.text(`JobTitle: ${applicantData.professionalDetails?.[0]?.jobTitle || 'N/A'}`);
+    doc.text(`College: ${applicantData.educationalDetails?.[0]?.schoolName || 'N/A'}`);
+    doc.text(`DateStarted: ${applicantData.professionalDetails?.[0]?.startDate || 'N/A'}`);
+    doc.text(`DateLeft: ${applicantData.professionalDetails?.[0]?.endDate || 'N/A'}`);
+    doc.text(`BankName: ${applicantData.bankDetails?.bankName || 'N/A'}`);
+    doc.text(`SortCode: ${applicantData.bankDetails?.sortCode || 'N/A'}`);
+    doc.text(`AccountName: ${applicantData.bankDetails?.accountName || 'N/A'}`);
+    doc.text(`AccountNumber: ${applicantData.bankDetails?.accountNumber || 'N/A'}`);
 
-//     // Finalize the PDF and end the stream
-//     doc.end();
+    // Finalize the PDF and end the stream
+    doc.end();
 
-//   } catch (error) {
-//     return res.status(500).json({ error: error.message });
-//   }
-// }
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+}
 
 
 

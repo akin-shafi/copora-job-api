@@ -44,6 +44,7 @@ var ApplicationService_1 = require("../services/ApplicationService");
 var constants_1 = require("../constants");
 var pdf_parse_1 = __importDefault(require("pdf-parse"));
 var json2csv_1 = require("json2csv"); // Import json2csv for converting JSON to CSV
+var pdfkit_1 = __importDefault(require("pdfkit")); // For PDF generation
 var ApplicationController = /** @class */ (function () {
     function ApplicationController() {
     }
@@ -556,6 +557,65 @@ var ApplicationController = /** @class */ (function () {
                     case 2:
                         error_9 = _a.sent();
                         return [2 /*return*/, res.status(500).json({ error: error_9.message })];
+                    case 3: return [2 /*return*/];
+                }
+            });
+        });
+    };
+    // New method for downloading applicant data as PDF
+    ApplicationController.downloadApplicantDataPdf = function (req, res) {
+        return __awaiter(this, void 0, void 0, function () {
+            var applicationNo, applicantData, doc, error_10;
+            var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t, _u, _v, _w, _x, _y, _z, _0, _1, _2, _3;
+            return __generator(this, function (_4) {
+                switch (_4.label) {
+                    case 0:
+                        _4.trys.push([0, 2, , 3]);
+                        applicationNo = req.params.applicationNo;
+                        return [4 /*yield*/, ApplicationService_1.ApplicationService.getApplicantData(applicationNo)];
+                    case 1:
+                        applicantData = _4.sent();
+                        if (!applicantData) {
+                            return [2 /*return*/, res.status(404).json({ message: 'Applicant not found' })];
+                        }
+                        doc = new pdfkit_1.default();
+                        // Set response headers for PDF download
+                        res.setHeader('Content-disposition', "attachment; filename=\"applicant_".concat(applicationNo, ".pdf\""));
+                        res.setHeader('Content-type', 'application/pdf');
+                        // Pipe the PDF into the response
+                        doc.pipe(res);
+                        // Add content to the PDF
+                        doc.fontSize(18).text("Applicant Data - ".concat(applicationNo), { align: 'center' });
+                        doc.moveDown();
+                        // Add applicant data to PDF
+                        doc.fontSize(12).text("Title: ".concat(((_a = applicantData.personalDetails) === null || _a === void 0 ? void 0 : _a.title) || 'N/A'));
+                        doc.text("Forename1: ".concat(((_b = applicantData.user) === null || _b === void 0 ? void 0 : _b.firstName) || 'N/A'));
+                        doc.text("Forename2: ".concat(((_c = applicantData.user) === null || _c === void 0 ? void 0 : _c.middleName) || 'N/A'));
+                        doc.text("Surname: ".concat(((_d = applicantData.user) === null || _d === void 0 ? void 0 : _d.lastName) || 'N/A'));
+                        doc.text("PreferredName: ".concat(((_e = applicantData.user) === null || _e === void 0 ? void 0 : _e.firstName) || 'N/A'));
+                        doc.text("Telephone: ".concat(((_f = applicantData.contactDetails) === null || _f === void 0 ? void 0 : _f.phone) || 'N/A'));
+                        doc.text("Mobile: ".concat(((_g = applicantData.contactDetails) === null || _g === void 0 ? void 0 : _g.phone) || 'N/A'));
+                        doc.text("Email: ".concat(((_h = applicantData.user) === null || _h === void 0 ? void 0 : _h.email) || 'N/A'));
+                        doc.text("Address: ".concat(((_j = applicantData.contactDetails) === null || _j === void 0 ? void 0 : _j.street) || 'N/A', ", ").concat(((_k = applicantData.contactDetails) === null || _k === void 0 ? void 0 : _k.town) || 'N/A', ", ").concat(((_l = applicantData.contactDetails) === null || _l === void 0 ? void 0 : _l.postcode) || 'N/A'));
+                        doc.text("Country: ".concat(((_m = applicantData.contactDetails) === null || _m === void 0 ? void 0 : _m.country) || 'N/A'));
+                        doc.text("Gender: ".concat(((_o = applicantData.personalDetails) === null || _o === void 0 ? void 0 : _o.gender) || 'N/A'));
+                        doc.text("Birthday: ".concat(((_p = applicantData.personalDetails) === null || _p === void 0 ? void 0 : _p.dateOfBirth) || 'N/A'));
+                        doc.text("PassportNumber: ".concat(((_q = applicantData.personalDetails) === null || _q === void 0 ? void 0 : _q.passportPhoto) || 'N/A'));
+                        doc.text("NINumber: ".concat(((_r = applicantData.personalDetails) === null || _r === void 0 ? void 0 : _r.nationalInsuranceNumber) || 'N/A'));
+                        doc.text("JobTitle: ".concat(((_t = (_s = applicantData.professionalDetails) === null || _s === void 0 ? void 0 : _s[0]) === null || _t === void 0 ? void 0 : _t.jobTitle) || 'N/A'));
+                        doc.text("College: ".concat(((_v = (_u = applicantData.educationalDetails) === null || _u === void 0 ? void 0 : _u[0]) === null || _v === void 0 ? void 0 : _v.schoolName) || 'N/A'));
+                        doc.text("DateStarted: ".concat(((_x = (_w = applicantData.professionalDetails) === null || _w === void 0 ? void 0 : _w[0]) === null || _x === void 0 ? void 0 : _x.startDate) || 'N/A'));
+                        doc.text("DateLeft: ".concat(((_z = (_y = applicantData.professionalDetails) === null || _y === void 0 ? void 0 : _y[0]) === null || _z === void 0 ? void 0 : _z.endDate) || 'N/A'));
+                        doc.text("BankName: ".concat(((_0 = applicantData.bankDetails) === null || _0 === void 0 ? void 0 : _0.bankName) || 'N/A'));
+                        doc.text("SortCode: ".concat(((_1 = applicantData.bankDetails) === null || _1 === void 0 ? void 0 : _1.sortCode) || 'N/A'));
+                        doc.text("AccountName: ".concat(((_2 = applicantData.bankDetails) === null || _2 === void 0 ? void 0 : _2.accountName) || 'N/A'));
+                        doc.text("AccountNumber: ".concat(((_3 = applicantData.bankDetails) === null || _3 === void 0 ? void 0 : _3.accountNumber) || 'N/A'));
+                        // Finalize the PDF and end the stream
+                        doc.end();
+                        return [3 /*break*/, 3];
+                    case 2:
+                        error_10 = _4.sent();
+                        return [2 /*return*/, res.status(500).json({ error: error_10.message })];
                     case 3: return [2 /*return*/];
                 }
             });
