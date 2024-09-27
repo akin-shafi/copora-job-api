@@ -10,33 +10,30 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AgreementConsent = void 0;
-var typeorm_1 = require("typeorm");
-var AgreementConsent = /** @class */ (function () {
-    function AgreementConsent() {
-    }
-    __decorate([
-        (0, typeorm_1.PrimaryGeneratedColumn)(),
-        __metadata("design:type", Number)
-    ], AgreementConsent.prototype, "id", void 0);
-    __decorate([
-        (0, typeorm_1.Column)({ unique: true }),
-        __metadata("design:type", String)
-    ], AgreementConsent.prototype, "applicationNo", void 0);
-    __decorate([
-        (0, typeorm_1.Column)(),
-        __metadata("design:type", String)
-    ], AgreementConsent.prototype, "employmentStatusDeclaration", void 0);
-    __decorate([
-        (0, typeorm_1.Column)(),
-        __metadata("design:type", String)
-    ], AgreementConsent.prototype, "declarationAgreement", void 0);
-    __decorate([
-        (0, typeorm_1.Column)(),
-        __metadata("design:type", String)
-    ], AgreementConsent.prototype, "userConsent", void 0);
-    AgreementConsent = __decorate([
-        (0, typeorm_1.Entity)()
-    ], AgreementConsent);
-    return AgreementConsent;
-}());
+const typeorm_1 = require("typeorm");
+let AgreementConsent = class AgreementConsent {
+};
 exports.AgreementConsent = AgreementConsent;
+__decorate([
+    (0, typeorm_1.PrimaryGeneratedColumn)(),
+    __metadata("design:type", Number)
+], AgreementConsent.prototype, "id", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ unique: true }),
+    __metadata("design:type", String)
+], AgreementConsent.prototype, "applicationNo", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], AgreementConsent.prototype, "employmentStatusDeclaration", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], AgreementConsent.prototype, "declarationAgreement", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], AgreementConsent.prototype, "userConsent", void 0);
+exports.AgreementConsent = AgreementConsent = __decorate([
+    (0, typeorm_1.Entity)()
+], AgreementConsent);

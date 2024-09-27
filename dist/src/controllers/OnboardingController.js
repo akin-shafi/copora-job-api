@@ -1,9 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.OnboardingController = void 0;
-var ApplicationService_1 = require("../services/ApplicationService");
-var OnboardingController = /** @class */ (function () {
-    function OnboardingController() {
+const ApplicationService_1 = require("../services/ApplicationService");
+class OnboardingController {
+    constructor() {
         this.applicationService = new ApplicationService_1.ApplicationService();
         // async startOnboarding(req: Request, res: Response) {
         //     try {
@@ -14,6 +14,5 @@ var OnboardingController = /** @class */ (function () {
         //     }
         // }
     }
-    return OnboardingController;
-}());
+}
 exports.OnboardingController = OnboardingController;

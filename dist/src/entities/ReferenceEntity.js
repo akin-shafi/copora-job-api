@@ -10,41 +10,38 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Reference = void 0;
-var typeorm_1 = require("typeorm");
-var Reference = /** @class */ (function () {
-    function Reference() {
-    }
-    __decorate([
-        (0, typeorm_1.PrimaryGeneratedColumn)(),
-        __metadata("design:type", Number)
-    ], Reference.prototype, "id", void 0);
-    __decorate([
-        (0, typeorm_1.Column)({ unique: true }),
-        __metadata("design:type", String)
-    ], Reference.prototype, "applicationNo", void 0);
-    __decorate([
-        (0, typeorm_1.Column)(),
-        __metadata("design:type", String)
-    ], Reference.prototype, "employerName", void 0);
-    __decorate([
-        (0, typeorm_1.Column)(),
-        __metadata("design:type", String)
-    ], Reference.prototype, "contactName", void 0);
-    __decorate([
-        (0, typeorm_1.Column)({ nullable: false }),
-        __metadata("design:type", String)
-    ], Reference.prototype, "phone", void 0);
-    __decorate([
-        (0, typeorm_1.Column)(),
-        __metadata("design:type", String)
-    ], Reference.prototype, "email", void 0);
-    __decorate([
-        (0, typeorm_1.Column)(),
-        __metadata("design:type", String)
-    ], Reference.prototype, "address", void 0);
-    Reference = __decorate([
-        (0, typeorm_1.Entity)()
-    ], Reference);
-    return Reference;
-}());
+const typeorm_1 = require("typeorm");
+let Reference = class Reference {
+};
 exports.Reference = Reference;
+__decorate([
+    (0, typeorm_1.PrimaryGeneratedColumn)(),
+    __metadata("design:type", Number)
+], Reference.prototype, "id", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ unique: true }),
+    __metadata("design:type", String)
+], Reference.prototype, "applicationNo", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], Reference.prototype, "employerName", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], Reference.prototype, "contactName", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: false }),
+    __metadata("design:type", String)
+], Reference.prototype, "phone", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], Reference.prototype, "email", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], Reference.prototype, "address", void 0);
+exports.Reference = Reference = __decorate([
+    (0, typeorm_1.Entity)()
+], Reference);

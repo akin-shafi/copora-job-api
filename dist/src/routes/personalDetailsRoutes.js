@@ -3,10 +3,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var express_1 = require("express");
-var PersonalDetailsController_1 = require("../controllers/PersonalDetailsController");
-var multerConfig_1 = __importDefault(require("../multerConfig"));
-var router = (0, express_1.Router)();
+const express_1 = require("express");
+const PersonalDetailsController_1 = require("../controllers/PersonalDetailsController");
+const multerConfig_1 = __importDefault(require("../multerConfig"));
+const router = (0, express_1.Router)();
 /**
  * @swagger
  * tags:

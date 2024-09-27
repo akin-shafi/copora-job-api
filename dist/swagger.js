@@ -4,11 +4,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.swaggerSetup = exports.swaggerSpec = void 0;
-var swagger_jsdoc_1 = __importDefault(require("swagger-jsdoc"));
-var swagger_ui_express_1 = __importDefault(require("swagger-ui-express"));
-var config_1 = require("./src/config");
-var isLocal = process.env.NODE_ENV === 'development'; // Check if running in development mode
-var swaggerOptions = {
+const swagger_jsdoc_1 = __importDefault(require("swagger-jsdoc"));
+const swagger_ui_express_1 = __importDefault(require("swagger-ui-express"));
+const config_1 = require("./src/config");
+const isLocal = process.env.NODE_ENV === 'development'; // Check if running in development mode
+const swaggerOptions = {
     swaggerDefinition: {
         openapi: '3.0.0',
         info: {
@@ -18,7 +18,7 @@ var swaggerOptions = {
         },
         servers: [
             {
-                url: "".concat(config_1.BASE_URL),
+                url: `${config_1.BASE_URL}`,
                 description: isLocal ? 'Local server' : 'Remote server',
             },
         ],
@@ -99,7 +99,7 @@ var swaggerOptions = {
     apis: ['./src/routes/*.ts', './src/controllers/*.ts'], // Paths to files with OpenAPI annotations
 };
 exports.swaggerSpec = (0, swagger_jsdoc_1.default)(swaggerOptions);
-var swaggerSetup = function (app) {
+const swaggerSetup = (app) => {
     app.use('/api-docs', swagger_ui_express_1.default.serve, swagger_ui_express_1.default.setup(exports.swaggerSpec));
 };
 exports.swaggerSetup = swaggerSetup;

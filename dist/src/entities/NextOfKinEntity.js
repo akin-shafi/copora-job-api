@@ -10,41 +10,38 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.NextOfKin = void 0;
-var typeorm_1 = require("typeorm");
-var NextOfKin = /** @class */ (function () {
-    function NextOfKin() {
-    }
-    __decorate([
-        (0, typeorm_1.PrimaryGeneratedColumn)(),
-        __metadata("design:type", Number)
-    ], NextOfKin.prototype, "id", void 0);
-    __decorate([
-        (0, typeorm_1.Column)({ unique: true }),
-        __metadata("design:type", String)
-    ], NextOfKin.prototype, "applicationNo", void 0);
-    __decorate([
-        (0, typeorm_1.Column)(),
-        __metadata("design:type", String)
-    ], NextOfKin.prototype, "name", void 0);
-    __decorate([
-        (0, typeorm_1.Column)({ nullable: true }),
-        __metadata("design:type", String)
-    ], NextOfKin.prototype, "relationship", void 0);
-    __decorate([
-        (0, typeorm_1.Column)({ nullable: true }),
-        __metadata("design:type", String)
-    ], NextOfKin.prototype, "address", void 0);
-    __decorate([
-        (0, typeorm_1.Column)(),
-        __metadata("design:type", String)
-    ], NextOfKin.prototype, "email", void 0);
-    __decorate([
-        (0, typeorm_1.Column)({ nullable: true }),
-        __metadata("design:type", String)
-    ], NextOfKin.prototype, "phoneNumber", void 0);
-    NextOfKin = __decorate([
-        (0, typeorm_1.Entity)()
-    ], NextOfKin);
-    return NextOfKin;
-}());
+const typeorm_1 = require("typeorm");
+let NextOfKin = class NextOfKin {
+};
 exports.NextOfKin = NextOfKin;
+__decorate([
+    (0, typeorm_1.PrimaryGeneratedColumn)(),
+    __metadata("design:type", Number)
+], NextOfKin.prototype, "id", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ unique: true }),
+    __metadata("design:type", String)
+], NextOfKin.prototype, "applicationNo", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], NextOfKin.prototype, "name", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], NextOfKin.prototype, "relationship", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], NextOfKin.prototype, "address", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], NextOfKin.prototype, "email", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], NextOfKin.prototype, "phoneNumber", void 0);
+exports.NextOfKin = NextOfKin = __decorate([
+    (0, typeorm_1.Entity)()
+], NextOfKin);

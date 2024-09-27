@@ -2,7 +2,7 @@
 // emailHeader.js
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.emailHeader = emailHeader;
-var HEADER_IMAGES = {
+const HEADER_IMAGES = {
     welcome: 'https://res.cloudinary.com/dgdx2a9cq/image/upload/v1724319469/Copora_Welcome_Email_Header_jnhbxk.png',
     temporary_work: 'https://res.cloudinary.com/dgdx2a9cq/image/upload/v1724322808/Copora_Onboarding_Email_Template_ihe8rd.png',
     reminder: 'https://res.cloudinary.com/dgdx2a9cq/image/upload/v1724323730/Copora_Onboarding_Complete_Email_Template_l7vj0z.png',
@@ -14,6 +14,98 @@ var HEADER_IMAGES = {
     others: 'https://res.cloudinary.com/dgdx2a9cq/image/upload/v1724319469/Copora_Welcome_Email_Header_jnhbxk.png'
 };
 function emailHeader(headerType) {
-    var imageUrl = HEADER_IMAGES[headerType] || HEADER_IMAGES['others'];
-    return "\n  <!DOCTYPE html>\n  <html lang=\"en\">\n    <head>\n      <meta charset=\"UTF-8\">\n      <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\n      <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n      <link href=\"https://fonts.googleapis.com/css?family=Inter\" rel=\"stylesheet\">\n      <link href=\"https://fonts.cdnfonts.com/css/satoshi\" rel=\"stylesheet\">\n      <title>Copora</title>\n    </head>\n  \n    <body style=\"\n        font-family: 'Satoshi', sans-serif;\n        -webkit-font-smoothing: antialiased;\n        font-size: 14px;\n        line-height: 1.4;\n        margin: 0;\n        padding: 0;\n        -ms-text-size-adjust: 100%;\n        -webkit-text-size-adjust: 100%;\n      \">\n    \n      <table role=\"presentation\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"body\" style=\"\n          border-collapse: separate;\n          mso-table-lspace: 0pt;\n          mso-table-rspace: 0pt;\n          background-color: #EAF0F3;\n          width: 100%;\n        \" width=\"100%\">\n        <tr>\n          <td style=\"font-family: Inter; font-size: 14px; vertical-align: top\" valign=\"top\">\n            &nbsp;\n          </td>\n          <td class=\"container\" style=\"\n              font-family: Inter;\n              font-size: 14px;\n              vertical-align: top;\n              display: block;\n              max-width: 580px;\n              padding: 10px;\n              width: 580px;\n              margin: 0 auto;\n            \" width=\"580\" valign=\"top\">\n            <div class=\"content\" style=\"\n                box-sizing: border-box;\n                display: block;\n                margin: 0 auto;\n                max-width: 580px;\n                padding: 10px;\n              \">\n              <!-- START CENTERED WHITE CONTAINER -->\n              <table role=\"presentation\" class=\"main\" style=\"\n                  border-collapse: separate;\n                  mso-table-lspace: 0pt;\n                  mso-table-rspace: 0pt;\n                  background: #ffffff;\n                  border-radius: 3px;\n                  width: 100%;\n                \" width=\"100%\">\n                <!-- START MAIN CONTENT AREA -->\n                <tr>\n                  <td class=\"wrapper\" style=\"\n                      background-color: #EAF0F3;\n                      font-family: Inter;\n                      font-size: 14px;\n                      vertical-align: top;\n                      box-sizing: border-box;\n                      border: 0;\n                      outline: 0;\n                      padding: 20px;\n                      height: 40rem;\n                    \" valign=\"top\">\n                    <table role=\"presentation\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"\n                        border-collapse: separate;\n                        mso-table-lspace: 0pt;\n                        mso-table-rspace: 0pt;\n                        width: 100%;\n                      \" width=\"100%\">\n                      <tr>\n                        <td style=\"\n                            font-family: Inter;\n                            font-size: 14px;\n                            vertical-align: top;\n                          \" valign=\"top\">\n                          <img src=\"".concat(imageUrl, "\" style=\"\n                              font-family: Inter;\n                              width: 100%;\n                              font-weight: normal;\n                              margin: 0;\n                              margin-bottom: 30px;\n                            \">\n      ");
+    const imageUrl = HEADER_IMAGES[headerType] || HEADER_IMAGES['others'];
+    return `
+  <!DOCTYPE html>
+  <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link href="https://fonts.googleapis.com/css?family=Inter" rel="stylesheet">
+      <link href="https://fonts.cdnfonts.com/css/satoshi" rel="stylesheet">
+      <title>Copora</title>
+    </head>
+  
+    <body style="
+        font-family: 'Satoshi', sans-serif;
+        -webkit-font-smoothing: antialiased;
+        font-size: 14px;
+        line-height: 1.4;
+        margin: 0;
+        padding: 0;
+        -ms-text-size-adjust: 100%;
+        -webkit-text-size-adjust: 100%;
+      ">
+    
+      <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="body" style="
+          border-collapse: separate;
+          mso-table-lspace: 0pt;
+          mso-table-rspace: 0pt;
+          background-color: #EAF0F3;
+          width: 100%;
+        " width="100%">
+        <tr>
+          <td style="font-family: Inter; font-size: 14px; vertical-align: top" valign="top">
+            &nbsp;
+          </td>
+          <td class="container" style="
+              font-family: Inter;
+              font-size: 14px;
+              vertical-align: top;
+              display: block;
+              max-width: 580px;
+              padding: 10px;
+              width: 580px;
+              margin: 0 auto;
+            " width="580" valign="top">
+            <div class="content" style="
+                box-sizing: border-box;
+                display: block;
+                margin: 0 auto;
+                max-width: 580px;
+                padding: 10px;
+              ">
+              <!-- START CENTERED WHITE CONTAINER -->
+              <table role="presentation" class="main" style="
+                  border-collapse: separate;
+                  mso-table-lspace: 0pt;
+                  mso-table-rspace: 0pt;
+                  background: #ffffff;
+                  border-radius: 3px;
+                  width: 100%;
+                " width="100%">
+                <!-- START MAIN CONTENT AREA -->
+                <tr>
+                  <td class="wrapper" style="
+                      background-color: #EAF0F3;
+                      font-family: Inter;
+                      font-size: 14px;
+                      vertical-align: top;
+                      box-sizing: border-box;
+                      border: 0;
+                      outline: 0;
+                      padding: 20px;
+                      height: 40rem;
+                    " valign="top">
+                    <table role="presentation" border="0" cellpadding="0" cellspacing="0" style="
+                        border-collapse: separate;
+                        mso-table-lspace: 0pt;
+                        mso-table-rspace: 0pt;
+                        width: 100%;
+                      " width="100%">
+                      <tr>
+                        <td style="
+                            font-family: Inter;
+                            font-size: 14px;
+                            vertical-align: top;
+                          " valign="top">
+                          <img src="${imageUrl}" style="
+                              font-family: Inter;
+                              width: 100%;
+                              font-weight: normal;
+                              margin: 0;
+                              margin-bottom: 30px;
+                            ">
+      `;
 }

@@ -2,9 +2,20 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = onboardingReminderEmail;
 // resetPasswordEmail.js
-var emailHeader_1 = require("./emailHeader");
-var emailFooter_1 = require("./emailFooter");
+const emailHeader_1 = require("./emailHeader");
+const emailFooter_1 = require("./emailFooter");
 // import { FRONTEND_URL } from '../config';
 function onboardingReminderEmail(user) {
-    return "\n        ".concat((0, emailHeader_1.emailHeader)('remainder'), " \n            <p>Hi ").concat(user.firstName, ",</p>\n            <p>We noticed that your onboarding process with Copora is still incomplete. If you\u2019re having any trouble providing the necessary information or if you\u2019re unsure about any of the steps, please don\u2019t hesitate to get in touch. We\u2019re here to assist you and make the process as smooth as possible.</p>\n            <p>Completing your onboarding is essential for accessing our booking system and viewing available roles, so please reach out if you need any help.</p>\n            <p>\n                Best regards,\n                <br/>\n                The ").concat(process.env.APP_COMPANY, " Team\n            </p>\n        ").concat((0, emailFooter_1.emailFooter)(), "    \n    ");
+    return `
+        ${(0, emailHeader_1.emailHeader)('remainder')} 
+            <p>Hi ${user.firstName},</p>
+            <p>We noticed that your onboarding process with Copora is still incomplete. If you’re having any trouble providing the necessary information or if you’re unsure about any of the steps, please don’t hesitate to get in touch. We’re here to assist you and make the process as smooth as possible.</p>
+            <p>Completing your onboarding is essential for accessing our booking system and viewing available roles, so please reach out if you need any help.</p>
+            <p>
+                Best regards,
+                <br/>
+                The ${process.env.APP_COMPANY} Team
+            </p>
+        ${(0, emailFooter_1.emailFooter)()}    
+    `;
 }

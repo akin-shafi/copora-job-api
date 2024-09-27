@@ -4,24 +4,24 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppDataSource = void 0;
-var typeorm_1 = require("typeorm");
-var dotenv_1 = __importDefault(require("dotenv"));
+const typeorm_1 = require("typeorm");
+const dotenv_1 = __importDefault(require("dotenv"));
 // Load environment variables from .env file
 dotenv_1.default.config();
 // Import all entities
-var UserEntity_1 = require("./entities/UserEntity");
-var ApplicationEntity_1 = require("./entities/ApplicationEntity");
-var PersonalDetailsEntity_1 = require("./entities/PersonalDetailsEntity");
-var GeneralInfoEntity_1 = require("./entities/GeneralInfoEntity");
-var NextOfKinEntity_1 = require("./entities/NextOfKinEntity");
-var ContactDetailsEntity_1 = require("./entities/ContactDetailsEntity");
-var ProfessionalDetailsEntity_1 = require("./entities/ProfessionalDetailsEntity");
-var EducationalDetailsEntity_1 = require("./entities/EducationalDetailsEntity");
-var HealthAndDisabilityEntity_1 = require("./entities/HealthAndDisabilityEntity");
-var FoodSafetyQuestionnaireEntity_1 = require("./entities/FoodSafetyQuestionnaireEntity");
-var BankDetailsEntity_1 = require("./entities/BankDetailsEntity");
-var AgreementConsentEntity_1 = require("./entities/AgreementConsentEntity");
-var ReferenceEntity_1 = require("./entities/ReferenceEntity");
+const UserEntity_1 = require("./entities/UserEntity");
+const ApplicationEntity_1 = require("./entities/ApplicationEntity");
+const PersonalDetailsEntity_1 = require("./entities/PersonalDetailsEntity");
+const GeneralInfoEntity_1 = require("./entities/GeneralInfoEntity");
+const NextOfKinEntity_1 = require("./entities/NextOfKinEntity");
+const ContactDetailsEntity_1 = require("./entities/ContactDetailsEntity");
+const ProfessionalDetailsEntity_1 = require("./entities/ProfessionalDetailsEntity");
+const EducationalDetailsEntity_1 = require("./entities/EducationalDetailsEntity");
+const HealthAndDisabilityEntity_1 = require("./entities/HealthAndDisabilityEntity");
+const FoodSafetyQuestionnaireEntity_1 = require("./entities/FoodSafetyQuestionnaireEntity");
+const BankDetailsEntity_1 = require("./entities/BankDetailsEntity");
+const AgreementConsentEntity_1 = require("./entities/AgreementConsentEntity");
+const ReferenceEntity_1 = require("./entities/ReferenceEntity");
 exports.AppDataSource = new typeorm_1.DataSource({
     type: 'postgres', // PostgreSQL database type
     host: process.env.DB_HOST || 'localhost',
@@ -53,9 +53,9 @@ exports.AppDataSource = new typeorm_1.DataSource({
     },
 });
 exports.AppDataSource.initialize()
-    .then(function () {
+    .then(() => {
     console.log('Database connection established successfully.');
 })
-    .catch(function (error) {
+    .catch(error => {
     console.error('Error connecting to the database', error);
 });

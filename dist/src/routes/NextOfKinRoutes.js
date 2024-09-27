@@ -1,9 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var express_1 = require("express");
-var NextOfKinController_1 = require("../controllers/NextOfKinController");
-var router = (0, express_1.Router)();
-var nextOfKinController = new NextOfKinController_1.NextOfKinController();
+const express_1 = require("express");
+const NextOfKinController_1 = require("../controllers/NextOfKinController");
+const router = (0, express_1.Router)();
+const nextOfKinController = new NextOfKinController_1.NextOfKinController();
 /**
  * @swagger
  * /next-of-kin:
@@ -107,9 +107,9 @@ var nextOfKinController = new NextOfKinController_1.NextOfKinController();
  *       500:
  *         description: Internal Server Error
  */
-router.post('/', function (req, res) { return nextOfKinController.create(req, res); });
-router.get('/', function (req, res) { return nextOfKinController.getAll(req, res); });
-router.get('/:id', function (req, res) { return nextOfKinController.getById(req, res); });
-router.put('/:id', function (req, res) { return nextOfKinController.update(req, res); });
-router.delete('/:id', function (req, res) { return nextOfKinController.delete(req, res); });
+router.post('/', (req, res) => nextOfKinController.create(req, res));
+router.get('/', (req, res) => nextOfKinController.getAll(req, res));
+router.get('/:id', (req, res) => nextOfKinController.getById(req, res));
+router.put('/:id', (req, res) => nextOfKinController.update(req, res));
+router.delete('/:id', (req, res) => nextOfKinController.delete(req, res));
 exports.default = router;

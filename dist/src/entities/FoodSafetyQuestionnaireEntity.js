@@ -10,69 +10,66 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.FoodSafetyQuestionnaire = void 0;
-var typeorm_1 = require("typeorm");
-var FoodSafetyQuestionnaire = /** @class */ (function () {
-    function FoodSafetyQuestionnaire() {
-    }
-    __decorate([
-        (0, typeorm_1.PrimaryGeneratedColumn)(),
-        __metadata("design:type", Number)
-    ], FoodSafetyQuestionnaire.prototype, "id", void 0);
-    __decorate([
-        (0, typeorm_1.Column)({ unique: true }),
-        __metadata("design:type", String)
-    ], FoodSafetyQuestionnaire.prototype, "applicationNo", void 0);
-    __decorate([
-        (0, typeorm_1.Column)(),
-        __metadata("design:type", Boolean)
-    ], FoodSafetyQuestionnaire.prototype, "cleaningRawMeatUtensilsRequired", void 0);
-    __decorate([
-        (0, typeorm_1.Column)(),
-        __metadata("design:type", String)
-    ], FoodSafetyQuestionnaire.prototype, "foodSafetyAct1990Description", void 0);
-    __decorate([
-        (0, typeorm_1.Column)(),
-        __metadata("design:type", String)
-    ], FoodSafetyQuestionnaire.prototype, "cleaningRequirement", void 0);
-    __decorate([
-        (0, typeorm_1.Column)(),
-        __metadata("design:type", String)
-    ], FoodSafetyQuestionnaire.prototype, "contaminatedFoodCharacteristics", void 0);
-    __decorate([
-        (0, typeorm_1.Column)(),
-        __metadata("design:type", String)
-    ], FoodSafetyQuestionnaire.prototype, "bacteriaFactTrue", void 0);
-    __decorate([
-        (0, typeorm_1.Column)(),
-        __metadata("design:type", String)
-    ], FoodSafetyQuestionnaire.prototype, "highRiskFoodStoragePosition", void 0);
-    __decorate([
-        (0, typeorm_1.Column)(),
-        __metadata("design:type", String)
-    ], FoodSafetyQuestionnaire.prototype, "temperatureDangerZone", void 0);
-    __decorate([
-        (0, typeorm_1.Column)(),
-        __metadata("design:type", String)
-    ], FoodSafetyQuestionnaire.prototype, "handWashingScenarios", void 0);
-    __decorate([
-        (0, typeorm_1.Column)(),
-        __metadata("design:type", String)
-    ], FoodSafetyQuestionnaire.prototype, "allergenDefinition", void 0);
-    __decorate([
-        (0, typeorm_1.Column)(),
-        __metadata("design:type", String)
-    ], FoodSafetyQuestionnaire.prototype, "highRiskFoodsExamples", void 0);
-    __decorate([
-        (0, typeorm_1.Column)(),
-        __metadata("design:type", String)
-    ], FoodSafetyQuestionnaire.prototype, "foodSafetyActOffense", void 0);
-    __decorate([
-        (0, typeorm_1.Column)(),
-        __metadata("design:type", Boolean)
-    ], FoodSafetyQuestionnaire.prototype, "licensingRegulationAgreement", void 0);
-    FoodSafetyQuestionnaire = __decorate([
-        (0, typeorm_1.Entity)()
-    ], FoodSafetyQuestionnaire);
-    return FoodSafetyQuestionnaire;
-}());
+const typeorm_1 = require("typeorm");
+let FoodSafetyQuestionnaire = class FoodSafetyQuestionnaire {
+};
 exports.FoodSafetyQuestionnaire = FoodSafetyQuestionnaire;
+__decorate([
+    (0, typeorm_1.PrimaryGeneratedColumn)(),
+    __metadata("design:type", Number)
+], FoodSafetyQuestionnaire.prototype, "id", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ unique: true }),
+    __metadata("design:type", String)
+], FoodSafetyQuestionnaire.prototype, "applicationNo", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", Boolean)
+], FoodSafetyQuestionnaire.prototype, "cleaningRawMeatUtensilsRequired", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], FoodSafetyQuestionnaire.prototype, "foodSafetyAct1990Description", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], FoodSafetyQuestionnaire.prototype, "cleaningRequirement", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], FoodSafetyQuestionnaire.prototype, "contaminatedFoodCharacteristics", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], FoodSafetyQuestionnaire.prototype, "bacteriaFactTrue", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], FoodSafetyQuestionnaire.prototype, "highRiskFoodStoragePosition", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], FoodSafetyQuestionnaire.prototype, "temperatureDangerZone", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], FoodSafetyQuestionnaire.prototype, "handWashingScenarios", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], FoodSafetyQuestionnaire.prototype, "allergenDefinition", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], FoodSafetyQuestionnaire.prototype, "highRiskFoodsExamples", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], FoodSafetyQuestionnaire.prototype, "foodSafetyActOffense", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", Boolean)
+], FoodSafetyQuestionnaire.prototype, "licensingRegulationAgreement", void 0);
+exports.FoodSafetyQuestionnaire = FoodSafetyQuestionnaire = __decorate([
+    (0, typeorm_1.Entity)()
+], FoodSafetyQuestionnaire);

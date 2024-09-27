@@ -2,10 +2,116 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = loginLinkEmail;
 // loginLinkEmail.js
-var emailHeader_1 = require("./emailHeader");
-var emailFooter_1 = require("./emailFooter");
-var config_1 = require("../config");
+const emailHeader_1 = require("./emailHeader");
+const emailFooter_1 = require("./emailFooter");
+const config_1 = require("../config");
 function loginLinkEmail(user, twoFactorToken) {
-    var verificationUrl = "".concat(config_1.FRONTEND_LOGIN, "/login-without-code?email=").concat(encodeURIComponent(user.email), "&code=").concat(encodeURIComponent(twoFactorToken));
-    return "\n".concat((0, emailHeader_1.emailHeader)('others'), "\n\n    <div class=\"email-body\" style=\"background-color: #ffffff; border-radius: 4px\">\n        <p style=\"\n            font-family: Inter;\n            color: #000000;\n            font-size: 14px;\n            line-height: 20px;\n            font-weight: normal;\n            margin: 0;\n            padding: 1rem;\n            margin-bottom: -15px;\n        \">\n        Hi ").concat(user.firstName || 'User', ",\n        </p>\n        <p style=\"\n            font-family: Inter;\n            color: #000000;\n            font-size: 14px;\n            line-height: 20px;\n            font-weight: normal;\n            margin: 0;\n            padding: 1rem;\n            margin-bottom: -15px;\n        \">\n        You can log in without a password using the button below:\n        </p>\n\n        <p style=\"\n            font-family: Inter;\n            color: #000000;\n            font-size: 14px;\n            line-height: 20px;\n            font-weight: normal;\n            margin: 0;\n            padding: 1rem;\n            margin-bottom: -15px;\n        \">\n        <a href=\"").concat(verificationUrl, "\" \n            style=\"text-decoration: none; cursor:pointer; \n            background-color:#247A84; color:#fff; \n            padding:0.5rem 1rem; border:0; outline:0; \n            border-radius:100px; font-weight:600\">Log In</a>\n        </p>\n        \n        \n        <p style=\"\n            font-family: Inter;\n            color: #000000;\n            font-size: 14px;\n            line-height: 20px;\n            font-weight: normal;\n            margin: 0;\n            padding: 1rem;\n            margin-bottom: -15px;\n        \">\n        or Copy and Paste the 2FA Code into the input:\n        </p>\n        <h2 style=\"\n            font-family: Inter;\n            text-align: center;\n            font-size: 24px;\n            color: #000000;\n        \">\n        ").concat(twoFactorToken, "\n        </h2>\n        <p style=\"\n            font-family: Inter;\n            color: #000000;\n            font-size: 14px;\n            line-height: 20px;\n            font-weight: normal;\n            margin: 0;\n            padding: 1rem;\n            margin-bottom: -15px;\n        \">\n        This code will expire in 5 minutes.\n        </p>\n        <p style=\"\n            font-family: Inter;\n            color: #000000;\n            font-size: 14px;\n            line-height: 20px;\n            font-weight: normal;\n            margin: 0;\n            padding: 1rem;\n            margin-bottom: -15px;\n        \">\n        If you did not request this, please ignore this email.\n        </p>\n        <p style=\"\n            font-family: Inter;\n            color: #000000;\n            font-size: 14px;\n            line-height: 20px;\n            font-weight: normal;\n            margin: 0;\n            padding: 1rem;\n            margin-bottom: -15px;\n        \">\n        Best regards,<br>The ").concat(process.env.APP_COMPANY, " Team\n        </p>\n    </div>\n\n").concat((0, emailFooter_1.emailFooter)(), "\n  ");
+    const verificationUrl = `${config_1.FRONTEND_LOGIN}/login-without-code?email=${encodeURIComponent(user.email)}&code=${encodeURIComponent(twoFactorToken)}`;
+    return `
+${(0, emailHeader_1.emailHeader)('others')}
+
+    <div class="email-body" style="background-color: #ffffff; border-radius: 4px">
+        <p style="
+            font-family: Inter;
+            color: #000000;
+            font-size: 14px;
+            line-height: 20px;
+            font-weight: normal;
+            margin: 0;
+            padding: 1rem;
+            margin-bottom: -15px;
+        ">
+        Hi ${user.firstName || 'User'},
+        </p>
+        <p style="
+            font-family: Inter;
+            color: #000000;
+            font-size: 14px;
+            line-height: 20px;
+            font-weight: normal;
+            margin: 0;
+            padding: 1rem;
+            margin-bottom: -15px;
+        ">
+        You can log in without a password using the button below:
+        </p>
+
+        <p style="
+            font-family: Inter;
+            color: #000000;
+            font-size: 14px;
+            line-height: 20px;
+            font-weight: normal;
+            margin: 0;
+            padding: 1rem;
+            margin-bottom: -15px;
+        ">
+        <a href="${verificationUrl}" 
+            style="text-decoration: none; cursor:pointer; 
+            background-color:#247A84; color:#fff; 
+            padding:0.5rem 1rem; border:0; outline:0; 
+            border-radius:100px; font-weight:600">Log In</a>
+        </p>
+        
+        
+        <p style="
+            font-family: Inter;
+            color: #000000;
+            font-size: 14px;
+            line-height: 20px;
+            font-weight: normal;
+            margin: 0;
+            padding: 1rem;
+            margin-bottom: -15px;
+        ">
+        or Copy and Paste the 2FA Code into the input:
+        </p>
+        <h2 style="
+            font-family: Inter;
+            text-align: center;
+            font-size: 24px;
+            color: #000000;
+        ">
+        ${twoFactorToken}
+        </h2>
+        <p style="
+            font-family: Inter;
+            color: #000000;
+            font-size: 14px;
+            line-height: 20px;
+            font-weight: normal;
+            margin: 0;
+            padding: 1rem;
+            margin-bottom: -15px;
+        ">
+        This code will expire in 5 minutes.
+        </p>
+        <p style="
+            font-family: Inter;
+            color: #000000;
+            font-size: 14px;
+            line-height: 20px;
+            font-weight: normal;
+            margin: 0;
+            padding: 1rem;
+            margin-bottom: -15px;
+        ">
+        If you did not request this, please ignore this email.
+        </p>
+        <p style="
+            font-family: Inter;
+            color: #000000;
+            font-size: 14px;
+            line-height: 20px;
+            font-weight: normal;
+            margin: 0;
+            padding: 1rem;
+            margin-bottom: -15px;
+        ">
+        Best regards,<br>The ${process.env.APP_COMPANY} Team
+        </p>
+    </div>
+
+${(0, emailFooter_1.emailFooter)()}
+  `;
 }

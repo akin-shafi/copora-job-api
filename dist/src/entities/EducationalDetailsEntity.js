@@ -10,41 +10,38 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.EducationalDetails = void 0;
-var typeorm_1 = require("typeorm");
-var EducationalDetails = /** @class */ (function () {
-    function EducationalDetails() {
-    }
-    __decorate([
-        (0, typeorm_1.PrimaryGeneratedColumn)(),
-        __metadata("design:type", Number)
-    ], EducationalDetails.prototype, "id", void 0);
-    __decorate([
-        (0, typeorm_1.Column)(),
-        __metadata("design:type", String)
-    ], EducationalDetails.prototype, "applicationNo", void 0);
-    __decorate([
-        (0, typeorm_1.Column)(),
-        __metadata("design:type", String)
-    ], EducationalDetails.prototype, "schoolName", void 0);
-    __decorate([
-        (0, typeorm_1.Column)(),
-        __metadata("design:type", String)
-    ], EducationalDetails.prototype, "certificateObtained", void 0);
-    __decorate([
-        (0, typeorm_1.Column)(),
-        __metadata("design:type", String)
-    ], EducationalDetails.prototype, "courseOfStudy", void 0);
-    __decorate([
-        (0, typeorm_1.Column)(),
-        __metadata("design:type", Number)
-    ], EducationalDetails.prototype, "yearAdmitted", void 0);
-    __decorate([
-        (0, typeorm_1.Column)(),
-        __metadata("design:type", Number)
-    ], EducationalDetails.prototype, "yearGraduated", void 0);
-    EducationalDetails = __decorate([
-        (0, typeorm_1.Entity)()
-    ], EducationalDetails);
-    return EducationalDetails;
-}());
+const typeorm_1 = require("typeorm");
+let EducationalDetails = class EducationalDetails {
+};
 exports.EducationalDetails = EducationalDetails;
+__decorate([
+    (0, typeorm_1.PrimaryGeneratedColumn)(),
+    __metadata("design:type", Number)
+], EducationalDetails.prototype, "id", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], EducationalDetails.prototype, "applicationNo", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], EducationalDetails.prototype, "schoolName", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], EducationalDetails.prototype, "certificateObtained", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], EducationalDetails.prototype, "courseOfStudy", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", Number)
+], EducationalDetails.prototype, "yearAdmitted", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", Number)
+], EducationalDetails.prototype, "yearGraduated", void 0);
+exports.EducationalDetails = EducationalDetails = __decorate([
+    (0, typeorm_1.Entity)()
+], EducationalDetails);

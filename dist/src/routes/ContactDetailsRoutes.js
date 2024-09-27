@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var express_1 = require("express");
-var ContactDetailsController_1 = require("../controllers/ContactDetailsController");
-var router = (0, express_1.Router)();
+const express_1 = require("express");
+const ContactDetailsController_1 = require("../controllers/ContactDetailsController");
+const router = (0, express_1.Router)();
 /**
  * @swagger
  * tags:

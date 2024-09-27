@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var express_1 = require("express");
-var AgreementConsentController_1 = require("../controllers/AgreementConsentController");
-var router = (0, express_1.Router)();
+const express_1 = require("express");
+const AgreementConsentController_1 = require("../controllers/AgreementConsentController");
+const router = (0, express_1.Router)();
 /**
  * @swagger
  * tags:

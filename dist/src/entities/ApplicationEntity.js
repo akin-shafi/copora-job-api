@@ -10,29 +10,26 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Application = void 0;
-var typeorm_1 = require("typeorm");
-var Application = /** @class */ (function () {
-    function Application() {
-    }
-    __decorate([
-        (0, typeorm_1.PrimaryGeneratedColumn)(),
-        __metadata("design:type", Number)
-    ], Application.prototype, "id", void 0);
-    __decorate([
-        (0, typeorm_1.Column)({ unique: true }),
-        __metadata("design:type", String)
-    ], Application.prototype, "applicationNo", void 0);
-    __decorate([
-        (0, typeorm_1.Column)(),
-        __metadata("design:type", Date)
-    ], Application.prototype, "createdAt", void 0);
-    __decorate([
-        (0, typeorm_1.Column)(),
-        __metadata("design:type", Date)
-    ], Application.prototype, "updatedAt", void 0);
-    Application = __decorate([
-        (0, typeorm_1.Entity)()
-    ], Application);
-    return Application;
-}());
+const typeorm_1 = require("typeorm");
+let Application = class Application {
+};
 exports.Application = Application;
+__decorate([
+    (0, typeorm_1.PrimaryGeneratedColumn)(),
+    __metadata("design:type", Number)
+], Application.prototype, "id", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ unique: true }),
+    __metadata("design:type", String)
+], Application.prototype, "applicationNo", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", Date)
+], Application.prototype, "createdAt", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", Date)
+], Application.prototype, "updatedAt", void 0);
+exports.Application = Application = __decorate([
+    (0, typeorm_1.Entity)()
+], Application);

@@ -10,73 +10,70 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.GeneralInfo = void 0;
-var typeorm_1 = require("typeorm");
-var GeneralInfo = /** @class */ (function () {
-    function GeneralInfo() {
-    }
-    __decorate([
-        (0, typeorm_1.PrimaryGeneratedColumn)(),
-        __metadata("design:type", Number)
-    ], GeneralInfo.prototype, "id", void 0);
-    __decorate([
-        (0, typeorm_1.Column)({ unique: true, nullable: true }),
-        __metadata("design:type", String)
-    ], GeneralInfo.prototype, "applicationNo", void 0);
-    __decorate([
-        (0, typeorm_1.Column)(),
-        __metadata("design:type", Boolean)
-    ], GeneralInfo.prototype, "plateWaiting", void 0);
-    __decorate([
-        (0, typeorm_1.Column)(),
-        __metadata("design:type", Boolean)
-    ], GeneralInfo.prototype, "retailCashier", void 0);
-    __decorate([
-        (0, typeorm_1.Column)(),
-        __metadata("design:type", Boolean)
-    ], GeneralInfo.prototype, "barWork", void 0);
-    __decorate([
-        (0, typeorm_1.Column)(),
-        __metadata("design:type", Boolean)
-    ], GeneralInfo.prototype, "hospitality", void 0);
-    __decorate([
-        (0, typeorm_1.Column)(),
-        __metadata("design:type", Boolean)
-    ], GeneralInfo.prototype, "foodService", void 0);
-    __decorate([
-        (0, typeorm_1.Column)(),
-        __metadata("design:type", Boolean)
-    ], GeneralInfo.prototype, "barista", void 0);
-    __decorate([
-        (0, typeorm_1.Column)(),
-        __metadata("design:type", Boolean)
-    ], GeneralInfo.prototype, "supervising", void 0);
-    __decorate([
-        (0, typeorm_1.Column)({ nullable: true }),
-        __metadata("design:type", String)
-    ], GeneralInfo.prototype, "level2FoodHygieneCertificate", void 0);
-    __decorate([
-        (0, typeorm_1.Column)({ nullable: true }),
-        __metadata("design:type", String)
-    ], GeneralInfo.prototype, "level2FoodHygieneCertificateUpload", void 0);
-    __decorate([
-        (0, typeorm_1.Column)(),
-        __metadata("design:type", Boolean)
-    ], GeneralInfo.prototype, "personalLicenseHolder", void 0);
-    __decorate([
-        (0, typeorm_1.Column)({ nullable: true }),
-        __metadata("design:type", String)
-    ], GeneralInfo.prototype, "personalLicenseCertificateUpload", void 0);
-    __decorate([
-        (0, typeorm_1.Column)(),
-        __metadata("design:type", Boolean)
-    ], GeneralInfo.prototype, "dbsDisclosureAndBarringService", void 0);
-    __decorate([
-        (0, typeorm_1.Column)({ nullable: true }),
-        __metadata("design:type", String)
-    ], GeneralInfo.prototype, "dbsCertificateUpload", void 0);
-    GeneralInfo = __decorate([
-        (0, typeorm_1.Entity)()
-    ], GeneralInfo);
-    return GeneralInfo;
-}());
+const typeorm_1 = require("typeorm");
+let GeneralInfo = class GeneralInfo {
+};
 exports.GeneralInfo = GeneralInfo;
+__decorate([
+    (0, typeorm_1.PrimaryGeneratedColumn)(),
+    __metadata("design:type", Number)
+], GeneralInfo.prototype, "id", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ unique: true, nullable: true }),
+    __metadata("design:type", String)
+], GeneralInfo.prototype, "applicationNo", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", Boolean)
+], GeneralInfo.prototype, "plateWaiting", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", Boolean)
+], GeneralInfo.prototype, "retailCashier", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", Boolean)
+], GeneralInfo.prototype, "barWork", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", Boolean)
+], GeneralInfo.prototype, "hospitality", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", Boolean)
+], GeneralInfo.prototype, "foodService", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", Boolean)
+], GeneralInfo.prototype, "barista", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", Boolean)
+], GeneralInfo.prototype, "supervising", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], GeneralInfo.prototype, "level2FoodHygieneCertificate", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], GeneralInfo.prototype, "level2FoodHygieneCertificateUpload", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", Boolean)
+], GeneralInfo.prototype, "personalLicenseHolder", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], GeneralInfo.prototype, "personalLicenseCertificateUpload", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", Boolean)
+], GeneralInfo.prototype, "dbsDisclosureAndBarringService", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ nullable: true }),
+    __metadata("design:type", String)
+], GeneralInfo.prototype, "dbsCertificateUpload", void 0);
+exports.GeneralInfo = GeneralInfo = __decorate([
+    (0, typeorm_1.Entity)()
+], GeneralInfo);

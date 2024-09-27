@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var express_1 = require("express");
+const express_1 = require("express");
 // import { getSuggestions } from '../controllers/searchController';
-var router = (0, express_1.Router)();
+const router = (0, express_1.Router)();
 // /**
 //  * @swagger
 //  * /search/suggestions:

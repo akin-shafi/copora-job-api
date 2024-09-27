@@ -10,41 +10,38 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.BankDetails = void 0;
-var typeorm_1 = require("typeorm");
-var BankDetails = /** @class */ (function () {
-    function BankDetails() {
-    }
-    __decorate([
-        (0, typeorm_1.PrimaryGeneratedColumn)(),
-        __metadata("design:type", Number)
-    ], BankDetails.prototype, "id", void 0);
-    __decorate([
-        (0, typeorm_1.Column)({ unique: true }),
-        __metadata("design:type", String)
-    ], BankDetails.prototype, "applicationNo", void 0);
-    __decorate([
-        (0, typeorm_1.Column)(),
-        __metadata("design:type", String)
-    ], BankDetails.prototype, "bankName", void 0);
-    __decorate([
-        (0, typeorm_1.Column)(),
-        __metadata("design:type", String)
-    ], BankDetails.prototype, "accountNumber", void 0);
-    __decorate([
-        (0, typeorm_1.Column)(),
-        __metadata("design:type", String)
-    ], BankDetails.prototype, "sortCode", void 0);
-    __decorate([
-        (0, typeorm_1.Column)(),
-        __metadata("design:type", String)
-    ], BankDetails.prototype, "accountName", void 0);
-    __decorate([
-        (0, typeorm_1.Column)(),
-        __metadata("design:type", String)
-    ], BankDetails.prototype, "employmentStatusDeclaration", void 0);
-    BankDetails = __decorate([
-        (0, typeorm_1.Entity)()
-    ], BankDetails);
-    return BankDetails;
-}());
+const typeorm_1 = require("typeorm");
+let BankDetails = class BankDetails {
+};
 exports.BankDetails = BankDetails;
+__decorate([
+    (0, typeorm_1.PrimaryGeneratedColumn)(),
+    __metadata("design:type", Number)
+], BankDetails.prototype, "id", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ unique: true }),
+    __metadata("design:type", String)
+], BankDetails.prototype, "applicationNo", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], BankDetails.prototype, "bankName", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], BankDetails.prototype, "accountNumber", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], BankDetails.prototype, "sortCode", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], BankDetails.prototype, "accountName", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], BankDetails.prototype, "employmentStatusDeclaration", void 0);
+exports.BankDetails = BankDetails = __decorate([
+    (0, typeorm_1.Entity)()
+], BankDetails);

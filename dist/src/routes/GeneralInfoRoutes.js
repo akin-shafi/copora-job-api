@@ -1,9 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-var express_1 = require("express");
-var GeneralInfoController_1 = require("../controllers/GeneralInfoController");
-var router = (0, express_1.Router)();
-var generalInfoController = new GeneralInfoController_1.GeneralInfoController();
+const express_1 = require("express");
+const GeneralInfoController_1 = require("../controllers/GeneralInfoController");
+const router = (0, express_1.Router)();
+const generalInfoController = new GeneralInfoController_1.GeneralInfoController();
 // Route to create a new GeneralInfo entry
 /**
  * @swagger
@@ -140,13 +140,13 @@ var generalInfoController = new GeneralInfoController_1.GeneralInfoController();
  *       500:
  *         description: Server error
  */
-router.post('/', function (req, res) { return generalInfoController.create(req, res); });
+router.post('/', (req, res) => generalInfoController.create(req, res));
 // Route to get all GeneralInfo entries
-router.get('/', function (req, res) { return generalInfoController.getAll(req, res); });
+router.get('/', (req, res) => generalInfoController.getAll(req, res));
 // Route to get a specific GeneralInfo entry by ID
-router.get('/:id', function (req, res) { return generalInfoController.getById(req, res); });
+router.get('/:id', (req, res) => generalInfoController.getById(req, res));
 // Route to update a GeneralInfo entry by ID
-router.put('/:id', function (req, res) { return generalInfoController.update(req, res); });
+router.put('/:id', (req, res) => generalInfoController.update(req, res));
 // Route to delete a GeneralInfo entry by ID
-router.delete('/:id', function (req, res) { return generalInfoController.delete(req, res); });
+router.delete('/:id', (req, res) => generalInfoController.delete(req, res));
 exports.default = router;

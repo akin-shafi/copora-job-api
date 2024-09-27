@@ -10,41 +10,38 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.EmploymentDetails = void 0;
-var typeorm_1 = require("typeorm");
-var EmploymentDetails = /** @class */ (function () {
-    function EmploymentDetails() {
-    }
-    __decorate([
-        (0, typeorm_1.PrimaryGeneratedColumn)(),
-        __metadata("design:type", Number)
-    ], EmploymentDetails.prototype, "id", void 0);
-    __decorate([
-        (0, typeorm_1.Column)({ unique: true }),
-        __metadata("design:type", String)
-    ], EmploymentDetails.prototype, "applicationNo", void 0);
-    __decorate([
-        (0, typeorm_1.Column)(),
-        __metadata("design:type", String)
-    ], EmploymentDetails.prototype, "employerName", void 0);
-    __decorate([
-        (0, typeorm_1.Column)(),
-        __metadata("design:type", String)
-    ], EmploymentDetails.prototype, "contactName", void 0);
-    __decorate([
-        (0, typeorm_1.Column)(),
-        __metadata("design:type", String)
-    ], EmploymentDetails.prototype, "phone", void 0);
-    __decorate([
-        (0, typeorm_1.Column)(),
-        __metadata("design:type", String)
-    ], EmploymentDetails.prototype, "email", void 0);
-    __decorate([
-        (0, typeorm_1.Column)(),
-        __metadata("design:type", String)
-    ], EmploymentDetails.prototype, "address", void 0);
-    EmploymentDetails = __decorate([
-        (0, typeorm_1.Entity)()
-    ], EmploymentDetails);
-    return EmploymentDetails;
-}());
+const typeorm_1 = require("typeorm");
+let EmploymentDetails = class EmploymentDetails {
+};
 exports.EmploymentDetails = EmploymentDetails;
+__decorate([
+    (0, typeorm_1.PrimaryGeneratedColumn)(),
+    __metadata("design:type", Number)
+], EmploymentDetails.prototype, "id", void 0);
+__decorate([
+    (0, typeorm_1.Column)({ unique: true }),
+    __metadata("design:type", String)
+], EmploymentDetails.prototype, "applicationNo", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], EmploymentDetails.prototype, "employerName", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], EmploymentDetails.prototype, "contactName", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], EmploymentDetails.prototype, "phone", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], EmploymentDetails.prototype, "email", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", String)
+], EmploymentDetails.prototype, "address", void 0);
+exports.EmploymentDetails = EmploymentDetails = __decorate([
+    (0, typeorm_1.Entity)()
+], EmploymentDetails);

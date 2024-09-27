@@ -2,9 +2,107 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = welcomeEmail;
 // resetPasswordEmail.js
-var emailHeader_1 = require("./emailHeader");
-var emailFooter_1 = require("./emailFooter");
-var config_1 = require("../config");
+const emailHeader_1 = require("./emailHeader");
+const emailFooter_1 = require("./emailFooter");
+const config_1 = require("../config");
 function welcomeEmail(user) {
-    return "\n        ".concat((0, emailHeader_1.emailHeader)('remainder'), " \n        <div class=\"email-body\" style=\"background-color: #ffffff; border-radius: 4px\">\n            <p style=\"\n                font-family: Inter;\n                color: #000000;\n                font-size: 14px;\n                line-height: 20px;\n                font-weight: normal;\n                margin: 0;\n                padding: 1rem;\n                margin-bottom: -15px;\">\n                Hi ").concat(user.firstName, ",\n            </p>\n            <p style=\"\n                font-family: Inter;\n                color: #000000;\n                font-size: 14px;\n                line-height: 20px;\n                font-weight: normal;\n                margin: 0;\n                padding: 1rem;\n                margin-bottom: -15px;\">\n                Thank you for completing the onboarding process with Copora. We\u2019re pleased to have you moving forward with us.\n            </p>\n            <p style=\"\n                font-family: Inter;\n                color: #000000;\n                font-size: 14px;\n                line-height: 20px;\n                font-weight: normal;\n                margin: 0;\n                padding: 1rem;\n                margin-bottom: -15px;\">\n                Your documents are now with our Contracts Team for review. Once they\u2019ve approved the information, we\u2019ll activate your access to our booking system.\n            </p>\n            <p style=\"\n                font-family: Inter;\n                color: #000000;\n                font-size: 14px;\n                line-height: 20px;\n                font-weight: normal;\n                margin: 0;\n                padding: 1rem;\n                margin-bottom: -15px;\">\n                This will allow you to see all the available roles and start selecting the ones that best fit your schedule.\n            </p>\n            <p style=\"\n                font-family: Inter;\n                color: #000000;\n                font-size: 14px;\n                line-height: 20px;\n                font-weight: normal;\n                margin: 0;\n                padding: 1rem;\n                margin-bottom: -15px;\">\n                We look forward to working with you.\n            </p>\n            <p style=\"\n                font-family: Inter;\n                color: #000000;\n                font-size: 14px;\n                line-height: 20px;\n                font-weight: normal;\n                margin: 0;\n                padding: 1rem;\n                margin-bottom: -15px;\">\n                If you have any questions or need further assistance, please don\u2019t hesitate to reach out.\n            </p>\n            <br>\n            <p style=\"\n                font-family: Inter;\n                color: #000000;\n                font-size: 14px;\n                line-height: 20px;\n                font-weight: normal;\n                margin: 0;\n                padding: 1rem;\n                margin-bottom: -15px;\">\n                <a href=\"").concat(config_1.FRONTEND_LOGIN, "/auth/login\" style=\"text-decoration: none; cursor:pointer; background-color:#247A84; color:#fff; padding:0.5rem 1rem; border:0; outline:0; border-radius:100px; font-weight:600\">\n                    Proceed to Dashboard\n                </a>\n            </p>\n            <br>\n            <p style=\"\n                font-family: Inter;\n                color: #000000;\n                font-size: 14px;\n                line-height: 20px;\n                font-weight: normal;\n                margin: 0;\n                padding: 1rem;\n                margin-bottom: -15px;\">\n                Best regards, <br><br>\n                <strong>The ").concat(process.env.APP_COMPANY, " Team</strong>\n            </p>\n        </div>\n        ").concat((0, emailFooter_1.emailFooter)(), "\n    ");
+    return `
+        ${(0, emailHeader_1.emailHeader)('remainder')} 
+        <div class="email-body" style="background-color: #ffffff; border-radius: 4px">
+            <p style="
+                font-family: Inter;
+                color: #000000;
+                font-size: 14px;
+                line-height: 20px;
+                font-weight: normal;
+                margin: 0;
+                padding: 1rem;
+                margin-bottom: -15px;">
+                Hi ${user.firstName},
+            </p>
+            <p style="
+                font-family: Inter;
+                color: #000000;
+                font-size: 14px;
+                line-height: 20px;
+                font-weight: normal;
+                margin: 0;
+                padding: 1rem;
+                margin-bottom: -15px;">
+                Thank you for completing the onboarding process with Copora. We’re pleased to have you moving forward with us.
+            </p>
+            <p style="
+                font-family: Inter;
+                color: #000000;
+                font-size: 14px;
+                line-height: 20px;
+                font-weight: normal;
+                margin: 0;
+                padding: 1rem;
+                margin-bottom: -15px;">
+                Your documents are now with our Contracts Team for review. Once they’ve approved the information, we’ll activate your access to our booking system.
+            </p>
+            <p style="
+                font-family: Inter;
+                color: #000000;
+                font-size: 14px;
+                line-height: 20px;
+                font-weight: normal;
+                margin: 0;
+                padding: 1rem;
+                margin-bottom: -15px;">
+                This will allow you to see all the available roles and start selecting the ones that best fit your schedule.
+            </p>
+            <p style="
+                font-family: Inter;
+                color: #000000;
+                font-size: 14px;
+                line-height: 20px;
+                font-weight: normal;
+                margin: 0;
+                padding: 1rem;
+                margin-bottom: -15px;">
+                We look forward to working with you.
+            </p>
+            <p style="
+                font-family: Inter;
+                color: #000000;
+                font-size: 14px;
+                line-height: 20px;
+                font-weight: normal;
+                margin: 0;
+                padding: 1rem;
+                margin-bottom: -15px;">
+                If you have any questions or need further assistance, please don’t hesitate to reach out.
+            </p>
+            <br>
+            <p style="
+                font-family: Inter;
+                color: #000000;
+                font-size: 14px;
+                line-height: 20px;
+                font-weight: normal;
+                margin: 0;
+                padding: 1rem;
+                margin-bottom: -15px;">
+                <a href="${config_1.FRONTEND_LOGIN}/auth/login" style="text-decoration: none; cursor:pointer; background-color:#247A84; color:#fff; padding:0.5rem 1rem; border:0; outline:0; border-radius:100px; font-weight:600">
+                    Proceed to Dashboard
+                </a>
+            </p>
+            <br>
+            <p style="
+                font-family: Inter;
+                color: #000000;
+                font-size: 14px;
+                line-height: 20px;
+                font-weight: normal;
+                margin: 0;
+                padding: 1rem;
+                margin-bottom: -15px;">
+                Best regards, <br><br>
+                <strong>The ${process.env.APP_COMPANY} Team</strong>
+            </p>
+        </div>
+        ${(0, emailFooter_1.emailFooter)()}
+    `;
 }
