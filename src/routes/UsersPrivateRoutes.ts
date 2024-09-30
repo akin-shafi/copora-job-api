@@ -391,5 +391,81 @@ router.put('/profile/:id',  authenticateToken, uploadDocumentsAndImages.single('
  */
 router.patch('/users/:id/role',  authenticateToken, authorizeRoles('admin'), UserController.changeUserRole);
 
+/**
+ * @swagger
+ * /auth/users/upload-users:
+ *   post:
+ *     summary: Bulk upload users from an Excel file
+ *     description: Allows admin to upload an Excel file containing first name, last name, email, and phone number. The system assigns application IDs and sends an invitation email to each user in the file.
+ *     tags: [Admin - Private Endpoints]
+ *     requestBody:
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               file:
+ *                 type: string
+ *                 format: binary
+ *                 description: Excel file with user data (first name, last name, email, phone number).
+ *           required:
+ *             - file
+ *     responses:
+ *       200:
+ *         description: Users uploaded successfully, and invitations sent.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Users uploaded successfully, and invitations sent.
+ *                 processedUsers:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       firstName:
+ *                         type: string
+ *                         example: John
+ *                       lastName:
+ *                         type: string
+ *                         example: Doe
+ *                       email:
+ *                         type: string
+ *                         example: johndoe@example.com
+ *                       phoneNumber:
+ *                         type: string
+ *                         example: +1234567890
+ *                       role:
+ *                         type: string
+ *                         example: applicant
+ *       400:
+ *         description: Bad request, possibly missing file or invalid format.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Invalid file or missing fields.
+ *       500:
+ *         description: Server error while processing the file or sending emails.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: Server error while processing the upload.
+ *     security:
+ *       - bearerAuth: []  # Apply bearerAuth security scheme
+ */
+router.post('/admin/upload-users', authenticateToken, authorizeRoles('admin'), UserController.bulkUploadUsers);
+
+
 
 export default router;

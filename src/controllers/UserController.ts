@@ -1,4 +1,6 @@
-import { Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
+import multer from 'multer';
+import { AuthenticatedRequest } from '../types/AuthenticatedRequest'; // Adjust the import based on your project structure
 import { AppDataSource } from '../data-source';
 import { User } from '../entities/UserEntity';
 import { UserService } from '../services/UserService';
@@ -11,10 +13,15 @@ import { v4 as uuidv4 } from 'uuid'; // For generating verification tokens
 import { FRONTEND_LOGIN } from '../config';
 import axios from 'axios'; // Add axios for HTTP requests
 import pdfParse from 'pdf-parse';
+import * as XLSX from 'xlsx';
 import { OnboardingStatus } from '../constants';
 
-
 const userService = new UserService();
+
+// Multer configuration for handling file uploads
+const storage = multer.memoryStorage(); // Store the file in memory
+const upload = multer({ storage }).single('file'); // Single file upload under 'file' field
+
 
 // Configure Cloudinary
 cloudinary.config({
@@ -27,8 +34,10 @@ class UserController {
 
   constructor() {
     this.register = this.register.bind(this);
+    this.bulkUploadUsers = this.bulkUploadUsers.bind(this);
   }
 
+  
 
 
   async linkedinCallback(req: Request, res: Response): Promise<Response> {
@@ -76,8 +85,6 @@ class UserController {
       return res.status(500).json({ message: 'Server error', error: error.message });
     }
   }
-
-
 
   async register(req: Request, res: Response): Promise<Response> {
     try {
@@ -318,6 +325,82 @@ class UserController {
       res.status(500).json({ message: 'Server error', error: error.message });
     }
   }
+
+  // Admin endpoint to upload Excel file
+  async bulkUploadUsers(req: Request, res: Response) {
+    upload(req, res, async (err) => {
+      if (err) {
+        return res.status(500).json({ message: 'Error uploading file', error: err.message });
+      }
+
+      if (!req.file) {
+        return res.status(400).json({ message: 'No file uploaded' });
+      }
+
+      try {
+        // Parse the uploaded Excel file
+        const workbook = XLSX.read(req.file.buffer, { type: 'buffer' });
+        const sheetName = workbook.SheetNames[0]; // Assuming data is in the first sheet
+        const sheet = workbook.Sheets[sheetName];
+        const rows = XLSX.utils.sheet_to_json(sheet);
+
+        // Process each row in the Excel file
+        for (const row of rows) {
+          // const { firstName, middleName, lastName, email, password, role, accountStatus, createdBy } = req.body;
+          const { firstName, lastName, email, phoneNumber, role } = row as {
+            firstName: string;
+            lastName: string;
+            email: string;
+            role: string;
+            phoneNumber: string;
+          };
+
+          // Validate the required fields
+          if (!firstName || !lastName || !email || !phoneNumber) {
+            continue; // Skip rows with missing data
+          }
+
+          const normalizedEmail = email.trim().toLowerCase();
+
+          // Check if user already exists
+          const existingUser = await userService.findByEmail(normalizedEmail);
+          if (existingUser) {
+            continue; // Skip existing users
+          }
+
+          // Generate application number and temporary password
+          // const applicationNo = this.generateApplicationNumber(role);
+          const applicationNo = await this.generateApplicationNumber(role);
+
+          const temporaryPassword = uuidv4().slice(0, 8); // Generate a temporary password
+
+          // Create new user
+          const newUser = await userService.create({
+            firstName,
+            lastName,
+            email: normalizedEmail,
+            phoneNumber,
+            password: temporaryPassword, // Save the temporary password
+            applicationNo
+          });
+
+          // Send invitation email
+          await sendInvitationToOnboard({
+            email: normalizedEmail,
+            firstName,
+            loginLink: `${FRONTEND_LOGIN}/login`,
+            temporaryPassword
+          });
+        }
+
+        return res.status(200).json({ message: 'Users uploaded and invitations sent' });
+
+      } catch (error) {
+        console.error('Error processing Excel file:', error);
+        return res.status(500).json({ message: 'Server error', error: error.message });
+      }
+    });
+  }
   
 
   async login(req: Request, res: Response) {
@@ -493,33 +576,37 @@ class UserController {
     }
   }
 
-  async changeUserRole(req: Request, res: Response) {
+  
+  async changeUserRole(req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> {
     const userId = parseInt(req.params.userId, 10); // Convert string to number
     const { role } = req.body;
 
     try {
-        // Validate input
-        if (isNaN(userId) || !role) {
-            return res.status(400).json({ message: 'User ID (number) and role are required' });
-        }
+      // Validate input
+      if (isNaN(userId) || !role) {
+        res.status(400).json({ message: 'User ID (number) and role are required' });
+        return; // Ensure we return to avoid further execution
+      }
 
-        // Validate role
-        const allowedRoles = ['admin', 'user', 'manager']; // Adjust roles as necessary
-        if (!allowedRoles.includes(role)) {
-            return res.status(400).json({ message: 'Invalid role' });
-        }
+      // Validate role
+      const allowedRoles = ['admin', 'user', 'manager']; // Adjust roles as necessary
+      if (!allowedRoles.includes(role)) {
+        res.status(400).json({ message: 'Invalid role' });
+        return; // Ensure we return to avoid further execution
+      }
 
-        // Update user role
-        const updatedUser = await userService.updateUserRole(userId, role);
+      // Update user role
+      const updatedUser = await userService.updateUserRole(userId, role);
 
-        if (updatedUser) {
-            return res.status(200).json({ message: 'User role updated successfully', user: updatedUser });
-        } else {
-            return res.status(404).json({ message: 'User not found' });
-        }
+      if (updatedUser) {
+        res.status(200).json({ message: 'User role updated successfully', user: updatedUser });
+      } else {
+        res.status(404).json({ message: 'User not found' });
+      }
     } catch (error) {
-        console.error('Error updating user role:', error);
-        return res.status(500).json({ message: 'Server error', error: error.message });
+      console.error('Error updating user role:', error);
+      // Use next to pass error to the error-handling middleware
+      next(error);
     }
   }
   

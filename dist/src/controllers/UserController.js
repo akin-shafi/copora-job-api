@@ -1,4 +1,27 @@
 "use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -12,6 +35,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const multer_1 = __importDefault(require("multer"));
 const data_source_1 = require("../data-source");
 const UserEntity_1 = require("../entities/UserEntity");
 const UserService_1 = require("../services/UserService");
@@ -23,8 +47,12 @@ const emailActions_1 = require("../lib/emailActions");
 const uuid_1 = require("uuid"); // For generating verification tokens
 const config_1 = require("../config");
 const axios_1 = __importDefault(require("axios")); // Add axios for HTTP requests
+const XLSX = __importStar(require("xlsx"));
 const constants_1 = require("../constants");
 const userService = new UserService_1.UserService();
+// Multer configuration for handling file uploads
+const storage = multer_1.default.memoryStorage(); // Store the file in memory
+const upload = (0, multer_1.default)({ storage }).single('file'); // Single file upload under 'file' field
 // Configure Cloudinary
 cloudinary_1.v2.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -34,6 +62,7 @@ cloudinary_1.v2.config({
 class UserController {
     constructor() {
         this.register = this.register.bind(this);
+        this.bulkUploadUsers = this.bulkUploadUsers.bind(this);
     }
     linkedinCallback(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -297,6 +326,66 @@ class UserController {
             }
         });
     }
+    // Admin endpoint to upload Excel file
+    bulkUploadUsers(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            upload(req, res, (err) => __awaiter(this, void 0, void 0, function* () {
+                if (err) {
+                    return res.status(500).json({ message: 'Error uploading file', error: err.message });
+                }
+                if (!req.file) {
+                    return res.status(400).json({ message: 'No file uploaded' });
+                }
+                try {
+                    // Parse the uploaded Excel file
+                    const workbook = XLSX.read(req.file.buffer, { type: 'buffer' });
+                    const sheetName = workbook.SheetNames[0]; // Assuming data is in the first sheet
+                    const sheet = workbook.Sheets[sheetName];
+                    const rows = XLSX.utils.sheet_to_json(sheet);
+                    // Process each row in the Excel file
+                    for (const row of rows) {
+                        // const { firstName, middleName, lastName, email, password, role, accountStatus, createdBy } = req.body;
+                        const { firstName, lastName, email, phoneNumber, role } = row;
+                        // Validate the required fields
+                        if (!firstName || !lastName || !email || !phoneNumber) {
+                            continue; // Skip rows with missing data
+                        }
+                        const normalizedEmail = email.trim().toLowerCase();
+                        // Check if user already exists
+                        const existingUser = yield userService.findByEmail(normalizedEmail);
+                        if (existingUser) {
+                            continue; // Skip existing users
+                        }
+                        // Generate application number and temporary password
+                        // const applicationNo = this.generateApplicationNumber(role);
+                        const applicationNo = yield this.generateApplicationNumber(role);
+                        const temporaryPassword = (0, uuid_1.v4)().slice(0, 8); // Generate a temporary password
+                        // Create new user
+                        const newUser = yield userService.create({
+                            firstName,
+                            lastName,
+                            email: normalizedEmail,
+                            phoneNumber,
+                            password: temporaryPassword, // Save the temporary password
+                            applicationNo
+                        });
+                        // Send invitation email
+                        yield (0, emailActions_1.sendInvitationToOnboard)({
+                            email: normalizedEmail,
+                            firstName,
+                            loginLink: `${config_1.FRONTEND_LOGIN}/login`,
+                            temporaryPassword
+                        });
+                    }
+                    return res.status(200).json({ message: 'Users uploaded and invitations sent' });
+                }
+                catch (error) {
+                    console.error('Error processing Excel file:', error);
+                    return res.status(500).json({ message: 'Server error', error: error.message });
+                }
+            }));
+        });
+    }
     login(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
@@ -456,32 +545,35 @@ class UserController {
             }
         });
     }
-    changeUserRole(req, res) {
+    changeUserRole(req, res, next) {
         return __awaiter(this, void 0, void 0, function* () {
             const userId = parseInt(req.params.userId, 10); // Convert string to number
             const { role } = req.body;
             try {
                 // Validate input
                 if (isNaN(userId) || !role) {
-                    return res.status(400).json({ message: 'User ID (number) and role are required' });
+                    res.status(400).json({ message: 'User ID (number) and role are required' });
+                    return; // Ensure we return to avoid further execution
                 }
                 // Validate role
                 const allowedRoles = ['admin', 'user', 'manager']; // Adjust roles as necessary
                 if (!allowedRoles.includes(role)) {
-                    return res.status(400).json({ message: 'Invalid role' });
+                    res.status(400).json({ message: 'Invalid role' });
+                    return; // Ensure we return to avoid further execution
                 }
                 // Update user role
                 const updatedUser = yield userService.updateUserRole(userId, role);
                 if (updatedUser) {
-                    return res.status(200).json({ message: 'User role updated successfully', user: updatedUser });
+                    res.status(200).json({ message: 'User role updated successfully', user: updatedUser });
                 }
                 else {
-                    return res.status(404).json({ message: 'User not found' });
+                    res.status(404).json({ message: 'User not found' });
                 }
             }
             catch (error) {
                 console.error('Error updating user role:', error);
-                return res.status(500).json({ message: 'Server error', error: error.message });
+                // Use next to pass error to the error-handling middleware
+                next(error);
             }
         });
     }
