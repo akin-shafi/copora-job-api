@@ -26,3 +26,9 @@
 2024-09-30T06:06:00.443Z [[32minfo[39m]: HTTP GET /api-docs/swagger-ui-bundle.js
 2024-09-30T06:06:00.449Z [[32minfo[39m]: HTTP GET /api-docs/swagger-ui-standalone-preset.js
 2024-09-30T06:06:03.588Z [[32minfo[39m]: HTTP GET /api-docs/favicon-32x32.png
+2024-09-30T15:13:04.987Z [[32minfo[39m]: HTTP GET /api-docs
+2024-09-30T15:13:05.168Z [[32minfo[39m]: HTTP GET /api-docs/
+2024-09-30T15:13:05.253Z [[32minfo[39m]: HTTP GET /api-docs/swagger-ui.css
+2024-09-30T15:13:05.282Z [[32minfo[39m]: HTTP GET /api-docs/swagger-ui-init.js
+2024-09-30T15:13:05.315Z [[32minfo[39m]: HTTP GET /api-docs/swagger-ui-standalone-preset.js
+2024-09-30T15:13:05.340Z [[32minfo[39m]: HTTP GET /api-docs/swagger-ui-bundle.js
