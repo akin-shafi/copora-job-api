@@ -8,7 +8,8 @@ import crypto from 'crypto';
 import { sendTwoFactorCodeEmail, sendLoginLink } from '../lib/emailActions';
 import { OnboardingStatus } from '../constants';
 
-const  userRepository = AppDataSource.getRepository(User);
+// const  userRepository = AppDataSource.getRepository(User);
+export const userRepository = AppDataSource.getRepository(User);
 
 export class UserService {
 

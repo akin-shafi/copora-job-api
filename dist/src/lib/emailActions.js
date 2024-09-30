@@ -21,6 +21,7 @@ exports.sendLoginLink = sendLoginLink;
 exports.sendOnboardingReminderEmail = sendOnboardingReminderEmail;
 exports.sendOnboardingCompletionEmail = sendOnboardingCompletionEmail;
 exports.sendOnboardingHospitalityWorkerEmail = sendOnboardingHospitalityWorkerEmail;
+exports.sendBulkOnboardingCompletionEmails = sendBulkOnboardingCompletionEmails;
 // main.ts
 const signupEmail_1 = __importDefault(require("../emails/signupEmail"));
 const resetPasswordEmail_1 = __importDefault(require("../emails/resetPasswordEmail"));
@@ -31,6 +32,7 @@ const invitationToOnboardEmail_1 = __importDefault(require("../emails/invitation
 const onboardingReminderEmail_1 = __importDefault(require("../emails/onboardingReminderEmail"));
 const onboardingCompletionEmail_1 = __importDefault(require("../emails/onboardingCompletionEmail"));
 const onboardingHospitalityWorkerEmail_1 = __importDefault(require("../emails/onboardingHospitalityWorkerEmail"));
+const bulkEmailTemplate_1 = require("../emails/bulkEmailTemplate");
 const email_1 = require("./email");
 // Function to send signup email
 function sendSignupEmail(user) {
@@ -101,5 +103,13 @@ function sendOnboardingHospitalityWorkerEmail(user) {
         const subject = 'Welcome ';
         const html = (0, onboardingHospitalityWorkerEmail_1.default)(user); // Generate the email HTML
         yield (0, email_1.sendEmail)(user.email, subject, html); // Send the email
+    });
+}
+function sendBulkOnboardingCompletionEmails(users, customSubject, customContent) {
+    return __awaiter(this, void 0, void 0, function* () {
+        for (const user of users) {
+            const html = (0, bulkEmailTemplate_1.bulkEmailTemplate)(user, customContent); // Generate the email content using the custom message
+            yield (0, email_1.sendEmail)(user.email, customSubject, html); // Send the email to each user with the custom subject
+        }
     });
 }

@@ -8,7 +8,7 @@ import invitationToOnboardEmail from '../emails/invitationToOnboardEmail';
 import onboardingReminderEmail from '../emails/onboardingReminderEmail';
 import onboardingCompletionEmail from '../emails/onboardingCompletionEmail';
 import onboardingHospitalityWorkerEmail from '../emails/onboardingHospitalityWorkerEmail';
-
+import { bulkEmailTemplate } from '../emails/bulkEmailTemplate';
 import { sendEmail } from "./email";
 
 // Function to send signup email
@@ -72,6 +72,19 @@ export async function sendOnboardingHospitalityWorkerEmail(user: { firstName: st
     const html = onboardingHospitalityWorkerEmail(user);  // Generate the email HTML
     await sendEmail(user.email, subject, html);  // Send the email
 }
+
+
+export async function sendBulkOnboardingCompletionEmails(
+    users: { firstName: string; email: string }[],
+    customSubject: string,
+    customContent: string
+  ): Promise<void> {
+    for (const user of users) {
+      const html = bulkEmailTemplate(user, customContent); // Generate the email content using the custom message
+      await sendEmail(user.email, customSubject, html);    // Send the email to each user with the custom subject
+    }
+  }
+  
 
 
 

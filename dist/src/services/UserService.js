@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UserService = void 0;
+exports.UserService = exports.userRepository = void 0;
 const typeorm_1 = require("typeorm");
 const data_source_1 = require("../data-source");
 const UserEntity_1 = require("../entities/UserEntity");
@@ -20,14 +20,15 @@ const bcrypt_1 = __importDefault(require("bcrypt"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const crypto_1 = __importDefault(require("crypto"));
 const emailActions_1 = require("../lib/emailActions");
-const userRepository = data_source_1.AppDataSource.getRepository(UserEntity_1.User);
+// const  userRepository = AppDataSource.getRepository(User);
+exports.userRepository = data_source_1.AppDataSource.getRepository(UserEntity_1.User);
 class UserService {
     static register(arg0) {
         throw new Error('Method not implemented.');
     }
     login(email, password) {
         return __awaiter(this, void 0, void 0, function* () {
-            const user = yield userRepository.findOne({ where: { email } });
+            const user = yield exports.userRepository.findOne({ where: { email } });
             if (!user) {
                 throw new Error('Invalid email or password');
             }
@@ -41,7 +42,7 @@ class UserService {
     }
     findByVerificationToken(verifyToken) {
         return __awaiter(this, void 0, void 0, function* () {
-            return userRepository.findOne({ where: { verificationToken: verifyToken } });
+            return exports.userRepository.findOne({ where: { verificationToken: verifyToken } });
         });
     }
     verifyUser(verifyToken) {
@@ -52,18 +53,18 @@ class UserService {
             }
             user.isVerified = true;
             user.verificationToken = null; // Clear the token
-            yield userRepository.save(user);
+            yield exports.userRepository.save(user);
             return user;
         });
     }
     updateProfile(id, updatedData) {
         return __awaiter(this, void 0, void 0, function* () {
-            const user = yield userRepository.findOneBy({ id });
+            const user = yield exports.userRepository.findOneBy({ id });
             if (!user) {
                 throw new Error('User not found');
             }
             Object.assign(user, updatedData); // Update user fields
-            yield userRepository.save(user);
+            yield exports.userRepository.save(user);
         });
     }
     updateUserRole(id, role) {
@@ -90,7 +91,7 @@ class UserService {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 // Find the user by email and two-factor token, and ensure the two-factor code has not expired
-                const user = yield userRepository.findOne({
+                const user = yield exports.userRepository.findOne({
                     where: {
                         email: filter.email,
                         twoFactorToken: filter.twoFactorToken,
@@ -114,7 +115,7 @@ class UserService {
                     });
                     user.twoFactorToken = update.twoFactorToken;
                     user.twoFactorExpires = update.twoFactorExpires;
-                    yield userRepository.save(user); // Save the updated user
+                    yield exports.userRepository.save(user); // Save the updated user
                     console.log('User updated successfully');
                 }
                 return user;
@@ -129,7 +130,7 @@ class UserService {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 // Find the user by ID
-                const user = yield userRepository.findOne({ where: { id: userId } });
+                const user = yield exports.userRepository.findOne({ where: { id: userId } });
                 return user || null; // Return null if user is not found
             }
             catch (error) {
@@ -141,29 +142,29 @@ class UserService {
     // Get all users
     getAll() {
         return __awaiter(this, void 0, void 0, function* () {
-            return userRepository.find();
+            return exports.userRepository.find();
         });
     }
     // Get user by ID
     getById(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            return userRepository.findOneBy({ id });
+            return exports.userRepository.findOneBy({ id });
         });
     }
     // Create new user
     create(userData) {
         return __awaiter(this, void 0, void 0, function* () {
-            const user = userRepository.create(userData);
-            return userRepository.save(user);
+            const user = exports.userRepository.create(userData);
+            return exports.userRepository.save(user);
         });
     }
     // Update user
     update(id, userData) {
         return __awaiter(this, void 0, void 0, function* () {
-            const user = yield userRepository.findOneBy({ id });
+            const user = yield exports.userRepository.findOneBy({ id });
             if (user) {
                 Object.assign(user, userData);
-                return userRepository.save(user);
+                return exports.userRepository.save(user);
             }
             return null;
         });
@@ -171,13 +172,13 @@ class UserService {
     // Delete user
     delete(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            yield userRepository.delete(id);
+            yield exports.userRepository.delete(id);
         });
     }
     findByEmail(email) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                return yield userRepository.findOne({ where: { email } });
+                return yield exports.userRepository.findOne({ where: { email } });
             }
             catch (error) {
                 console.error('Error finding user by email:', error);
@@ -195,21 +196,21 @@ class UserService {
     // }
     static findApplicationNo(applicationNo) {
         return __awaiter(this, void 0, void 0, function* () {
-            return yield userRepository.findOneBy({ applicationNo });
+            return yield exports.userRepository.findOneBy({ applicationNo });
         });
     }
     static updateOnboardingStatus(applicationNo, status) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 // Find the user by application number
-                const user = yield userRepository.findOne({ where: { applicationNo } });
+                const user = yield exports.userRepository.findOne({ where: { applicationNo } });
                 if (!user) {
                     throw new Error(`User with application number ${applicationNo} not found`);
                 }
                 // Update the onboarding status
                 user.onboardingStatus = status;
                 // Save the updated user entity
-                return yield userRepository.save(user);
+                return yield exports.userRepository.save(user);
             }
             catch (error) {
                 console.error('Error updating onboarding status:', error);
@@ -220,7 +221,7 @@ class UserService {
     findByResetToken(resetPasswordToken) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                return yield userRepository.findOne({
+                return yield exports.userRepository.findOne({
                     where: {
                         resetPasswordToken,
                         resetPasswordExpires: (0, typeorm_1.MoreThan)(new Date()),
@@ -236,7 +237,7 @@ class UserService {
     generateAndSendTwoFactorToken(id, loginType) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const user = yield userRepository.findOneBy({ id });
+                const user = yield exports.userRepository.findOneBy({ id });
                 if (!user) {
                     throw new Error('User not found');
                 }
@@ -264,7 +265,7 @@ class UserService {
         return __awaiter(this, void 0, void 0, function* () {
             try {
                 const hashedCode = crypto_1.default.createHash('sha256').update(twoFactorCode).digest('hex');
-                const user = yield userRepository.findOne({
+                const user = yield exports.userRepository.findOne({
                     where: {
                         email,
                         twoFactorToken: hashedCode,
@@ -273,7 +274,7 @@ class UserService {
                 });
                 if (!user) {
                     // Check if the token has expired or if the user doesn't exist
-                    const expiredUser = yield userRepository.findOne({
+                    const expiredUser = yield exports.userRepository.findOne({
                         where: {
                             email,
                             twoFactorExpires: (0, typeorm_1.LessThan)(new Date())
@@ -300,7 +301,7 @@ class UserService {
     updateData(user) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                return yield userRepository.save(user);
+                return yield exports.userRepository.save(user);
             }
             catch (error) {
                 console.error('Error updating user:', error);
@@ -310,7 +311,7 @@ class UserService {
     }
     findUsersWithIncompleteOnboarding() {
         return __awaiter(this, void 0, void 0, function* () {
-            return userRepository.createQueryBuilder('user')
+            return exports.userRepository.createQueryBuilder('user')
                 .where('user.onboardingStep < :step', { step: 5 })
                 .andWhere('user.role = :role', { role: 'applicant' })
                 .getMany();
