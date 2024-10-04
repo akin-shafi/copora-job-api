@@ -81,7 +81,7 @@ data_source_1.AppDataSource.initialize()
     app.use(`/personal-details`, personalDetailsRoutes_1.default);
     app.use(`/professional-details`, ProfessionalDetailsRoutes_1.default);
     app.use(`/reference`, ReferenceRoutes_1.default);
-    app.use('/api/agreements', AgreementDocRoutes_1.default);
+    app.use('/agreements', AgreementDocRoutes_1.default);
     // Swagger setup
     app.use('/api-docs', swagger_ui_express_1.default.serve, swagger_ui_express_1.default.setup(swagger_1.swaggerSpec));
     // Error logging with Winston

@@ -1,9 +1,144 @@
-import puppeteer from 'puppeteer';
+import PDFDocument from 'pdfkit';
+import fs from 'fs';
+import path from 'path';
 
-export const generatePDF = async (htmlContent: string, outputPath: string) => {
-  const browser = await puppeteer.launch();
-  const page = await browser.newPage();
-  await page.setContent(htmlContent);
-  await page.pdf({ path: outputPath, format: 'A4' });
-  await browser.close();
+// Function to generate a PDF using pdfkit
+export const generatePDF = (data: {
+    firstName: string;
+    lastName: string;
+    middleName?: string;
+    email: string;
+    address: string;
+    jobTitle: string;
+    jobDescription: string;
+    startDate: string; // Date format for employment start
+    day: string;       // Day for the agreement date
+    month: string;     // Month for the agreement date
+    year: number;      // Year for the agreement date
+}, outputPath: string): Promise<void> => {
+    
+   
+    
+    return new Promise((resolve, reject) => {
+        try {
+            const dateSigned = `${data.day} ${data.month}, ${data.year}`;
+            const doc = new PDFDocument({ margins: { top: 50, bottom: 50, left: 50, right: 50 } });
+
+            const jobDescriptionText = typeof data.jobDescription === 'string' ? data.jobDescription : '';
+            const jobDescriptionBullets = jobDescriptionText
+                .split('.')
+                .map(item => item.trim())
+                .filter(item => item.length > 0);
+            
+            // Write the PDF to a file
+            const writeStream = fs.createWriteStream(outputPath);
+            doc.pipe(writeStream);
+
+            // Title
+            doc.fontSize(20).font('Times-Bold').text('EMPLOYMENT AGREEMENT', { align: 'center' });
+            doc.moveDown(1.5);
+
+            // Agreement content
+            doc.fontSize(12).font('Times-Roman').text(`This Employment Agreement ("Agreement") is made and entered into on this ${data.day} day of ${data.month}, ${data.year}, by and between:`, { align: 'left' });
+            doc.moveDown(1.5);
+
+            doc.text('Copora Limited, a company duly registered under the laws of Nigeria, with its principal office located at 71-75 Shelton Street, London, England, WC2H 9JQ, United Kingdom ("Employer" or "Company"), represented by its Managing Director, Mr. Andrew Smith,', { align: 'left' });
+            doc.moveDown();
+            doc.text(`AND`, { align: 'center' });
+            doc.moveDown();
+            doc.text(`${data.firstName} ${data.middleName || ''} ${data.lastName}, residing at ${data.address} ("Employee").`, { align: 'left' });
+            doc.moveDown(2);
+
+            // Contract body content
+            doc.text('1. POSITION', { underline: true });
+            doc.moveDown(0.5);
+            doc.text(`The Employer agrees to employ the Employee as a ${data.jobTitle}. The Employee shall report to the Employer's designated supervisor and shall perform the duties and responsibilities set forth by the Employer, including but not limited to:`);
+            doc.list(jobDescriptionBullets, { bulletRadius: 2 });
+            doc.moveDown(1.5);
+
+            doc.text('2. COMMENCEMENT DATE', { underline: true });
+            doc.moveDown(0.5);
+            doc.text(`The Employee's employment shall commence on the ${data.startDate}.`);
+            doc.moveDown(1.5);
+
+            doc.text('3. TERM OF EMPLOYMENT', { underline: true });
+            doc.moveDown(0.5);
+            doc.text('This Agreement is for an indefinite period unless terminated earlier in accordance with the provisions of this Agreement.');
+            doc.moveDown(1.5);
+
+            doc.text('4. COMPENSATION', { underline: true });
+            doc.moveDown(0.5);
+            doc.text('The Employee shall be paid a monthly salary of [Amount] NGN, subject to deductions for taxes and other withholdings as required by law. Payment shall be made on the last working day of each calendar month.');
+            doc.moveDown(1.5);
+
+            doc.text('5. WORKING HOURS', { underline: true });
+            doc.moveDown(0.5);
+            doc.text('The Employee shall work [specify working hours], with a lunch break of [specify duration] each day. Any additional hours worked shall be subject to overtime pay as per Nigerian labor law.');
+            doc.moveDown(1.5);
+
+            doc.text('6. LEAVE ENTITLEMENT', { underline: true });
+            doc.moveDown(0.5);
+            doc.text('The Employee shall be entitled to annual leave of [Number] days per calendar year, in accordance with the Company’s leave policy. Sick leave and other leave entitlements shall be provided in line with Nigerian labor laws.');
+            doc.moveDown(1.5);
+
+            doc.text('7. CONFIDENTIALITY', { underline: true });
+            doc.moveDown(0.5);
+            doc.text('The Employee agrees not to disclose any confidential information or trade secrets of the Company, either during the period of employment or after its termination, except as required by law or with the written consent of the Company.');
+            doc.moveDown(1.5);
+
+            doc.text('8. TERMINATION OF EMPLOYMENT', { underline: true });
+            doc.moveDown(0.5);
+            doc.text('8.1. Termination by Employer: The Employer may terminate this Agreement by providing the Employee with [Number] days’ notice or payment in lieu of notice.');
+            doc.moveDown(0.5);
+            doc.text('8.2. Termination by Employee: The Employee may terminate this Agreement by giving the Employer [Number] days’ notice in writing.');
+            doc.moveDown(0.5);
+            doc.text('8.3. Immediate Termination: The Employer reserves the right to terminate the Employee without notice in cases of gross misconduct, serious breach of duty, or any act that causes reputational or financial harm to the Company.');
+            doc.moveDown(1.5);
+
+            doc.text('9. GOVERNING LAW', { underline: true });
+            doc.moveDown(0.5);
+            doc.text('This Agreement shall be governed by and construed in accordance with the laws of the Federal Republic of Nigeria.');
+            doc.moveDown(1.5);
+
+            doc.text('10. ENTIRE AGREEMENT', { underline: true });
+            doc.moveDown(0.5);
+            doc.text('This Agreement contains the entire understanding between the parties and supersedes all prior agreements or understandings, oral or written, relating to the Employee\'s employment with the Company.');
+            doc.moveDown(1.5);
+
+            doc.text('11. AMENDMENTS', { underline: true });
+            doc.moveDown(0.5);
+            doc.text('Any amendments or modifications to this Agreement must be made in writing and signed by both parties.');
+            doc.moveDown(1.5);
+
+            doc.text('12. SIGNATURES', { underline: true });
+            doc.moveDown(1.5);
+
+            // Load and use cursive font for the signatures
+            const cursiveFontPath = path.join(__dirname, 'fonts', 'GreatVibes-Regular.ttf');
+            doc.font(cursiveFontPath);
+
+            // Signatures
+            doc.fontSize(24).text('Andrew Smith', { align: 'left' });
+            doc.font('Times-Roman').fontSize(12).text('Managing Director, Copora Limited', { align: 'left' });
+            doc.moveDown(2);
+            doc.text(`Date: ${dateSigned}`, { align: 'left' });
+            doc.moveDown(2);
+
+            doc.font(cursiveFontPath);
+            doc.fontSize(24).text(`${data.firstName} ${data.middleName || ''} ${data.lastName}`, { align: 'left' });
+            doc.font('Times-Roman').fontSize(12).text('Employee', { align: 'left' });
+            doc.moveDown(2);
+            doc.text(`Date: ${dateSigned}`, { align: 'left' });
+
+            // Finalize the PDF file
+            doc.end();
+
+            // Listen for the 'finish' event to resolve the promise when the PDF is fully written
+            writeStream.on('finish', resolve);
+
+        } catch (error) {
+            console.error('Error generating PDF:', error);
+            reject(error);
+        }
+    });
 };

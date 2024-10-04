@@ -87,7 +87,7 @@ AppDataSource.initialize()
     app.use(`/personal-details`, personalDetailsRoutes);
     app.use(`/professional-details`, ProfessionalDetailsRoutes);
     app.use(`/reference`, ReferenceRoutes);
-    app.use('/api/agreements', agreementRoutes);
+    app.use('/agreements', agreementRoutes);
     
     // Swagger setup
     app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerSpec));
