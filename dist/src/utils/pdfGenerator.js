@@ -7,29 +7,50 @@ exports.generatePDF = void 0;
 const pdfkit_1 = __importDefault(require("pdfkit"));
 const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
-// Function to generate a PDF using pdfkit
+// Function to generate a PDF using pdfkit with header and footer images
 const generatePDF = (data, outputPath) => {
     return new Promise((resolve, reject) => {
         try {
             const dateSigned = `${data.day} ${data.month}, ${data.year}`;
-            const doc = new pdfkit_1.default({ margins: { top: 50, bottom: 50, left: 50, right: 50 } });
-            const jobDescriptionText = typeof data.jobDescription === 'string' ? data.jobDescription : '';
-            const jobDescriptionBullets = jobDescriptionText
+            const doc = new pdfkit_1.default({ margins: { top: 100, bottom: 100, left: 50, right: 50 } });
+            // Paths to the header and footer images
+            const headerImagePath = path_1.default.join(__dirname, 'images', 'letter-header.png');
+            const footerImagePath = path_1.default.join(__dirname, 'images', 'letter-footer.png');
+            // Split jobDescription string into bullet points
+            const jobDescriptionBullets = data.jobDescription
                 .split('.')
                 .map(item => item.trim())
                 .filter(item => item.length > 0);
             // Write the PDF to a file
             const writeStream = fs_1.default.createWriteStream(outputPath);
             doc.pipe(writeStream);
+            // Add the header image
+            doc.image(headerImagePath, 0, 0, { width: doc.page.width });
+            // Set a margin after the header image
+            const contentTopMargin = 80; // Adjust this value as needed
+            doc.moveDown(contentTopMargin / 20); // Move down to add space before the content
+            // Add a footer image on every page
+            const addFooter = () => {
+                doc.image(footerImagePath, 0, doc.page.height - 90, { width: doc.page.width }); // Adjusted Y-position for footer
+            };
+            // Add footer to the first page
+            addFooter();
+            // Add event listener to add footer on each new page
+            doc.on('pageAdded', () => {
+                doc.image(headerImagePath, 0, 0, { width: doc.page.width });
+                doc.moveDown(contentTopMargin / 20); // Adjust vertical position after header
+                addFooter(); // Add footer to new pages
+            });
             // Title
-            doc.fontSize(20).font('Times-Bold').text('EMPLOYMENT AGREEMENT', { align: 'center' });
+            doc.fontSize(16).font('Times-Bold').text(`${data.jobTitle}`, { align: 'center' });
+            doc.fontSize(18).font('Times-Bold').text('SERVICE AGREEMENT', { align: 'center' });
             doc.moveDown(1.5);
             // Agreement content
-            doc.fontSize(12).font('Times-Roman').text(`This Employment Agreement ("Agreement") is made and entered into on this ${data.day} day of ${data.month}, ${data.year}, by and between:`, { align: 'left' });
+            doc.fontSize(12).font('Times-Roman').text(`THIS GENERAL SERVICE AGREEMENT CONTRACT (the "Contract") is made and entered into on this ${data.day} day of ${data.month}, ${data.year}, by and between:`, { align: 'left' });
             doc.moveDown(1.5);
             doc.text('Copora Limited, a company duly registered under the laws of Nigeria, with its principal office located at 71-75 Shelton Street, London, England, WC2H 9JQ, United Kingdom ("Employer" or "Company"), represented by its Managing Director, Mr. Andrew Smith,', { align: 'left' });
             doc.moveDown();
-            doc.text(`AND`, { align: 'center' });
+            doc.text('AND', { align: 'center' });
             doc.moveDown();
             doc.text(`${data.firstName} ${data.middleName || ''} ${data.lastName}, residing at ${data.address} ("Employee").`, { align: 'left' });
             doc.moveDown(2);

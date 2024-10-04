@@ -64,7 +64,7 @@ export const createAgreement = async (req: Request, res: Response) => {
         await generatePDF(agreementData, pdfPath);
   
         // Send the generated PDF via email
-        await sendAgreementEmail({ firstName, email: "sakinropo@gmail.com" }, pdfPath);
+        await sendAgreementEmail({ firstName, email }, pdfPath);
   
         res.status(200).json({ message: 'Agreement generated and sent successfully.' });
     } catch (error) {

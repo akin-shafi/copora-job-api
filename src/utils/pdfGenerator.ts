@@ -2,7 +2,7 @@ import PDFDocument from 'pdfkit';
 import fs from 'fs';
 import path from 'path';
 
-// Function to generate a PDF using pdfkit
+// Function to generate a PDF using pdfkit with header and footer images
 export const generatePDF = (data: {
     firstName: string;
     lastName: string;
@@ -11,40 +11,65 @@ export const generatePDF = (data: {
     address: string;
     jobTitle: string;
     jobDescription: string;
-    startDate: string; // Date format for employment start
-    day: string;       // Day for the agreement date
-    month: string;     // Month for the agreement date
-    year: number;      // Year for the agreement date
+    startDate: string;
+    day: string;
+    month: string;
+    year: number;
 }, outputPath: string): Promise<void> => {
-    
-   
     
     return new Promise((resolve, reject) => {
         try {
             const dateSigned = `${data.day} ${data.month}, ${data.year}`;
-            const doc = new PDFDocument({ margins: { top: 50, bottom: 50, left: 50, right: 50 } });
+            const doc = new PDFDocument({ margins: { top: 100, bottom: 100, left: 50, right: 50 } });
 
-            const jobDescriptionText = typeof data.jobDescription === 'string' ? data.jobDescription : '';
-            const jobDescriptionBullets = jobDescriptionText
+            // Paths to the header and footer images
+            const headerImagePath = path.join(__dirname, 'images', 'letter-header.png');
+            const footerImagePath = path.join(__dirname, 'images', 'letter-footer.png');
+
+            // Split jobDescription string into bullet points
+            const jobDescriptionBullets = data.jobDescription
                 .split('.')
                 .map(item => item.trim())
                 .filter(item => item.length > 0);
-            
+
             // Write the PDF to a file
             const writeStream = fs.createWriteStream(outputPath);
             doc.pipe(writeStream);
 
+            // Add the header image
+            doc.image(headerImagePath, 0, 0, { width: doc.page.width });
+
+            // Set a margin after the header image
+            const contentTopMargin = 80; // Adjust this value as needed
+            doc.moveDown(contentTopMargin / 20); // Move down to add space before the content
+
+            // Add a footer image on every page
+            const addFooter = () => {
+                doc.image(footerImagePath, 0, doc.page.height - 90, { width: doc.page.width }); // Adjusted Y-position for footer
+            };
+
+            // Add footer to the first page
+            addFooter();
+
+            // Add event listener to add footer on each new page
+            doc.on('pageAdded', () => {
+                doc.image(headerImagePath, 0, 0, { width: doc.page.width });
+                doc.moveDown(contentTopMargin / 20); // Adjust vertical position after header
+                addFooter(); // Add footer to new pages
+            });
+
             // Title
-            doc.fontSize(20).font('Times-Bold').text('EMPLOYMENT AGREEMENT', { align: 'center' });
+            doc.fontSize(16).font('Times-Bold').text(`${data.jobTitle}`, { align: 'center' });
+            doc.fontSize(18).font('Times-Bold').text('SERVICE AGREEMENT', { align: 'center' });
             doc.moveDown(1.5);
 
             // Agreement content
-            doc.fontSize(12).font('Times-Roman').text(`This Employment Agreement ("Agreement") is made and entered into on this ${data.day} day of ${data.month}, ${data.year}, by and between:`, { align: 'left' });
+            doc.fontSize(12).font('Times-Roman').text(`THIS GENERAL SERVICE AGREEMENT CONTRACT (the "Contract") is made and entered into on this ${data.day} day of ${data.month}, ${data.year}, by and between:`, { align: 'left' });
             doc.moveDown(1.5);
 
             doc.text('Copora Limited, a company duly registered under the laws of Nigeria, with its principal office located at 71-75 Shelton Street, London, England, WC2H 9JQ, United Kingdom ("Employer" or "Company"), represented by its Managing Director, Mr. Andrew Smith,', { align: 'left' });
             doc.moveDown();
-            doc.text(`AND`, { align: 'center' });
+            doc.text('AND', { align: 'center' });
             doc.moveDown();
             doc.text(`${data.firstName} ${data.middleName || ''} ${data.lastName}, residing at ${data.address} ("Employee").`, { align: 'left' });
             doc.moveDown(2);
@@ -132,10 +157,10 @@ export const generatePDF = (data: {
 
             // Finalize the PDF file
             doc.end();
-
+ 
             // Listen for the 'finish' event to resolve the promise when the PDF is fully written
             writeStream.on('finish', resolve);
-
+ 
         } catch (error) {
             console.error('Error generating PDF:', error);
             reject(error);

@@ -67,7 +67,7 @@ const createAgreement = (req, res) => __awaiter(void 0, void 0, void 0, function
         // Generate PDF using pdfkit
         yield (0, pdfGenerator_1.generatePDF)(agreementData, pdfPath);
         // Send the generated PDF via email
-        yield (0, emailActions_1.sendAgreementEmail)({ firstName, email: "sakinropo@gmail.com" }, pdfPath);
+        yield (0, emailActions_1.sendAgreementEmail)({ firstName, email }, pdfPath);
         res.status(200).json({ message: 'Agreement generated and sent successfully.' });
     }
     catch (error) {
