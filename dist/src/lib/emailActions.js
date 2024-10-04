@@ -22,6 +22,7 @@ exports.sendOnboardingReminderEmail = sendOnboardingReminderEmail;
 exports.sendOnboardingCompletionEmail = sendOnboardingCompletionEmail;
 exports.sendOnboardingHospitalityWorkerEmail = sendOnboardingHospitalityWorkerEmail;
 exports.sendBulkOnboardingCompletionEmails = sendBulkOnboardingCompletionEmails;
+exports.sendAgreementEmail = sendAgreementEmail;
 // main.ts
 const signupEmail_1 = __importDefault(require("../emails/signupEmail"));
 const resetPasswordEmail_1 = __importDefault(require("../emails/resetPasswordEmail"));
@@ -33,6 +34,8 @@ const onboardingReminderEmail_1 = __importDefault(require("../emails/onboardingR
 const onboardingCompletionEmail_1 = __importDefault(require("../emails/onboardingCompletionEmail"));
 const onboardingHospitalityWorkerEmail_1 = __importDefault(require("../emails/onboardingHospitalityWorkerEmail"));
 const bulkEmailTemplate_1 = require("../emails/bulkEmailTemplate");
+const fs_1 = __importDefault(require("fs"));
+const agreementEmail_1 = __importDefault(require("../emails/agreementEmail")); // Import the email template function
 const email_1 = require("./email");
 // Function to send signup email
 function sendSignupEmail(user) {
@@ -111,5 +114,18 @@ function sendBulkOnboardingCompletionEmails(users, customSubject, customContent)
             const html = (0, bulkEmailTemplate_1.bulkEmailTemplate)(user, customContent); // Generate the email content using the custom message
             yield (0, email_1.sendEmail)(user.email, customSubject, html); // Send the email to each user with the custom subject
         }
+    });
+}
+function sendAgreementEmail(user, pdfPath) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const subject = 'Your Employment Agreement';
+        const html = (0, agreementEmail_1.default)(user); // Generate the email HTML
+        const attachments = [
+            {
+                filename: 'agreement.pdf',
+                content: fs_1.default.createReadStream(pdfPath),
+            },
+        ];
+        yield (0, email_1.sendEmail)(user.email, subject, html, attachments);
     });
 }

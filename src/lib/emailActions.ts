@@ -9,6 +9,9 @@ import onboardingReminderEmail from '../emails/onboardingReminderEmail';
 import onboardingCompletionEmail from '../emails/onboardingCompletionEmail';
 import onboardingHospitalityWorkerEmail from '../emails/onboardingHospitalityWorkerEmail';
 import { bulkEmailTemplate } from '../emails/bulkEmailTemplate';
+import fs from 'fs';
+import agreementEmail from '../emails/agreementEmail';  // Import the email template function
+
 import { sendEmail } from "./email";
 
 // Function to send signup email
@@ -84,7 +87,21 @@ export async function sendBulkOnboardingCompletionEmails(
       await sendEmail(user.email, customSubject, html);    // Send the email to each user with the custom subject
     }
   }
+
+
+  export async function sendAgreementEmail(user: { firstName: string; email: string }, pdfPath: string) {
+    const subject = 'Your Employment Agreement';
+    const html = agreementEmail(user);  // Generate the email HTML
+    const attachments = [
+      {
+        filename: 'agreement.pdf',
+        content: fs.createReadStream(pdfPath),
+      },
+    ];
+    await sendEmail(user.email, subject, html, attachments); 
+  }
   
+
 
 
 

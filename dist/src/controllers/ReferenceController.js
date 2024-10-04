@@ -8,56 +8,69 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __rest = (this && this.__rest) || function (s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
+    return t;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ReferenceController = void 0;
 const ReferenceService_1 = require("../services/ReferenceService");
 const UserService_1 = require("../services/UserService");
 class ReferenceController {
     // Create or update Reference
-    static createOrUpdateReference(req, res) {
+    static createOrUpdateReferences(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const { applicationNo, employerName, contactName, phone, email, address } = req.body;
-                // Validate required fields
+                const _a = req.body, { applicationNo } = _a, references = __rest(_a, ["applicationNo"]);
+                // Validate applicationNo
                 if (!applicationNo) {
                     return res.status(400).json({ statusCode: 400, message: 'Application number is required' });
                 }
-                if (!phone) {
-                    return res.status(400).json({ statusCode: 400, message: 'Reference contact phone is required' });
-                }
-                // Check if applicant exists
+                // Check if the applicant exists
                 const existingApplicant = yield UserService_1.UserService.findApplicationNo(applicationNo);
                 if (!existingApplicant) {
                     return res.status(400).json({ statusCode: 400, message: 'Applicant does not exist' });
                 }
-                // Check if reference already exists by phone number
-                const existingReference = yield ReferenceService_1.ReferenceService.findByApplicationNoAndPhone(applicationNo, phone);
-                let result;
-                if (existingReference) {
-                    // Update existing reference
-                    result = yield ReferenceService_1.ReferenceService.update(existingReference.id, {
-                        applicationNo,
-                        employerName,
-                        contactName,
-                        phone,
-                        email,
-                        address
-                    });
+                // Ensure references are in the correct format
+                if (typeof references !== 'object' || Array.isArray(references)) {
+                    return res.status(400).json({ statusCode: 400, message: 'Invalid references format' });
                 }
-                else {
-                    // Create new reference
-                    result = yield ReferenceService_1.ReferenceService.create({
-                        applicationNo,
-                        employerName,
-                        contactName,
-                        phone,
-                        email,
-                        address
-                    });
+                // Process and save each reference entry
+                const entries = Object.values(references).filter(value => typeof value === 'object' && value !== null);
+                if (entries.length === 0) {
+                    return res.status(400).json({ statusCode: 400, message: 'No valid reference entries provided' });
+                }
+                const updatedEntries = [];
+                const newEntries = [];
+                for (const entry of entries) {
+                    if (entry && typeof entry === 'object') {
+                        const { phone } = entry, restOfEntry = __rest(entry, ["phone"]);
+                        if (!phone) {
+                            return res.status(400).json({ statusCode: 400, message: 'Reference contact phone is required' });
+                        }
+                        const existingReference = yield ReferenceService_1.ReferenceService.findByApplicationNoAndPhone(applicationNo, phone);
+                        if (existingReference) {
+                            // Update existing reference
+                            yield ReferenceService_1.ReferenceService.update(existingReference.id, Object.assign(Object.assign({}, restOfEntry), { applicationNo }));
+                            updatedEntries.push(Object.assign(Object.assign({}, existingReference), restOfEntry));
+                        }
+                        else {
+                            // Create new reference
+                            const newReference = yield ReferenceService_1.ReferenceService.create(Object.assign({ applicationNo }, entry));
+                            newEntries.push(newReference);
+                        }
+                    }
                 }
                 return res.status(201).json({
                     message: 'Reference details processed successfully',
-                    data: result
+                    data: { updatedEntries, newEntries }
                 });
             }
             catch (error) {

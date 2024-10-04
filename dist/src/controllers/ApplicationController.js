@@ -129,67 +129,6 @@ class ApplicationController {
             }
         });
     }
-    // Static function to extract specific fields from resume text
-    // static async extractDataFromResume(resumeText: string) {
-    //   console.log('Extracting data from resume text...');
-    //   const extractedData: any = {};
-    //   // Split the text into lines to analyze the content more accurately
-    //   const lines = resumeText.split(/\r?\n/).map(line => line.trim()).filter(Boolean);
-    //   // Extract Name (look for typical name-like patterns, ignoring sections like "Work Experience")
-    //   const nameRegex = /^[A-Z][a-z]+\s+[A-Z][a-z]+(\s+[A-Z][a-z]+)?$/;
-    //   const nameLine = lines.find(line => nameRegex.test(line));
-    //   if (nameLine) {
-    //     extractedData.name = nameLine;
-    //     console.log('Extracted name:', extractedData.name);
-    //   } else {
-    //     console.log('Name not found in resume text.');
-    //   }
-    //   // Extract Email
-    //   const emailRegex = /\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/i;
-    //   const emailMatch = resumeText.match(emailRegex);
-    //   if (emailMatch) {
-    //     extractedData.email = emailMatch[0];
-    //     console.log('Extracted email:', extractedData.email);
-    //   } else {
-    //     console.log('Email not found in resume text.');
-    //   }
-    //   // Extract Phone Number (handling international, local, or different delimiters)
-    //   const phoneRegex = /\+?\d{1,3}?[-.\s]?\(?\d{1,4}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}/;
-    //   const phoneMatch = resumeText.match(phoneRegex);
-    //   if (phoneMatch) {
-    //     extractedData.phone = phoneMatch[0];
-    //     console.log('Extracted phone number:', extractedData.phone);
-    //   } else {
-    //     console.log('Phone number not found in resume text.');
-    //   }
-    //   // Extract Work Experience (find between headers like "Work Experience" and "Projects" or "Education")
-    //   const workExperienceRegex = /Work Experience[\s\S]+?(?=Projects|Education|Skills)/i;
-    //   const workExperienceMatch = resumeText.match(workExperienceRegex);
-    //   if (workExperienceMatch) {
-    //     extractedData.workExperience = workExperienceMatch[0].trim();
-    //     console.log('Extracted work experience:', extractedData.workExperience);
-    //   } else {
-    //     console.log('Work experience not found in resume text.');
-    //   }
-    //   // Extract Projects (similar to work experience)
-    //   const projectsRegex = /Projects[\s\S]+?(?=Education|Skills|Experience)/i;
-    //   const projectsMatch = resumeText.match(projectsRegex);
-    //   if (projectsMatch) {
-    //     extractedData.projects = projectsMatch[0].trim();
-    //     console.log('Extracted projects:', extractedData.projects);
-    //   } else {
-    //     console.log('Projects not found in resume text.');
-    //   }
-    //   // Optionally extract additional sections like "Skills", "Education"
-    //   // Example for "Skills"
-    //   const skillsRegex = /Skills[\s\S]+?(?=Projects|Work Experience|Education)/i;
-    //   const skillsMatch = resumeText.match(skillsRegex);
-    //   if (skillsMatch) {
-    //     extractedData.skills = skillsMatch[0].trim();
-    //     console.log('Extracted skills:', extractedData.skills);
-    //   }
-    //   return extractedData;
-    // }
     static extractDataFromResume(resumeText) {
         return __awaiter(this, void 0, void 0, function* () {
             console.log('Extracting data from resume text...');
@@ -270,38 +209,6 @@ class ApplicationController {
             return extractedData;
         });
     }
-    // static async downloadApplicantDataCsv(req: Request, res: Response) {
-    //   try {
-    //     const { applicationNo } = req.params;
-    //     const applicantData = await ApplicationService.getApplicantData(applicationNo);
-    //     if (!applicantData) {
-    //       return res.status(404).json({ message: 'Applicant not found' });
-    //     }
-    //     // Combine applicant data into a single object
-    //     const combinedData = {
-    //       user: applicantData.user,
-    //       personalDetails: applicantData.personalDetails,
-    //       contactDetails: applicantData.contactDetails,
-    //       professionalDetails: applicantData.professionalDetails,
-    //       educationalDetails: applicantData.educationalDetails,
-    //       healthAndDisability: applicantData.healthAndDisability,
-    //       foodSafetyQuestionnaire: applicantData.foodSafetyQuestionnaire,
-    //       bankDetails: applicantData.bankDetails,
-    //       agreementConsent: applicantData.agreementConsent,
-    //       reference: applicantData.reference,
-    //     };
-    //     // Convert the data to CSV
-    //     const fields = Object.keys(combinedData);
-    //     const json2csvParser = new Parser({ fields });
-    //     const csv = json2csvParser.parse(combinedData);
-    //     // Set headers for file download
-    //     res.header('Content-Type', 'text/csv');
-    //     res.attachment(`applicant_${applicationNo}.csv`);
-    //     return res.send(csv);
-    //   } catch (error) {
-    //     return res.status(500).json({ error: error.message });
-    //   }
-    // }
     // New method for downloading applicant data as CSV
     static downloadApplicantDataCsv(req, res) {
         return __awaiter(this, void 0, void 0, function* () {

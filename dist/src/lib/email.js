@@ -22,14 +22,15 @@ const transporter = nodemailer_1.default.createTransport({
         pass: process.env.EMAIL_PASS, // your email password
     },
 });
-// Function to send an email
-function sendEmail(to, subject, html) {
+// Function to send an email with optional attachments
+function sendEmail(to, subject, html, attachments) {
     return __awaiter(this, void 0, void 0, function* () {
         const mailOptions = {
             from: process.env.EMAIL_USER,
-            to,
-            subject,
-            html,
+            to, // recipient(s)
+            subject, // email subject
+            html, // email body in HTML
+            attachments, // optional attachments, if provided
         };
         try {
             yield transporter.sendMail(mailOptions);

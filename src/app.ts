@@ -19,6 +19,7 @@ import HealthAndDisabilityRoutes from './routes/HealthAndDisabilityRoutes';
 import personalDetailsRoutes from './routes/personalDetailsRoutes';
 import ProfessionalDetailsRoutes from './routes/ProfessionalDetailsRoutes';
 import ReferenceRoutes from './routes/ReferenceRoutes';
+import agreementRoutes from './routes/AgreementDocRoutes';
 import expressWinston from 'express-winston';
 import logger from './utils/logger'; // Corrected path
 import swaggerUI from 'swagger-ui-express';
@@ -86,6 +87,7 @@ AppDataSource.initialize()
     app.use(`/personal-details`, personalDetailsRoutes);
     app.use(`/professional-details`, ProfessionalDetailsRoutes);
     app.use(`/reference`, ReferenceRoutes);
+    app.use('/api/agreements', agreementRoutes);
     
     // Swagger setup
     app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerSpec));
