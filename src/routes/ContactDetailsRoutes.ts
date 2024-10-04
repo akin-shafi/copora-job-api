@@ -47,18 +47,6 @@ const router = Router();
  *               twitter:
  *                 type: string
  *                 example: "https://twitter.com/example"
- *               behance:
- *                 type: string
- *                 example: "https://behance.net/example"
- *               dribble:
- *                 type: string
- *                 example: "https://dribbble.com/example"
- *               github:
- *                 type: string
- *                 example: "https://github.com/example"
- *               website:
- *                 type: string
- *                 example: "https://example.com"
  *     responses:
  *       201:
  *         description: Contact Details record created successfully

@@ -4,54 +4,66 @@ import { UserService } from '../services/UserService';
 
 export class ReferenceController {
     // Create or update Reference
-    static async createOrUpdateReference(req: Request, res: Response) {
+    static async createOrUpdateReferences(req: Request, res: Response) {
         try {
-            const { applicationNo, employerName, contactName, phone, email, address } = req.body;
+            const { applicationNo, ...references } = req.body;
     
-            // Validate required fields
+            // Validate applicationNo
             if (!applicationNo) {
                 return res.status(400).json({ statusCode: 400, message: 'Application number is required' });
             }
     
-            if (!phone) {
-                return res.status(400).json({ statusCode: 400, message: 'Reference contact phone is required' });
-            }
-    
-            // Check if applicant exists
+            // Check if the applicant exists
             const existingApplicant = await UserService.findApplicationNo(applicationNo);
             if (!existingApplicant) {
                 return res.status(400).json({ statusCode: 400, message: 'Applicant does not exist' });
             }
     
-            // Check if reference already exists by phone number
-            const existingReference = await ReferenceService.findByApplicationNoAndPhone(applicationNo, phone);
+            // Ensure references are in the correct format
+            if (typeof references !== 'object' || Array.isArray(references)) {
+                return res.status(400).json({ statusCode: 400, message: 'Invalid references format' });
+            }
     
-            let result;
-            if (existingReference) {
-                // Update existing reference
-                result = await ReferenceService.update(existingReference.id, {
-                    applicationNo,
-                    employerName,
-                    contactName,
-                    phone,
-                    email,
-                    address
-                });
-            } else {
-                // Create new reference
-                result = await ReferenceService.create({
-                    applicationNo,
-                    employerName,
-                    contactName,
-                    phone,
-                    email,
-                    address
-                });
+            // Process and save each reference entry
+            const entries = Object.values(references).filter(value => typeof value === 'object' && value !== null) as Record<string, any>[];
+            if (entries.length === 0) {
+                return res.status(400).json({ statusCode: 400, message: 'No valid reference entries provided' });
+            }
+    
+            const updatedEntries: any[] = [];
+            const newEntries: any[] = [];
+    
+            for (const entry of entries) {
+                if (entry && typeof entry === 'object') {
+                    const { phone, ...restOfEntry } = entry;
+    
+                    if (!phone) {
+                        return res.status(400).json({ statusCode: 400, message: 'Reference contact phone is required' });
+                    }
+    
+                    const existingReference = await ReferenceService.findByApplicationNoAndPhone(applicationNo, phone);
+    
+                    if (existingReference) {
+                        // Update existing reference
+                        await ReferenceService.update(existingReference.id, {
+                            ...restOfEntry,
+                            applicationNo
+                        });
+                        updatedEntries.push({ ...existingReference, ...restOfEntry });
+                    } else {
+                        // Create new reference
+                        const newReference = await ReferenceService.create({
+                            applicationNo,
+                            ...entry
+                        });
+                        newEntries.push(newReference);
+                    }
+                }
             }
     
             return res.status(201).json({
                 message: 'Reference details processed successfully',
-                data: result
+                data: { updatedEntries, newEntries }
             });
     
         } catch (error) {
@@ -59,6 +71,7 @@ export class ReferenceController {
             res.status(500).json({ message: 'Error creating or updating reference details', error: error.message });
         }
     }
+    
     
 
     // Get Reference by applicationNo
