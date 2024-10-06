@@ -27,7 +27,7 @@ const generatePDF = (data, outputPath) => {
             // Add the header image
             doc.image(headerImagePath, 0, 0, { width: doc.page.width });
             // Set a margin after the header image
-            const contentTopMargin = 80; // Adjust this value as needed
+            const contentTopMargin = 60; // Adjust this value as needed
             doc.moveDown(contentTopMargin / 20); // Move down to add space before the content
             // Add a footer image on every page
             const addFooter = () => {
@@ -70,7 +70,7 @@ const generatePDF = (data, outputPath) => {
             doc.moveDown(1.5);
             doc.text('4. COMPENSATION', { underline: true });
             doc.moveDown(0.5);
-            doc.text('The Employee shall be paid a monthly salary of [Amount] NGN, subject to deductions for taxes and other withholdings as required by law. Payment shall be made on the last working day of each calendar month.');
+            doc.text(`The Employee shall be paid a monthly salary of ${data.amount}, subject to deductions for taxes and other withholdings as required by law. Payment shall be made on the last working day of each calendar month.`);
             doc.moveDown(1.5);
             doc.text('5. WORKING HOURS', { underline: true });
             doc.moveDown(0.5);
@@ -109,17 +109,19 @@ const generatePDF = (data, outputPath) => {
             // Load and use cursive font for the signatures
             const cursiveFontPath = path_1.default.join(__dirname, 'fonts', 'GreatVibes-Regular.ttf');
             doc.font(cursiveFontPath);
-            // Signatures
-            doc.fontSize(24).text('Andrew Smith', { align: 'left' });
-            doc.font('Times-Roman').fontSize(12).text('Managing Director, Copora Limited', { align: 'left' });
+            // Create a grid layout for the signatures
+            const signatureYPosition = doc.y; // Capture the current vertical position
+            // Employer Signature (left column)
+            doc.fontSize(24).text('Andrew Smith', 50, signatureYPosition, { width: 200, align: 'left' });
+            doc.font('Times-Roman').fontSize(12).text('Managing Director, Copora Limited', 50, doc.y, { width: 200, align: 'left' });
             doc.moveDown(2);
-            doc.text(`Date: ${dateSigned}`, { align: 'left' });
-            doc.moveDown(2);
+            doc.text(`Date: ${dateSigned}`, 50, doc.y, { width: 200, align: 'left' });
+            // Employee Signature (right column, moved more to the right)
             doc.font(cursiveFontPath);
-            doc.fontSize(24).text(`${data.firstName} ${data.middleName || ''} ${data.lastName}`, { align: 'left' });
-            doc.font('Times-Roman').fontSize(12).text('Employee', { align: 'left' });
+            doc.fontSize(24).text(`${data.firstName} ${data.middleName || ''} ${data.lastName}`, 400, signatureYPosition, { width: 200, align: 'left' });
+            doc.font('Times-Roman').fontSize(12).text('Employee', 400, doc.y, { width: 200, align: 'left' });
             doc.moveDown(2);
-            doc.text(`Date: ${dateSigned}`, { align: 'left' });
+            doc.text(`Date: ${dateSigned}`, 400, doc.y, { width: 200, align: 'left' });
             // Finalize the PDF file
             doc.end();
             // Listen for the 'finish' event to resolve the promise when the PDF is fully written

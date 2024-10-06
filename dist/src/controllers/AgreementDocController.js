@@ -37,7 +37,7 @@ const getCurrentDate = () => {
 };
 const createAgreement = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { applicationNo, jobTitle, jobDescription, startDate } = req.body;
+        const { applicationNo, jobTitle, jobDescription, startDate, amount } = req.body;
         // Find the applicant by application number
         const existingApplicant = yield UserService_1.UserService.findApplicationNo(applicationNo);
         const applicantContact = yield ContactDetailsService_1.ContactDetailsService.getContactDetailsByApplicationNo(applicationNo);
@@ -58,6 +58,7 @@ const createAgreement = (req, res) => __awaiter(void 0, void 0, void 0, function
             jobTitle,
             jobDescription,
             startDate, // Employment start date (today's date)
+            amount,
             day,
             month,
             year

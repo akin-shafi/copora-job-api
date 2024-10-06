@@ -32,6 +32,9 @@ const router = (0, express_1.Router)();
  *               startDate:
  *                 type: string
  *                 example: "09 May 2024"
+ *               amount:
+ *                 type: string
+ *                 example: "500 USD"
  *     responses:
  *       200:
  *         description: Agreement document created successfully

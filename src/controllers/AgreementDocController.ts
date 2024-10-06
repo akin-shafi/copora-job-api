@@ -26,7 +26,7 @@ const getCurrentDate = () => {
 
 export const createAgreement = async (req: Request, res: Response) => {
     try {
-        const { applicationNo, jobTitle, jobDescription, startDate } = req.body;
+        const { applicationNo, jobTitle, jobDescription, startDate, amount } = req.body;
 
         // Find the applicant by application number
         const existingApplicant = await UserService.findApplicationNo(applicationNo);
@@ -52,6 +52,7 @@ export const createAgreement = async (req: Request, res: Response) => {
             jobTitle,
             jobDescription,
             startDate,  // Employment start date (today's date)
+            amount,
             day,
             month,
             year
