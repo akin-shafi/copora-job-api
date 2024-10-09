@@ -294,3 +294,10 @@
 2024-10-09T03:51:58.740Z [[32minfo[39m]: HTTP POST /agreements/create-agreement
 2024-10-09T03:53:04.101Z [[32minfo[39m]: HTTP POST /agreements/create-agreement
 2024-10-09T03:56:58.664Z [[32minfo[39m]: HTTP POST /agreements/create-agreement
+2024-10-09T09:57:13.913Z [[32minfo[39m]: HTTP GET /api-docs/swagger-ui-init.js
+2024-10-09T09:57:13.966Z [[32minfo[39m]: HTTP GET /api-docs/swagger-ui.css
+2024-10-09T09:57:14.017Z [[32minfo[39m]: HTTP GET /api-docs/swagger-ui-standalone-preset.js
+2024-10-09T09:57:14.108Z [[32minfo[39m]: HTTP GET /api-docs/swagger-ui-bundle.js
+2024-10-09T09:57:18.118Z [[32minfo[39m]: HTTP GET /api-docs/swagger-ui-init.js
+2024-10-09T09:57:18.127Z [[32minfo[39m]: HTTP GET /api-docs/swagger-ui-standalone-preset.js
+2024-10-09T09:57:18.144Z [[32minfo[39m]: HTTP GET /api-docs/swagger-ui-bundle.js
