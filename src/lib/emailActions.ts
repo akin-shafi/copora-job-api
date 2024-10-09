@@ -79,7 +79,7 @@ export async function sendOnboardingHospitalityWorkerEmail(user: { firstName: st
 
 // Function to send bulk onboarding completion emails
 export async function sendBulkOnboardingCompletionEmails(
-  recipients: { email: string }[],
+  recipients: { email: string; firstName: string }[],
   customSubject: string,
   customContent: string
 ): Promise<void> {
@@ -90,21 +90,21 @@ export async function sendBulkOnboardingCompletionEmails(
     }
 
     try {
-      const html = bulkEmailTemplate(recipient.email, customContent); // Generate the email content
-      console.log(`Sending email to ${recipient.email}`); // Log the email being sent
+      const html = bulkEmailTemplate(recipient.firstName, customContent); // Generate the email content with the recipient's name
+      console.log(`Sending email to ${recipient.email} (${recipient.firstName})`); // Log the email and name being sent
 
       await sendEmail(recipient.email, customSubject, html); // Send the email
 
-      console.log(`Email sent to ${recipient.email} successfully`);
+      console.log(`Email sent to ${recipient.email} (${recipient.firstName}) successfully`);
     } catch (error) {
-      console.error(`Error sending email to ${recipient.email}:`, error);
+      console.error(`Error sending email to ${recipient.email} (${recipient.firstName}):`, error);
     }
   }
 }
 
 // Function to send emails in batches
 export async function sendEmailsInBatches(
-  recipients: { email: string }[],
+  recipients: { email: string; firstName: string }[],
   customSubject: string,
   customContent: string,
   batchSize: number = 50

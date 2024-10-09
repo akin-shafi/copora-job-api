@@ -22,20 +22,20 @@ const router = Router();
  *                   type: string
  *                   format: email
  *                   description: Email address of the recipient.
- *                   example: "johndoe@example.com"
+ *                   example: "sakinropo@gmail.com"
  *                 description: An array of recipient email addresses.
  *                 example: [
- *                   "johndoe@example.com",
- *                   "janedoe@example.com"
+ *                   "sakinropo@gmail.com",
+ *                   "engineering@copora.com"
  *                 ]
  *               customSubject:
  *                 type: string
  *                 description: The subject of the email.
- *                 example: "Welcome to our platform!"
+ *                 example: "Exciting News: Your Journey Begins Here!"
  *               customContent:
  *                 type: string
  *                 description: The content/body of the email.
- *                 example: "Hello, we're excited to have you with us. Let's get started!"
+ *                 example: "We're thrilled to welcome you to our community! Get ready for an amazing experience with us. Let's embark on this journey together!"
  *           required:
  *             - emails
  *             - customSubject
@@ -55,7 +55,7 @@ const router = Router();
  *                   type: array
  *                   items:
  *                     type: string
- *                     example: johndoe@example.com
+ *                     example: sakinropo@gmail.com
  *       400:
  *         description: Bad request, missing or invalid fields.
  *         content:

@@ -1,5 +1,7 @@
 import { Request, Response } from 'express';
 import { sendEmailsInBatches } from '../lib/emailActions'; // Utility for sending bulk emails in batches
+import { UserService } from '../services/UserService';
+const userService = new UserService();
 
 class BulkEmailController {
   constructor() {
@@ -22,12 +24,38 @@ class BulkEmailController {
         return res.status(400).json({ message: 'Subject and content are required for bulk email.' });
       }
 
+      // Search for users by email
+      const userPromises = emails.map(email => {
+        return userService.findByEmail(email.trim().toLowerCase());
+      });
+
+      const users = await Promise.all(userPromises);
+
+      // Create the recipients array for the email function
+      const recipients = users.map((user, index) => {
+        if (user) {
+          return {
+            email: user.email,
+            firstName: user.firstName || 'Valued Customer'
+          };
+        } else {
+          // If user is not found, set email and fallback name
+          console.log(`Email not found: ${emails[index]}, setting as 'Valued Customer'`);
+          return {
+            email: emails[index],
+            firstName: 'Valued Customer'
+          };
+        }
+      });
+
+      console.log('Final Recipients List:', recipients);
+
       // Send bulk email in batches
-      await sendEmailsInBatches(emails.map(email => ({ email })), customSubject, customContent);
+      await sendEmailsInBatches(recipients, customSubject, customContent);
 
       return res.status(200).json({
         message: 'Bulk email sent successfully.',
-        recipients: emails,
+        recipients,
       });
 
     } catch (error) {

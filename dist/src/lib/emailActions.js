@@ -118,13 +118,13 @@ function sendBulkOnboardingCompletionEmails(recipients, customSubject, customCon
                 continue; // Skip if email is missing
             }
             try {
-                const html = (0, bulkEmailTemplate_1.bulkEmailTemplate)(recipient.email, customContent); // Generate the email content
-                console.log(`Sending email to ${recipient.email}`); // Log the email being sent
+                const html = (0, bulkEmailTemplate_1.bulkEmailTemplate)(recipient.firstName, customContent); // Generate the email content with the recipient's name
+                console.log(`Sending email to ${recipient.email} (${recipient.firstName})`); // Log the email and name being sent
                 yield (0, email_1.sendEmail)(recipient.email, customSubject, html); // Send the email
-                console.log(`Email sent to ${recipient.email} successfully`);
+                console.log(`Email sent to ${recipient.email} (${recipient.firstName}) successfully`);
             }
             catch (error) {
-                console.error(`Error sending email to ${recipient.email}:`, error);
+                console.error(`Error sending email to ${recipient.email} (${recipient.firstName}):`, error);
             }
         }
     });
