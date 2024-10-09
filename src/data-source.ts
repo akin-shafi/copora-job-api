@@ -41,8 +41,8 @@ export const AppDataSource = new DataSource({
     AgreementConsent,
     Reference
   ],
-  synchronize: true, // Set to true in production
-  logging: true,
+  synchronize: false, // Set to true in production
+  logging: false,
   migrations: [],
   subscribers: [],
   ssl: {
