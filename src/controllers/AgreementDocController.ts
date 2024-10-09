@@ -49,10 +49,6 @@ export const createAgreement = async (req: Request, res: Response) => {
             middleName,
             email,
             address: `${address_line_1}, ${address_line_2}, ${country}, ${postcode}`,
-            jobTitle,
-            jobDescription,
-            startDate,  // Employment start date (today's date)
-            amount,
             day,
             month,
             year
