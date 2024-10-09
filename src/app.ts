@@ -6,6 +6,7 @@ import dotenv from 'dotenv';
 import rateLimiter from './middlewares/rateLimiter'; // Import the rate limiter middleware
 import userRoutes from './routes/UserRoutes';
 import userPrivateRoutes from './routes/UsersPrivateRoutes';
+import BulkEmailRoutes from './routes/BulkEmailRoutes';
 import userApplicant from './routes/ApplicationRoutes';
 import AgreementConsentRoutes from './routes/AgreementConsentRoutes';
 import ApplicationRoutes from './routes/ApplicationRoutes';
@@ -75,6 +76,7 @@ AppDataSource.initialize()
     app.use(`/users`, userRoutes);
     app.use(`/applicant`, userApplicant);
     app.use(`/auth/users`, userPrivateRoutes);
+    app.use(`/bulk-email`, BulkEmailRoutes);
     app.use(`/agreement-consent`, AgreementConsentRoutes);
     app.use(`/application`, ApplicationRoutes);
     app.use(`/bank-details`, BankDetailsRoutes);

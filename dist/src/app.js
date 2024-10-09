@@ -11,6 +11,7 @@ const dotenv_1 = __importDefault(require("dotenv"));
 const rateLimiter_1 = __importDefault(require("./middlewares/rateLimiter")); // Import the rate limiter middleware
 const UserRoutes_1 = __importDefault(require("./routes/UserRoutes"));
 const UsersPrivateRoutes_1 = __importDefault(require("./routes/UsersPrivateRoutes"));
+const BulkEmailRoutes_1 = __importDefault(require("./routes/BulkEmailRoutes"));
 const ApplicationRoutes_1 = __importDefault(require("./routes/ApplicationRoutes"));
 const AgreementConsentRoutes_1 = __importDefault(require("./routes/AgreementConsentRoutes"));
 const ApplicationRoutes_2 = __importDefault(require("./routes/ApplicationRoutes"));
@@ -69,6 +70,7 @@ data_source_1.AppDataSource.initialize()
     app.use(`/users`, UserRoutes_1.default);
     app.use(`/applicant`, ApplicationRoutes_1.default);
     app.use(`/auth/users`, UsersPrivateRoutes_1.default);
+    app.use(`/bulk-email`, BulkEmailRoutes_1.default);
     app.use(`/agreement-consent`, AgreementConsentRoutes_1.default);
     app.use(`/application`, ApplicationRoutes_2.default);
     app.use(`/bank-details`, BankDetailsRoutes_1.default);
