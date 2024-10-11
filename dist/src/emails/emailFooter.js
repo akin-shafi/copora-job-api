@@ -32,10 +32,10 @@ function emailFooter() {
                         margin-right: auto;
                         margin-left: auto;
                       ">
-                      <a href="https://instagram.com/use_nidi?igshid=MzRlODBiNWFlZA==" style="color: #ffffff"><img src="https://res.cloudinary.com/dgdx2a9cq/image/upload/v1724320720/COPORA_IG_rmhq7z.svg"></a>
-                      <a href="https://x.com/usenidi?s=21&t=DJhnfOr8u2WipeCDcSFy9A" style="color: #ffffff"><img src="https://res.cloudinary.com/dgdx2a9cq/image/upload/v1724320720/COPORA_X_m1pv3l.svg"></a>
-                      <a href="https://www.linkedin.com/company/usenidi/" style="color: #ffffff"><img src="https://res.cloudinary.com/dgdx2a9cq/image/upload/v1724320719/COPORA_IN_vch9tp.svg"></a>
-                      <a href="https://www.linkedin.com/company/usenidi/" style="color: #ffffff"><img src="https://res.cloudinary.com/dgdx2a9cq/image/upload/v1724320719/COPORA_YT_unayyf.svg"></a>
+                      <a href="https://instagram.com/use_nidi?igshid=MzRlODBiNWFlZA==" style="color: #ffffff"><img src="https://res.cloudinary.com/dhcikhvpu/image/upload/v1728681342/COPORA_IG_oc5r7i.png"></a>
+                      <a href="https://x.com/usenidi?s=21&t=DJhnfOr8u2WipeCDcSFy9A" style="color: #ffffff"><img src="https://res.cloudinary.com/dhcikhvpu/image/upload/v1728681342/COPORA_X_gkddqh.png"></a>
+                      <a href="https://www.linkedin.com/company/usenidi/" style="color: #ffffff"><img src="https://res.cloudinary.com/dhcikhvpu/image/upload/v1728681653/COPORA_IN_mw4ldq_p6kjvr.png"></a>
+                      <a href="https://www.linkedin.com/company/usenidi/" style="color: #ffffff"><img src="https://res.cloudinary.com/dhcikhvpu/image/upload/v1728681653/COPORA_YT_x4omls_y1mwgb.png"></a>
                     </div>
                   </footer>
                 </td>
