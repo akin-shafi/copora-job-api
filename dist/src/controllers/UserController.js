@@ -49,6 +49,7 @@ const config_1 = require("../config");
 const axios_1 = __importDefault(require("axios")); // Add axios for HTTP requests
 const XLSX = __importStar(require("xlsx"));
 const constants_1 = require("../constants");
+// import { format } from 'date-fns';
 const userService = new UserService_1.UserService();
 // Multer configuration for handling file uploads
 const storage = multer_1.default.memoryStorage(); // Store the file in memory
@@ -344,8 +345,7 @@ class UserController {
                     const rows = XLSX.utils.sheet_to_json(sheet);
                     // Process each row in the Excel file
                     for (const row of rows) {
-                        // const { firstName, middleName, lastName, email, password, role, accountStatus, createdBy } = req.body;
-                        const { firstName, lastName, email, phoneNumber, role } = row;
+                        const { firstName, lastName, email, phoneNumber, role, profilePicture, createdBy } = row;
                         // Validate the required fields
                         if (!firstName || !lastName || !email || !phoneNumber) {
                             continue; // Skip rows with missing data
@@ -357,19 +357,26 @@ class UserController {
                             continue; // Skip existing users
                         }
                         // Generate application number and temporary password
-                        // const applicationNo = this.generateApplicationNumber(role);
                         const applicationNo = yield this.generateApplicationNumber(role);
                         const temporaryPassword = (0, uuid_1.v4)().slice(0, 8); // Generate a temporary password
-                        // Create new user
-                        const newUser = yield userService.create({
+                        // Hash the temporary password
+                        const hashedPassword = yield bcrypt_1.default.hash(temporaryPassword, 10);
+                        // Get the current date
+                        const createdAt = new Date();
+                        // Create new user with hashed password and createdAt field
+                        yield userService.create({
                             firstName,
                             lastName,
                             email: normalizedEmail,
                             phoneNumber,
-                            password: temporaryPassword, // Save the temporary password
+                            password: hashedPassword, // Save the hashed password
+                            role: constants_1.UserRole.Applicant,
+                            profilePicture,
+                            createdBy,
+                            createdAt,
                             applicationNo
                         });
-                        // Send invitation email
+                        // Send invitation email with the plain text password
                         yield (0, emailActions_1.sendInvitationToOnboard)({
                             email: normalizedEmail,
                             firstName,
