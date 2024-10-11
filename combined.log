@@ -51,3 +51,13 @@
 2024-10-11T17:05:41.086Z [[32minfo[39m]: HTTP POST /auth/users/upload-users
 2024-10-11T17:21:53.721Z [[32minfo[39m]: HTTP POST /auth/users/upload-users
 2024-10-11T17:42:49.910Z [[32minfo[39m]: HTTP POST /auth/users/upload-users
+2024-10-11T17:54:57.204Z [[32minfo[39m]: HTTP POST /auth/users/upload-users
+2024-10-11T18:03:32.283Z [[32minfo[39m]: HTTP POST /auth/users/upload-users
+2024-10-11T18:03:37.009Z [[32minfo[39m]: HTTP GET /api-docs/
+2024-10-11T18:03:37.150Z [[32minfo[39m]: HTTP GET /api-docs/swagger-ui-init.js
+2024-10-11T18:03:37.154Z [[32minfo[39m]: HTTP GET /api-docs/swagger-ui-bundle.js
+2024-10-11T18:03:37.157Z [[32minfo[39m]: HTTP GET /api-docs/swagger-ui.css
+2024-10-11T18:03:37.159Z [[32minfo[39m]: HTTP GET /api-docs/swagger-ui-standalone-preset.js
+2024-10-11T18:03:38.729Z [[32minfo[39m]: HTTP GET /api-docs/favicon-32x32.png
+2024-10-11T18:03:58.826Z [[32minfo[39m]: HTTP POST /users/login
+2024-10-11T18:05:00.573Z [[32minfo[39m]: HTTP POST /auth/users/upload-users
