@@ -110,3 +110,4 @@
 2024-10-13T11:33:05.576Z [[32minfo[39m]: HTTP GET /api-docs/swagger-ui-bundle.js
 2024-10-13T11:33:10.149Z [[32minfo[39m]: HTTP GET /api-docs/swagger-ui-standalone-preset.js
 2024-10-13T11:33:10.718Z [[32minfo[39m]: HTTP GET /api-docs/swagger-ui-bundle.js
+2024-10-13T12:02:41.080Z [[32minfo[39m]: HTTP POST /reminders/onboarding
