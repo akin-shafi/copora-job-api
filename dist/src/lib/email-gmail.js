@@ -14,29 +14,27 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.sendEmail = sendEmail;
 const nodemailer_1 = __importDefault(require("nodemailer"));
-// Create a transporter using SendLayer's SMTP configuration
+// Create a transporter using your email service configuration
 const transporter = nodemailer_1.default.createTransport({
-    host: process.env.SENDLAYER_HOST, // e.g., smtp.sendlayer.com
-    port: 587, // Port for secure email (usually 587 or 465)
-    secure: false, // Set to true if using port 465
+    service: "Gmail", // use your email service
     auth: {
-        user: process.env.SENDLAYER_USER, // SMTP username provided by SendLayer
-        pass: process.env.SENDLAYER_PASS, // SMTP password provided by SendLayer
+        user: process.env.EMAIL_USER, // your email address
+        pass: process.env.EMAIL_PASS, // your email password
     },
 });
-// Function to send an email with optional attachments
+// Function to send an email
 function sendEmail(to, subject, html, attachments) {
     return __awaiter(this, void 0, void 0, function* () {
         const mailOptions = {
             from: "info@copora.com",
-            to, // recipient(s)
-            subject, // email subject
-            html, // email body in HTML
+            to,
+            subject,
+            html,
             attachments, // optional attachments, if provided
         };
         try {
             yield transporter.sendMail(mailOptions);
-            console.log(`Email sent to ${to} successfully`);
+            console.log(`Email sent ${to} successfully`);
         }
         catch (error) {
             console.error("Error sending email:", error);

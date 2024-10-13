@@ -14,24 +14,27 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.sendEmail = sendEmail;
 const nodemailer_1 = __importDefault(require("nodemailer"));
-// Create a transporter using SendLayer's SMTP configuration
+// Create a transporter using Azure SMTP relay configuration
 const transporter = nodemailer_1.default.createTransport({
-    host: process.env.SENDLAYER_HOST, // e.g., smtp.sendlayer.com
-    port: 587, // Port for secure email (usually 587 or 465)
-    secure: false, // Set to true if using port 465
+    host: "smtp.office365.com", // Azure SMTP host (e.g., Office 365)
+    port: 587, // Port for TLS (use 25 if not using TLS)
+    secure: false, // Set to true if using port 465, otherwise false
     auth: {
-        user: process.env.SENDLAYER_USER, // SMTP username provided by SendLayer
-        pass: process.env.SENDLAYER_PASS, // SMTP password provided by SendLayer
+        user: process.env.AZURE_EMAIL_USER, // Azure email address (Office 365 account)
+        pass: process.env.AZURE_EMAIL_PASS, // Password or App Password for the email account
+    },
+    tls: {
+        ciphers: "SSLv3", // Optional: Ensures compatibility with older ciphers
     },
 });
-// Function to send an email with optional attachments
+// Function to send an email
 function sendEmail(to, subject, html, attachments) {
     return __awaiter(this, void 0, void 0, function* () {
         const mailOptions = {
-            from: "info@copora.com",
-            to, // recipient(s)
-            subject, // email subject
-            html, // email body in HTML
+            from: "info@copora.com", // Ensure this matches your verified domain in Azure
+            to,
+            subject,
+            html,
             attachments, // optional attachments, if provided
         };
         try {
