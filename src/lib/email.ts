@@ -17,7 +17,7 @@ export async function sendEmail(
   attachments?: any[]
 ) {
 	const mailOptions = {
-		from: process.env.EMAIL_USER,
+		from: "info@copora.com",
 		to,
 		subject,
 		html,

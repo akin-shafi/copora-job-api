@@ -26,7 +26,7 @@ const transporter = nodemailer_1.default.createTransport({
 function sendEmail(to, subject, html, attachments) {
     return __awaiter(this, void 0, void 0, function* () {
         const mailOptions = {
-            from: process.env.EMAIL_USER,
+            from: "info@copora.com",
             to,
             subject,
             html,
